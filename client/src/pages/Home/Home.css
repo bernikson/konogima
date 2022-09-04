@@ -1,0 +1,108 @@
+#home {
+  width: 70%;
+  margin: auto;
+}
+
+#home > section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#home > section > article {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
+}
+
+#home_popular > article {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 2rem !important;
+  justify-content: space-between !important;
+}
+
+#home_popular > article > div {
+  margin: 0 !important;
+  width: 15rem !important;
+}
+
+#home > section > h1 {
+  font-size: 1.3rem;
+  background-color: var(--secondary);
+  width: fit-content;
+  padding: 0.5rem 1.2rem;
+  border-radius: 7px;
+  margin: 1rem 0rem;
+  margin-top: 3rem;
+}
+
+#home_popular > article > div:nth-child(2) {
+  width: 20rem !important;
+  height: 25rem !important;
+}
+
+#home > h1 {
+  font-size: 1.3rem;
+  background-color: var(--secondary);
+  width: fit-content;
+  padding: 0.5rem 1.2rem;
+  border-radius: 7px;
+  margin: 1rem 0rem;
+  margin-top: 3rem;
+  margin: 2rem auto;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  #home_popular > article {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem !important;
+  }
+  #home_popular > article > div {
+    margin: auto !important;
+    width: 100% !important;
+  }
+
+  #home_popular > article > div:nth-child(2) {
+    width: 100% !important;
+    height: 20rem !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #home {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  #anime_card {
+    width: 80% !important;
+    margin: auto !important;
+  }
+  #home_popular > article > div {
+    margin: auto !important;
+    width: 80% !important;
+  }
+  #home_popular > article > div:nth-child(2) {
+    width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #anime_card {
+    width: 90% !important;
+    margin: auto !important;
+  }
+
+  #home_popular > article > div {
+    margin: auto !important;
+    width: 90% !important;
+  }
+  #home_popular > article > div:nth-child(2) {
+    width: 90% !important;
+  }
+}
