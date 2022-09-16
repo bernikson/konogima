@@ -23,6 +23,7 @@ nav > aside {
   background-image: center;
   background-size: cover;
   background-repeat: no-repeat;
+  cursor: pointer;
   background-image: url("../../assets/images/konogima-logo.png");
 }
 
@@ -193,6 +194,10 @@ nav > aside {
   background-clip: padding-box;
 }
 
+#nav_menu > div > ul {
+  width: calc(100% + 2rem);
+}
+
 #nav_menu > div > ul > li {
   list-style-type: none;
   border-radius: 5px;
@@ -204,6 +209,10 @@ nav > aside {
   align-items: center;
   justify-content: center;
   background-color: lightgrey;
+}
+
+#nav_menu > div > ul > li:hover {
+  background-color: var(--secondary);
 }
 
 #nav_menu_dropdown_btn {
@@ -324,6 +333,7 @@ nav > aside {
   }
   #nav_menu > div > ul {
     grid-template-columns: 1fr;
+    width: 100%;
   }
   #nav_menu > div > ul > li {
     font-size: 1.3rem;

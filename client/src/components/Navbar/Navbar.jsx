@@ -1,15 +1,16 @@
 import React from "react";
 import "./Navbar.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [dropdown, triggerDropdown] = useState(false);
   const [profile, triggerProfile] = useState(false);
   const [navState, setNavState] = useState(0);
   return (
     <nav>
-      <div id="nav_logo"></div>
+      <div id="nav_logo" onClick={() => navigate("/")}></div>
       <aside>
         {true && (
           <div id="nav_auth">

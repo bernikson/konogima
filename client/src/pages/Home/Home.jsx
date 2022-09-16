@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <main id="home">
       <section id="home_popular">
-        <h1>პოპულარეულები</h1>
+        <h1>პოპულარულები</h1>
         <article>
           <AnimeCard />
           <AnimeCard />
