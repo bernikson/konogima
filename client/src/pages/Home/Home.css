@@ -55,6 +55,23 @@
   cursor: pointer;
 }
 
+#home > button {
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: var(--secondary);
+  width: fit-content;
+  padding: 0.5rem 1.2rem;
+  border-radius: 7px;
+  margin: 2rem auto;
+  cursor: pointer;
+  display: block;
+  transition: 0.2s;
+}
+
+#home > button:hover {
+  transform: translateY(-0.3rem);
+}
+
 @media screen and (max-width: 1200px) {
   #home_popular > article {
     display: grid !important;

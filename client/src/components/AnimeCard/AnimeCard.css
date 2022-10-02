@@ -15,6 +15,10 @@
   width: 100%;
 }
 
+#anime_card:hover {
+  box-shadow: 0px 0px 30px var(--secondary);
+}
+
 /* #anime_card:last-child {
   margin-inline: 2rem auto;
 } */

@@ -35,7 +35,7 @@ const Home = () => {
           <AnimeCard />
         </article>
       </section>
-      <h1>მეტის ჩატვირთვა</h1>
+      <button>მეტის ჩატვირთვა</button>
     </main>
   );
 };

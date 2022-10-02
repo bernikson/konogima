@@ -8,6 +8,7 @@ nav {
   position: sticky;
   top: 0;
   background-color: black;
+  z-index: 10;
 }
 
 nav > aside {
@@ -55,7 +56,6 @@ nav > aside {
   height: 100%;
   box-shadow: 0px 0px 10px var(--secondary);
   opacity: 0;
-  transition: 0.4s;
 }
 
 #nav_auth > button:hover:after {
@@ -178,7 +178,7 @@ nav > aside {
 }
 
 #nav_menu > div > ul::-webkit-scrollbar {
-  width: 30px;
+  width: 25px;
 }
 
 /* Track */

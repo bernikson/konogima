@@ -1,0 +1,112 @@
+#admin {
+  width: 70%;
+  margin: auto;
+  max-height: 79vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#admin::-webkit-scrollbar {
+  width: 0px;
+}
+
+.admin_anime {
+  width: 100%;
+  height: 18rem;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.2s;
+  position: relative;
+  background-color: lightgrey;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://cdn.shopify.com/s/files/1/0005/8592/4674/products/small-ancient-roman-empire-flag-4940890013762_750x.jpg?v=1636751896");
+}
+
+.admin_anime:hover div {
+  transform: scale(1);
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.admin_anime > div {
+  position: absolute;
+  transform: scale(0.5);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 100px 100px;
+  justify-content: center;
+  background-color: hsla(0, 100%, 0%, 70%);
+  transition: 0.2s;
+  opacity: 0;
+}
+
+.admin_anime > div > svg {
+  fill: var(--secondary);
+  width: 70px;
+  height: 70px;
+}
+
+#admin_anime_add {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  background-color: var(--secondary);
+  border-radius: 5px;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+#admin_anime_add:hover {
+  transform: translate(-50%, -0.3rem);
+}
+
+#admin_anime_add > span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+#admin_anime_add > svg {
+  width: 35px;
+  height: 35px;
+  fill: var(--primary);
+}
+
+@media screen and (max-width: 1000px) {
+  #admin {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #admin {
+    gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #admin {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #admin {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}

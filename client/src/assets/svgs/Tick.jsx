@@ -3,18 +3,39 @@ import React from "react";
 const Tick = ({ width, height, fill }) => {
   return (
     <svg
-      width={width}
-      height={height}
-      viewBox="0 0 16 16"
-      xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      fill={fill}
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      id="Capa_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      width="469.184px"
+      height="469.185px"
+      viewBox="0 0 469.184 469.185"
+      xmlSpace="preserve"
     >
-      <polyline points="2.75 8.75,6.25 12.25,13.25 4.75" />
+      <g>
+        <path
+          d="M462.5,96.193l-21.726-21.726c-8.951-8.95-23.562-8.95-32.59,0L180.368,302.361l-119.34-119.34
+		c-8.95-8.951-23.562-8.951-32.589,0L6.712,204.747c-8.95,8.951-8.95,23.562,0,32.589L163.997,394.62
+		c4.514,4.514,10.327,6.809,16.218,6.809s11.781-2.295,16.219-6.809L462.27,128.783C471.45,119.68,471.45,105.145,462.5,96.193z"
+        />
+      </g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
     </svg>
   );
 };
