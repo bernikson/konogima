@@ -5,6 +5,7 @@ import Footer from "./components/Footer/Footer";
 import Anime from "./pages/Anime/Anime";
 import Admin from "./pages/Admin/Admin";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import Profile from "./pages/Profile/Profile";
 function App() {
   return (
     <BrowserRouter className="App">
@@ -14,6 +15,7 @@ function App() {
         <Route path="/anime/:id" element={<Anime />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin_dashboard" element={<AdminDashboard />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
       <Footer />
     </BrowserRouter>

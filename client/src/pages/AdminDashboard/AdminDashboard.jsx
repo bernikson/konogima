@@ -49,56 +49,59 @@ const AdminDashboard = () => {
   const [image, setImage] = useState();
   const [genresDropdown, triggerGenresDropdown] = useState(false);
   const [calendarDropdown, triggerCalendarDropdown] = useState(false);
+  const [seasonCounter, setSeasonCounter] = useState(0);
   return (
     <main id="admin_dashboard">
       <aside id="top_admin">
         <aside id="top_left_admin">
           <div id="admin_dashboard_background"></div>
-          <button onClick={() => imageRef.current.click()}>
-            სურათის არჩევა
-          </button>
-          <input
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            ref={imageRef}
-            style={{ display: "none" }}
-            type="file"
-            accept="image/png, image/jpeg, image/webp"
-          />
-          <section id="admin_dashboard_players">
-            <div>
-              <span>ფლეიერი 2</span>
-              <div
-                onClick={() =>
-                  setPlayerOptions({
-                    ...playerOptions,
-                    playerTwo: !playerOptions.playerTwo,
-                  })
-                }
-                className={
-                  playerOptions.playerTwo ? "trigger_player" : undefined
-                }
-              >
-                <Tick />
+          <article>
+            <button onClick={() => imageRef.current.click()}>
+              სურათის არჩევა
+            </button>
+            <input
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              ref={imageRef}
+              style={{ display: "none" }}
+              type="file"
+              accept="image/png, image/jpeg, image/webp"
+            />
+            <section id="admin_dashboard_players">
+              <div>
+                <span>ფლეიერი 2</span>
+                <div
+                  onClick={() =>
+                    setPlayerOptions({
+                      ...playerOptions,
+                      playerTwo: !playerOptions.playerTwo,
+                    })
+                  }
+                  className={
+                    playerOptions.playerTwo ? "trigger_player" : undefined
+                  }
+                >
+                  <Tick />
+                </div>
               </div>
-            </div>
-            <div>
-              <span>ფლეიერი 3</span>
-              <div
-                onClick={() =>
-                  setPlayerOptions({
-                    ...playerOptions,
-                    playerThree: !playerOptions.playerThree,
-                  })
-                }
-                className={
-                  playerOptions.playerThree ? "trigger_player" : undefined
-                }
-              >
-                <Tick />
+              <div>
+                <span>ფლეიერი 3</span>
+                <div
+                  onClick={() =>
+                    setPlayerOptions({
+                      ...playerOptions,
+                      playerThree: !playerOptions.playerThree,
+                    })
+                  }
+                  className={
+                    playerOptions.playerThree ? "trigger_player" : undefined
+                  }
+                >
+                  <Tick />
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </article>
         </aside>
         <aside id="top_right_admin">
           <section id="admin_dashboard_information">
@@ -200,7 +203,90 @@ const AdminDashboard = () => {
           <button>შენახვა</button>
         </aside>
       </aside>
-      <aside id="bottom_admin"></aside>
+      <aside id="bottom_admin">
+        <div className="admin_input_wrapper">
+          <input type="text" placeholder="ფლეიერი 1" />
+          <div></div>
+        </div>
+        {playerOptions.playerTwo && (
+          <div className="admin_input_wrapper">
+            <input type="text" placeholder="ფლეიერი 2" />
+            <div></div>
+          </div>
+        )}
+        {playerOptions.playerThree && (
+          <div className="admin_input_wrapper">
+            <input type="text" placeholder="ფლეიერი 3" />
+            <div></div>
+          </div>
+        )}
+        <div id="season_wrapper">
+          <div
+            onClick={() => {
+              if (seasonCounter !== 1)
+                setSeasonCounter((prevSeason) => prevSeason - 1);
+            }}
+          >
+            <ArrowDown />
+          </div>
+          <span>სეზონი {seasonCounter}</span>
+          <div onClick={() => setSeasonCounter((prevSeason) => prevSeason + 1)}>
+            <ArrowDown />
+          </div>
+        </div>
+        <button>სერიის დამატება</button>
+        <section id="admin_series_information">
+          <aside>
+            <h1>სერიები</h1>
+            <div id="admin_seasones_switch">
+              <div>
+                <ArrowDown />
+              </div>
+              <span>სეზონი 1</span>
+              <div>
+                <ArrowDown />
+              </div>
+            </div>
+            <ul>
+              <li>სერია 1</li>
+              <li>სერია 2</li>
+              <li>სერია 1</li>
+              <li>სერია 2</li>
+              <li>სერია 1</li>
+              <li>სერია 2</li>
+              <li>სერია 1</li>
+              <li>სერია 2</li>
+            </ul>
+          </aside>
+          <aside>
+            <h1>პარამეტრები</h1>
+            <div id="admin_season_parameters">
+              <div>
+                <label htmlFor="">ფლეიერი 1</label>
+                <input
+                  type="text"
+                  value="8JKRdJflZiQVPOmoG7xsuZatm8o0Jdi4KscucnZM"
+                />
+              </div>
+              <div>
+                <label htmlFor="">ფლეიერი 2</label>
+                <input
+                  type="text"
+                  value="8JKRdJflZiQVPOmoG7xsuZatm8o0Jdi4KscucnZM"
+                />
+              </div>
+              <div>
+                <label htmlFor="">ფლეიერი 3</label>
+                <input
+                  type="text"
+                  value="8JKRdJflZiQVPOmoG7xsuZatm8o0Jdi4KscucnZM"
+                />
+              </div>
+              <button>განახლება</button>
+            </div>
+          </aside>
+        </section>
+      </aside>
     </main>
   );
 };
