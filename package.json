@@ -1,0 +1,19 @@
+{
+  "name": "konogima",
+  "version": "1.0.0",
+  "description": "I made this website for my friend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bernikson/konogima.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bernikson/konogima/issues"
+  },
+  "homepage": "https://github.com/bernikson/konogima#readme"
+}

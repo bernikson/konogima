@@ -1,0 +1,236 @@
+.parentAuth {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 0.4s;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.login,
+.register {
+  visibility: visible;
+  opacity: 1;
+}
+
+.login > .auth,
+.register > .auth {
+  transform: scale(1);
+}
+
+.auth {
+  padding: 2rem;
+  box-shadow: 0px 0px 30px var(--secondary);
+  border-radius: 8px;
+  background-color: black;
+  z-index: 10;
+  width: 30rem;
+  height: fit-content;
+  margin-top: 15%;
+  transform: scale(0.5);
+  transition: 0.4s;
+  overflow: hidden;
+}
+
+.auth_nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth_nav > div:first-child:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 5px;
+  width: 9.4rem;
+  background-color: var(--secondary);
+  transition: 0.4s;
+}
+
+.login .auth_nav > div:first-child:after {
+  left: calc(260px - 96px);
+  width: 6rem;
+}
+
+.auth_nav > div:last-child {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.auth_nav > div > svg {
+  fill: red;
+  width: 30px;
+  height: 30px;
+}
+
+.auth_nav > div:first-child {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+}
+.auth_nav > div:first-child > button {
+  cursor: pointer;
+  font-size: 1.1rem;
+  z-index: 100;
+  padding: 0.4rem 1.2rem;
+  background-color: transparent;
+  color: white;
+  transition: 0.4s;
+}
+
+.login .auth_nav > div:first-child > button:last-child {
+  color: black;
+  font-weight: bold;
+}
+.register .auth_nav > div:first-child > button:first-child {
+  color: black;
+  font-weight: bold;
+}
+
+.auth form {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: 1s;
+}
+
+.auth_input_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth_input_wrapper > div {
+  height: 0.2rem;
+  width: 100%;
+  background-color: var(--secondary);
+  border-radius: 100px;
+}
+
+.auth_input_wrapper > input {
+  background-color: transparent;
+  font-size: 1.1rem;
+  font-weight: 400;
+  padding: 0.5rem 0;
+  color: var(--secondary);
+  border: 0;
+  width: 26rem;
+}
+
+.auth_input_wrapper > input::placeholder {
+  color: lightgrey;
+}
+.auth_input_wrapper > input:focus {
+  outline: none;
+}
+
+.auth > button {
+  padding: 0.4rem 1.4rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  background-color: #55efc4;
+  border: 2px solid #55efc4;
+  color: black;
+  transition: 0.4s;
+}
+
+.auth > button:hover {
+  transform: translateY(-0.2rem);
+}
+
+.preError {
+  background-color: transparent !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: 0.4s;
+}
+
+.preError > svg {
+  transition: 0.4s;
+  min-width: 27px !important;
+}
+
+.preError > span {
+  font-weight: 600;
+  word-break: break-all;
+  transition: 0.4s;
+}
+
+#auth_switch {
+  display: flex;
+  gap: 2rem;
+  max-height: 300px;
+  transition: 0.4s;
+}
+
+.translateAuth {
+  transform: translateX(-448px);
+  max-height: 7.5rem !important;
+}
+
+@media screen and (max-width: 500px) {
+  .auth {
+    box-shadow: none;
+    width: 100%;
+    height: 100%;
+    margin-top: 0%;
+    transition: 0s;
+  }
+  .translateAuth {
+    transform: translateX(calc(-100%));
+  }
+  #auth_switch {
+    gap: 3rem;
+    width: 100%;
+  }
+  .auth_input_wrapper {
+    width: 100%;
+  }
+  .auth_input_wrapper > input {
+    width: 100%;
+  }
+  .auth form {
+    width: 100%;
+  }
+  .parentAuth {
+    transition: 0s;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .auth {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .auth_nav > div:first-child > button {
+    padding: 0.3rem 1rem;
+  }
+}
+
+@media screen and (min-width: 500px) and (max-height: 600px) {
+  .auth {
+    margin-top: 9%;
+  }
+}
+
+@media screen and (min-width: 500px) and (max-height: 500px) {
+  .auth {
+    margin-top: 6%;
+  }
+}

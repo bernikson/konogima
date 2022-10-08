@@ -2,8 +2,12 @@ import React from "react";
 import "./Navbar.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Auth from "../Auth/Auth";
+import { updateAuthState } from "../../redux/webSlice";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [dropdown, triggerDropdown] = useState(false);
   const [profile, triggerProfile] = useState(false);
@@ -14,8 +18,10 @@ const Navbar = () => {
       <aside>
         {true && (
           <div id="nav_auth">
-            <button>შესვლა</button>
-            <button>რეგისტრაცია</button>
+            <button onClick={() => dispatch(updateAuthState(1))}>შესვლა</button>
+            <button onClick={() => dispatch(updateAuthState(2))}>
+              რეგისტრაცია
+            </button>
           </div>
         )}
         {false && (
@@ -79,13 +85,16 @@ const Navbar = () => {
             )}
             {navState === 1 && (
               <ul id="nav_res_menu">
-                <li>შესვლა</li>
-                <li>რეგისტრაცია</li>
+                <li onClick={() => dispatch(updateAuthState(1))}>შესვლა</li>
+                <li onClick={() => dispatch(updateAuthState(2))}>
+                  რეგისტრაცია
+                </li>
               </ul>
             )}
           </div>
         </div>
       </aside>
+      <Auth />
     </nav>
   );
 };

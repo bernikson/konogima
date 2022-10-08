@@ -9,10 +9,11 @@ const Tick = ({ width, height, fill }) => {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       x="0px"
       y="0px"
-      width="469.184px"
-      height="469.185px"
+      width={width}
+      height={height}
       viewBox="0 0 469.184 469.185"
       xmlSpace="preserve"
+      fill={fill}
     >
       <g>
         <path

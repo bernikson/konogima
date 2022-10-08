@@ -1,0 +1,314 @@
+import React from "react";
+import Close from "../../assets/svgs/Close";
+import "./Auth.css";
+import { useState } from "react";
+import Tick from "../../assets/svgs/Tick";
+import { updateAuthState } from "../../redux/webSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+
+const Register = () => {
+  const dispatch = useDispatch();
+  const { authState } = useSelector((state) => ({ ...state.web }));
+  const [registerData, setRegisterData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [registerFocusData, setRegisterFocusData] = useState({
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+  const handleRegisterChange = (e) => {
+    const { value, name } = e.target;
+    setRegisterData({ ...registerData, [name]: value });
+  };
+
+  const handleRegister = () => {
+    const { username, email, password, confirmPassword } = registerData;
+    if (
+      username === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      toast.error("შეიყვანეთ ინფორმაცია", {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    }
+  };
+
+  const handleValidate = (check) => {
+    switch (check) {
+      case "username":
+        if (
+          registerData.username.length > 3 &&
+          registerData.username.length < 24
+        ) {
+          return true;
+        }
+        break;
+      case "email":
+        return String(registerData.email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+      case "password":
+        return String(registerData.password).match(
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&^_-]{8,}$/
+        );
+      case "confirmPassword":
+        if (registerData.password === registerData.confirmPassword) return true;
+        break;
+      default:
+        return false;
+    }
+  };
+  let authStateClass = "";
+  switch (authState) {
+    case 1:
+      authStateClass = "login";
+      break;
+    case 2:
+      authStateClass = "register";
+      break;
+    default:
+      authStateClass = "";
+  }
+  return (
+    <section className={`parentAuth ${authStateClass}`}>
+      <section className="auth">
+        <div className="auth_nav">
+          <div>
+            <button onClick={() => dispatch(updateAuthState(2))}>
+              რეგისტრაცია
+            </button>
+            <button onClick={() => dispatch(updateAuthState(1))}>შესვლა</button>
+          </div>
+          <div onClick={() => dispatch(updateAuthState(0))}>
+            <Close />
+          </div>
+        </div>
+        <article id="auth_switch">
+          {authState === 1 ? (
+            <form action="" autoComplete="off">
+              <div className="auth_input_wrapper">
+                <input
+                  type="text"
+                  placeholder="შეიყვანეთ ელ-ფოსტა"
+                  name="email"
+                  value={registerData.email}
+                  onChange={handleRegisterChange}
+                  onFocus={() => setRegisterFocusData({ email: true })}
+                  onBlur={() => setRegisterFocusData({ email: false })}
+                />
+                <div></div>
+              </div>
+              <div className="auth_input_wrapper">
+                <input
+                  type="password"
+                  placeholder="შეიყვანეთ პაროლი"
+                  name="password"
+                  value={registerData.password}
+                  onChange={handleRegisterChange}
+                  onFocus={() => setRegisterFocusData({ password: true })}
+                  onBlur={() => setRegisterFocusData({ password: false })}
+                />
+                <div></div>
+              </div>
+            </form>
+          ) : (
+            <form action="" autoComplete="off">
+              <div className="auth_input_wrapper">
+                <input
+                  type="text"
+                  placeholder="შეიყვანეთ სახელი"
+                  name="username"
+                  value={registerData.username}
+                  onChange={handleRegisterChange}
+                  onFocus={() => setRegisterFocusData({ username: true })}
+                  onBlur={() => setRegisterFocusData({ username: false })}
+                />
+                <div></div>
+                <div
+                  className="preError"
+                  style={
+                    registerData.username !== "" && registerFocusData.username
+                      ? { opacity: "1", height: "50px" }
+                      : { opacity: "0", height: "0" }
+                  }
+                >
+                  {handleValidate("username") ? (
+                    <Tick width="22px" height="22px" fill="#55efc4" />
+                  ) : (
+                    <Close width="27px" height="27px" fill="red" />
+                  )}
+                  <span
+                    style={
+                      handleValidate("username")
+                        ? { color: "#55efc4" }
+                        : { color: "red" }
+                    }
+                  >
+                    სახელი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს და მაქსიმუმ 24-ს
+                  </span>
+                </div>
+              </div>
+              <div className="auth_input_wrapper">
+                <input
+                  type="text"
+                  placeholder="შეიყვანეთ ელ-ფოსტა"
+                  name="email"
+                  value={registerData.email}
+                  onChange={handleRegisterChange}
+                  onFocus={() => setRegisterFocusData({ email: true })}
+                  onBlur={() => setRegisterFocusData({ email: false })}
+                />
+                <div></div>
+                <div
+                  className="preError"
+                  style={
+                    registerData.email !== "" && registerFocusData.email
+                      ? { opacity: "1", height: "30px" }
+                      : { opacity: "0", height: "0" }
+                  }
+                >
+                  {handleValidate("email") ? (
+                    <Tick width="22px" height="22px" fill="#55efc4" />
+                  ) : (
+                    <Close width="27px" height="27px" fill="red" />
+                  )}
+                  <span
+                    style={
+                      handleValidate("email")
+                        ? { color: "#55efc4" }
+                        : { color: "red" }
+                    }
+                  >
+                    ელ-ფოსტა უნდა იყოს სწორი
+                  </span>
+                </div>
+              </div>
+              <div className="auth_input_wrapper">
+                <input
+                  type="password"
+                  placeholder="შეიყვანეთ პაროლი"
+                  name="password"
+                  value={registerData.password}
+                  onChange={handleRegisterChange}
+                  onFocus={() => setRegisterFocusData({ password: true })}
+                  onBlur={() => setRegisterFocusData({ password: false })}
+                />
+                <div></div>
+                <div
+                  className="preError"
+                  style={
+                    registerData.password !== "" && registerFocusData.password
+                      ? { opacity: "1", height: "50px" }
+                      : { opacity: "0", height: "0" }
+                  }
+                >
+                  {handleValidate("password") ? (
+                    <Tick width="22px" height="22px" fill="#55efc4" />
+                  ) : (
+                    <Close width="27px" height="27px" fill="red" />
+                  )}
+                  <span
+                    style={
+                      handleValidate("password")
+                        ? { color: "#55efc4" }
+                        : { color: "red" }
+                    }
+                  >
+                    პაროლი უნდა შეიცავდეს ციფრებს და იწყებოდეს დიდი ასუთი
+                  </span>
+                </div>
+              </div>
+              <div className="auth_input_wrapper">
+                <input
+                  type="password"
+                  placeholder="გაიმეორეთ პაროლი"
+                  name="confirmPassword"
+                  value={registerData.confirmPassword}
+                  onChange={handleRegisterChange}
+                  onFocus={() =>
+                    setRegisterFocusData({ confirmPassword: true })
+                  }
+                  onBlur={() =>
+                    setRegisterFocusData({ confirmPassword: false })
+                  }
+                />
+                <div></div>
+                <div
+                  className="preError"
+                  style={
+                    registerData.confirmPassword !== "" &&
+                    registerFocusData.confirmPassword
+                      ? { opacity: "1", height: "50px" }
+                      : { opacity: "0", height: "0" }
+                  }
+                >
+                  {handleValidate("confirmPassword") ? (
+                    <Tick width="22px" height="22px" fill="#55efc4" />
+                  ) : (
+                    <Close width="27px" height="27px" fill="red" />
+                  )}
+                  <span
+                    style={
+                      handleValidate("confirmPassword")
+                        ? { color: "#55efc4" }
+                        : { color: "red" }
+                    }
+                  >
+                    პაროლები უნდა ემთხვეოდეს
+                  </span>
+                </div>
+              </div>
+            </form>
+          )}
+        </article>
+
+        {authState === 2 ? (
+          <button
+            onClick={handleRegister}
+            disabled={
+              handleValidate("username") &&
+              handleValidate("password") &&
+              handleValidate("email") &&
+              handleValidate("confirmPassword")
+            }
+            style={
+              handleValidate("username") &&
+              handleValidate("password") &&
+              handleValidate("email") &&
+              handleValidate("confirmPassword")
+                ? undefined
+                : {
+                    backgroundColor: "transparent",
+                    color: "#55efc4",
+                    cursor: "not-allowed",
+                  }
+            }
+          >
+            რეგისტრაცია
+          </button>
+        ) : (
+          <button>შესვლა</button>
+        )}
+      </section>
+    </section>
+  );
+};
+
+export default Register;

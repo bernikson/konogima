@@ -65,7 +65,23 @@
   display: grid;
 
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
+  gap: 2rem;
+}
+
+.profile_change_avatar {
+  padding: 0.4rem 1.4rem;
+  border-radius: 5px;
+  background-color: var(--secondary);
+  font-weight: bold;
+  color: black;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.profile_change_avatar:hover {
+  transform: translateY(-0.2rem);
 }
 
 @media screen and (max-width: 1000px) {
