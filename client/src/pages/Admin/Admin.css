@@ -1,11 +1,11 @@
 #admin {
   width: 70%;
   margin: auto;
-  max-height: 79vh;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 2rem;
   overflow-y: scroll;
+  min-height: calc(100vh - 208px);
   overflow-x: hidden;
 }
 
@@ -25,7 +25,6 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("https://cdn.shopify.com/s/files/1/0005/8592/4674/products/small-ancient-roman-empire-flag-4940890013762_750x.jpg?v=1636751896");
 }
 
 .admin_anime:hover div {
@@ -57,7 +56,7 @@
 }
 
 #admin_anime_add {
-  position: absolute;
+  position: fixed;
   bottom: 14%;
   left: 50%;
   transform: translateX(-50%);
@@ -68,6 +67,7 @@
   align-items: center;
   padding: 0.5rem 2rem;
   transition: 0.2s;
+  z-index: 10;
   cursor: pointer;
 }
 

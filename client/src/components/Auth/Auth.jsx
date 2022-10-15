@@ -1,15 +1,24 @@
 import React from "react";
 import Close from "../../assets/svgs/Close";
 import "./Auth.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Tick from "../../assets/svgs/Tick";
 import { updateAuthState } from "../../redux/webSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import {
+  login,
+  clearStatus,
+  register,
+  forgotPassword,
+  resetPassword,
+} from "../../redux/webSlice";
 
-const Register = () => {
+const Auth = () => {
   const dispatch = useDispatch();
-  const { authState } = useSelector((state) => ({ ...state.web }));
+  const { authState, success, loading, error } = useSelector((state) => ({
+    ...state.web,
+  }));
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
@@ -22,12 +31,19 @@ const Register = () => {
     password: false,
     confirmPassword: false,
   });
+  const [loginData, setLogindata] = useState({
+    email: "",
+    password: "",
+  });
   const handleRegisterChange = (e) => {
     const { value, name } = e.target;
     setRegisterData({ ...registerData, [name]: value });
   };
-
-  const handleRegister = () => {
+  const handleLoginChange = (e) => {
+    const { value, name } = e.target;
+    setLogindata({ ...loginData, [name]: value });
+  };
+  const handleRegister = async () => {
     const { username, email, password, confirmPassword } = registerData;
     if (
       username === "" ||
@@ -35,7 +51,7 @@ const Register = () => {
       password === "" ||
       confirmPassword === ""
     ) {
-      toast.error("შეიყვანეთ ინფორმაცია", {
+      return toast.error("შეიყვანეთ ინფორმაცია", {
         id: "single",
         duration: 4000,
         style: {
@@ -46,6 +62,59 @@ const Register = () => {
         },
       });
     }
+    await dispatch(register({ username, email, password, confirmPassword }));
+    localStorage.getItem("isLogged") === "true" && dispatch(updateAuthState(0));
+  };
+  const handleLogin = async () => {
+    const { email, password } = loginData;
+    if (email === "" || password === "") {
+      return toast.error("შეიყვანეთ ინფორმაცია", {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    }
+    await dispatch(login({ email, password }));
+    localStorage.getItem("isLogged") === "true" && dispatch(updateAuthState(0));
+  };
+  const handleForgotPassword = async () => {
+    const { email } = registerData;
+    if (email === "") {
+      return toast.error("შეიყვანეთ ინფორმაცია", {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    }
+    await dispatch(forgotPassword({ email }));
+    localStorage.getItem("isLogged") === "true" && dispatch(updateAuthState(0));
+  };
+  const handleResetPassword = async () => {
+    const { email, password } = registerData;
+    if (email === "") {
+      return toast.error("შეიყვანეთ ინფორმაცია", {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    }
+    await dispatch(resetPassword({ email, password }));
+    localStorage.getItem("isLogged") === "true" && dispatch(updateAuthState(0));
   };
 
   const handleValidate = (check) => {
@@ -83,25 +152,47 @@ const Register = () => {
     case 2:
       authStateClass = "register";
       break;
+    case 3:
+      authStateClass = "forgotPassword";
+      break;
     default:
       authStateClass = "";
   }
+
   return (
     <section className={`parentAuth ${authStateClass}`}>
       <section className="auth">
-        <div className="auth_nav">
-          <div>
-            <button onClick={() => dispatch(updateAuthState(2))}>
-              რეგისტრაცია
-            </button>
-            <button onClick={() => dispatch(updateAuthState(1))}>შესვლა</button>
+        {authState !== 3 || authState !== 3 ? (
+          <div className="auth_nav">
+            <div>
+              <button onClick={() => dispatch(updateAuthState(2))}>
+                რეგისტრაცია
+              </button>
+              <button onClick={() => dispatch(updateAuthState(1))}>
+                შესვლა
+              </button>
+            </div>
+            <div onClick={() => dispatch(updateAuthState(0))}>
+              <Close />
+            </div>
           </div>
-          <div onClick={() => dispatch(updateAuthState(0))}>
-            <Close />
+        ) : (
+          <div className="auth_nav">
+            <div>
+              <button onClick={() => dispatch(updateAuthState(3))}>
+                პაროლის აღდგენა
+              </button>
+              <button onClick={() => dispatch(updateAuthState(1))}>
+                შესვლა
+              </button>
+            </div>
+            <div onClick={() => dispatch(updateAuthState(0))}>
+              <Close />
+            </div>
           </div>
-        </div>
+        )}
         <article id="auth_switch">
-          {authState === 1 ? (
+          {authState === 3 && (
             <form action="" autoComplete="off">
               <div className="auth_input_wrapper">
                 <input
@@ -114,21 +205,63 @@ const Register = () => {
                   onBlur={() => setRegisterFocusData({ email: false })}
                 />
                 <div></div>
+                <div
+                  className="preError"
+                  style={
+                    registerData.email !== "" && registerFocusData.email
+                      ? { opacity: "1", height: "30px" }
+                      : { opacity: "0", height: "0" }
+                  }
+                >
+                  {handleValidate("email") ? (
+                    <Tick width="22px" height="22px" fill="#55efc4" />
+                  ) : (
+                    <Close width="27px" height="27px" fill="#ff3f34" />
+                  )}
+                  <span
+                    style={
+                      handleValidate("email")
+                        ? { color: "#55efc4" }
+                        : { color: "#ff3f34" }
+                    }
+                  >
+                    ელ-ფოსტა უნდა იყოს სწორი
+                  </span>
+                </div>
+              </div>
+            </form>
+          )}
+          {(authState === 1 || authState === 0) && (
+            <form action="" autoComplete="off">
+              <div className="auth_input_wrapper">
+                <input
+                  type="text"
+                  placeholder="შეიყვანეთ ელ-ფოსტა"
+                  name="email"
+                  value={loginData.email}
+                  onChange={handleLoginChange}
+                />
+                <div></div>
               </div>
               <div className="auth_input_wrapper">
                 <input
                   type="password"
                   placeholder="შეიყვანეთ პაროლი"
                   name="password"
-                  value={registerData.password}
-                  onChange={handleRegisterChange}
-                  onFocus={() => setRegisterFocusData({ password: true })}
-                  onBlur={() => setRegisterFocusData({ password: false })}
+                  value={loginData.password}
+                  onChange={handleLoginChange}
                 />
                 <div></div>
               </div>
+              <span
+                id="password_forgot"
+                onClick={() => dispatch(updateAuthState(3))}
+              >
+                დაგავიწყდათ პაროლი?
+              </span>
             </form>
-          ) : (
+          )}
+          {authState === 2 && (
             <form action="" autoComplete="off">
               <div className="auth_input_wrapper">
                 <input
@@ -152,13 +285,13 @@ const Register = () => {
                   {handleValidate("username") ? (
                     <Tick width="22px" height="22px" fill="#55efc4" />
                   ) : (
-                    <Close width="27px" height="27px" fill="red" />
+                    <Close width="27px" height="27px" fill="#ff3f34" />
                   )}
                   <span
                     style={
                       handleValidate("username")
                         ? { color: "#55efc4" }
-                        : { color: "red" }
+                        : { color: "#ff3f34" }
                     }
                   >
                     სახელი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს და მაქსიმუმ 24-ს
@@ -187,13 +320,13 @@ const Register = () => {
                   {handleValidate("email") ? (
                     <Tick width="22px" height="22px" fill="#55efc4" />
                   ) : (
-                    <Close width="27px" height="27px" fill="red" />
+                    <Close width="27px" height="27px" fill="#ff3f34" />
                   )}
                   <span
                     style={
                       handleValidate("email")
                         ? { color: "#55efc4" }
-                        : { color: "red" }
+                        : { color: "#ff3f34" }
                     }
                   >
                     ელ-ფოსტა უნდა იყოს სწორი
@@ -222,13 +355,13 @@ const Register = () => {
                   {handleValidate("password") ? (
                     <Tick width="22px" height="22px" fill="#55efc4" />
                   ) : (
-                    <Close width="27px" height="27px" fill="red" />
+                    <Close width="27px" height="27px" fill="#ff3f34" />
                   )}
                   <span
                     style={
                       handleValidate("password")
                         ? { color: "#55efc4" }
-                        : { color: "red" }
+                        : { color: "#ff3f34" }
                     }
                   >
                     პაროლი უნდა შეიცავდეს ციფრებს და იწყებოდეს დიდი ასუთი
@@ -278,16 +411,18 @@ const Register = () => {
             </form>
           )}
         </article>
-
-        {authState === 2 ? (
+        {authState === 2 && (
           <button
-            onClick={handleRegister}
-            disabled={
-              handleValidate("username") &&
-              handleValidate("password") &&
-              handleValidate("email") &&
-              handleValidate("confirmPassword")
-            }
+            onClick={() => {
+              if (
+                handleValidate("username") &&
+                handleValidate("password") &&
+                handleValidate("email") &&
+                handleValidate("confirmPassword")
+              ) {
+                handleRegister();
+              }
+            }}
             style={
               handleValidate("username") &&
               handleValidate("password") &&
@@ -303,12 +438,31 @@ const Register = () => {
           >
             რეგისტრაცია
           </button>
-        ) : (
-          <button>შესვლა</button>
         )}
+        {authState === 3 && (
+          <button
+            onClick={() => {
+              if (handleValidate("email")) {
+                handleForgotPassword();
+              }
+            }}
+            style={
+              handleValidate("email")
+                ? undefined
+                : {
+                    backgroundColor: "transparent",
+                    color: "#55efc4",
+                    cursor: "not-allowed",
+                  }
+            }
+          >
+            გაგზავნა
+          </button>
+        )}
+        {authState === 1 && <button onClick={handleLogin}>შესვლა</button>}
       </section>
     </section>
   );
 };
 
-export default Register;
+export default Auth;

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   width: fit-content;
+  min-height: calc(100vh - 240px);
   margin: 2rem auto 0 auto;
 }
 
@@ -20,6 +21,20 @@
   height: 20rem;
   border-radius: 5px;
   background-color: lightgrey;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#admin_season_button_wrapper {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: row !important;
+  gap: 1rem;
+}
+
+#admin_season_button_wrapper button:first-child {
+  background-color: #ff3f34 !important;
 }
 
 #top_left_admin > article > button {

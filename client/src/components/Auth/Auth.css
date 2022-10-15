@@ -13,13 +13,15 @@
 }
 
 .login,
-.register {
+.register,
+.forgotPassword {
   visibility: visible;
   opacity: 1;
 }
 
 .login > .auth,
-.register > .auth {
+.register > .auth,
+.forgotPassword > .auth {
   transform: scale(1);
 }
 
@@ -96,6 +98,14 @@
   color: black;
   font-weight: bold;
 }
+.forgotPassword .auth_nav > div:first-child > button:first-child {
+  color: black;
+  font-weight: bold;
+}
+
+.forgotPassword .auth_nav > div:first-child:after {
+  width: 11.5rem;
+}
 
 .auth form {
   margin-top: 1.5rem;
@@ -115,6 +125,15 @@
   width: 100%;
   background-color: var(--secondary);
   border-radius: 100px;
+}
+
+#reset_password_label {
+  background-color: var(--secondary);
+  font-weight: bold;
+  border-radius: 5px;
+  color: black;
+  padding: 0.4rem 1.2rem;
+  font-size: 1.1rem;
 }
 
 .auth_input_wrapper > input {
@@ -157,17 +176,20 @@
   align-items: center;
   gap: 0.5rem;
   transition: 0.4s;
+  z-index: -1;
 }
 
 .preError > svg {
   transition: 0.4s;
   min-width: 27px !important;
+  height: auto;
 }
 
 .preError > span {
   font-weight: 600;
   word-break: break-all;
   transition: 0.4s;
+  height: auto;
 }
 
 #auth_switch {
@@ -180,6 +202,13 @@
 .translateAuth {
   transform: translateX(-448px);
   max-height: 7.5rem !important;
+}
+
+#password_forgot {
+  color: #ff3f34;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 @media screen and (max-width: 500px) {

@@ -1,21 +1,69 @@
 import React from "react";
 import "./Profile.css";
 import AnimeCard from "../../components/AnimeCard/AnimeCard";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { uploadImage } from "../../redux/webSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const { user, Token } = useSelector((state) => ({ ...state.web }));
+  const { id } = useParams();
   const imageRef = useRef(null);
-  const [image, setImage] = useState();
+  const changeAvatar = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      let formData = new FormData();
+      formData.append("file", file);
+
+      await dispatch(uploadImage({ image: formData, Token }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <main id="profile">
-      <div id="profile_avatar"></div>
-      <h1 id="profile_name">Berniko</h1>
+      <div
+        id="profile_avatar"
+        style={{ backgroundImage: `url(${user?.avatar})` }}
+      ></div>
+      <h1 id="profile_name">{user?.username}</h1>
       <section id="profile_status">
-        <div>დეველოპერი</div>
-        <div>VIP</div>
-        <div>გამხმოვანებელი</div>
-        <div>მთარგმელი</div>
-        <diV>VIP+</diV>
+        {user?.status?.map((output) => {
+          let bgColor = "";
+          let fontColor = "";
+          switch (output) {
+            case "მომხმარებელი":
+              bgColor = "#3498db";
+              break;
+            case "დეველოპერი":
+              bgColor = "#130f40";
+              fontColor = "red";
+              break;
+            case "VIP":
+              bgColor = "#f1c40f";
+              break;
+            case "გამხმოვანებელი":
+              bgColor = "#16a085";
+              break;
+            case "მთარგმელი":
+              bgColor = "#7bed9f";
+              break;
+            default:
+              bgColor = "yellow";
+              fontColor = "black";
+              break;
+          }
+          return (
+            <div
+              style={{ backgroundColor: `${bgColor}`, color: `${fontColor}` }}
+            >
+              {output}
+            </div>
+          );
+        })}
       </section>
       <button
         className="profile_change_avatar"
@@ -24,8 +72,7 @@ const Profile = () => {
         სურათის შეცვლა
       </button>
       <input
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
+        onChange={changeAvatar}
         ref={imageRef}
         style={{ display: "none" }}
         type="file"

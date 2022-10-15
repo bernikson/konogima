@@ -3,12 +3,13 @@ import "./Navbar.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Auth from "../Auth/Auth";
-import { updateAuthState } from "../../redux/webSlice";
-import { useDispatch } from "react-redux";
+import { updateAuthState, logout } from "../../redux/webSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => ({ ...state.web }));
   const [dropdown, triggerDropdown] = useState(false);
   const [profile, triggerProfile] = useState(false);
   const [navState, setNavState] = useState(0);
@@ -16,20 +17,25 @@ const Navbar = () => {
     <nav>
       <div id="nav_logo" onClick={() => navigate("/")}></div>
       <aside>
-        {true && (
+        {localStorage.getItem("isLogged") !== "true" ? (
           <div id="nav_auth">
             <button onClick={() => dispatch(updateAuthState(1))}>შესვლა</button>
             <button onClick={() => dispatch(updateAuthState(2))}>
               რეგისტრაცია
             </button>
           </div>
-        )}
-        {false && (
-          <div id="nav_avatar" onClick={() => triggerProfile(!profile)}>
+        ) : (
+          <div
+            id="nav_avatar"
+            style={{ backgroundImage: `url(${user?.avatar})` }}
+            onClick={() => triggerProfile(!profile)}
+          >
             <div className={profile ? "triggerProfile" : undefined}>
-              <Link to="/profile">პროფილი</Link>
-              <Link to="/profile">ადმინი</Link>
-              <Link to="/">გამოსვლა</Link>
+              <Link to="/profile/own">პროფილი</Link>
+              <Link to="/admin">ადმინი</Link>
+              <Link to="/" onClick={() => dispatch(logout())}>
+                გამოსვლა
+              </Link>
             </div>
           </div>
         )}
