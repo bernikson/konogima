@@ -130,6 +130,7 @@ const webSlice = createSlice({
     loading: false,
     Token: null,
     animes: [],
+    comments: [],
   },
   reducers: {
     updateAuthState: (state, { payload }) => {
@@ -154,12 +155,160 @@ const webSlice = createSlice({
         if (anime._id === id) {
           anime = payload.payload;
           return anime;
+        } else {
+          return anime;
         }
       });
     },
     addAnimeSeasonRedux: (state, { payload }) => {
       let anime = state.animes.find((output) => output._id === payload.animeId);
-      anime.seasons.push(payload);
+      let season = anime.seasons.find(
+        (output) => output.index === payload.index
+      );
+      if (!season) {
+        anime.seasons.push(payload);
+      } else {
+        season = payload;
+        anime.seasons = anime.seasons.map((output) => {
+          if (output.index === season.index) {
+            output = season;
+            return output;
+          } else {
+            return output;
+          }
+        });
+      }
+    },
+    updateAnimeSeriesRedux: (state, { payload }) => {
+      let anime = state.animes.find((output) => output._id === payload.animeId);
+      anime.seasons = anime?.seasons?.map((output) => {
+        if (output._id === payload._id) {
+          output = payload;
+          return output;
+        } else {
+          return output;
+        }
+      });
+    },
+    addComment: (state, { payload }) => {
+      state.comments = payload;
+    },
+    likeAnimeComment: (state, { payload }) => {
+      state.comments = state.comments.map((comment) => {
+        if (comment._id === payload.commentId) {
+          if (comment?.likeRatio.like.includes(payload.userId)) {
+            let index = comment?.likeRatio.like.indexOf(payload.userId);
+            comment?.likeRatio.like.splice(index, 1);
+            comment.likeRatio.counter -= 1;
+          } else {
+            if (comment?.likeRatio.dislike.includes(payload.userId)) {
+              let index = comment?.likeRatio.dislike.indexOf(payload.userId);
+              comment?.likeRatio.dislike.splice(index, 1);
+              comment.likeRatio.counter += 1;
+            }
+            comment?.likeRatio.like.push(payload.userId);
+            comment.likeRatio.counter += 1;
+          }
+
+          return comment;
+        } else {
+          return comment;
+        }
+      });
+    },
+    dislikeAnimeComment: (state, { payload }) => {
+      state.comments = state.comments.map((comment) => {
+        if (comment._id === payload.commentId) {
+          if (comment?.likeRatio.dislike.includes(payload.userId)) {
+            let index = comment?.likeRatio.dislike.indexOf(payload.userId);
+            comment?.likeRatio.dislike.splice(index, 1);
+            comment.likeRatio.counter += 1;
+          } else {
+            if (comment?.likeRatio.like.includes(payload.userId)) {
+              let index = comment?.likeRatio.like.indexOf(payload.userId);
+              comment?.likeRatio.like.splice(index, 1);
+              comment.likeRatio.counter -= 1;
+            }
+            comment?.likeRatio.dislike.push(payload.userId);
+            comment.likeRatio.counter -= 1;
+          }
+
+          return comment;
+        } else {
+          return comment;
+        }
+      });
+    },
+    likeReplyComment: (state, { payload }) => {
+      let mainComment = state.comments.find(
+        (output) => output._id === payload.fatherCommentId
+      );
+      mainComment.reply = mainComment.reply.map((comment) => {
+        if (comment._id === payload.commentId) {
+          if (comment?.likeRatio.like.includes(payload.userId)) {
+            let index = comment?.likeRatio.like.indexOf(payload.userId);
+            comment?.likeRatio.like.splice(index, 1);
+            comment.likeRatio.counter -= 1;
+          } else {
+            if (comment?.likeRatio.dislike.includes(payload.userId)) {
+              let index = comment?.likeRatio.dislike.indexOf(payload.userId);
+              comment?.likeRatio.dislike.splice(index, 1);
+              comment.likeRatio.counter += 1;
+            }
+            comment?.likeRatio.like.push(payload.userId);
+            comment.likeRatio.counter += 1;
+          }
+
+          return comment;
+        } else {
+          return comment;
+        }
+      });
+    },
+    dislikeReplyComment: (state, { payload }) => {
+      let mainComment = state.comments.find(
+        (output) => output._id === payload.fatherCommentId
+      );
+      mainComment.reply = mainComment.reply.map((comment) => {
+        if (comment._id === payload.commentId) {
+          if (comment?.likeRatio.dislike.includes(payload.userId)) {
+            let index = comment?.likeRatio.dislike.indexOf(payload.userId);
+            comment?.likeRatio.dislike.splice(index, 1);
+            comment.likeRatio.counter += 1;
+          } else {
+            if (comment?.likeRatio.like.includes(payload.userId)) {
+              let index = comment?.likeRatio.like.indexOf(payload.userId);
+              comment?.likeRatio.like.splice(index, 1);
+              comment.likeRatio.counter -= 1;
+            }
+            comment?.likeRatio.dislike.push(payload.userId);
+            comment.likeRatio.counter -= 1;
+          }
+
+          return comment;
+        } else {
+          return comment;
+        }
+      });
+    },
+    addReply: (state, { payload }) => {
+      console.log(payload);
+      state.comments = state.comments.map((output) => {
+        if (output._id === payload.commentId) {
+          console.log("hi");
+          output.reply.push(payload.comment);
+          return output;
+        } else {
+          return output;
+        }
+      });
+    },
+    getComments: (state, { payload }) => {
+      console.log("second");
+      payload.forEach((arr) => state.comments.push(arr));
+    },
+    clearComments: (state, { payload }) => {
+      state.comments = [];
     },
   },
   extraReducers: {
@@ -186,6 +335,7 @@ const webSlice = createSlice({
     [logout.fulfilled]: (state, { payload }) => {
       state.Token = null;
       localStorage.setItem("isLogged", false);
+      state.user = {};
     },
     [register.pending]: (state) => {
       state.loading = true;
@@ -278,5 +428,14 @@ export const {
   addAnime,
   addUpdatedAnime,
   addAnimeSeasonRedux,
+  updateAnimeSeriesRedux,
+  addComment,
+  likeAnimeComment,
+  dislikeAnimeComment,
+  addReply,
+  getComments,
+  likeReplyComment,
+  dislikeReplyComment,
+  clearComments,
 } = webSlice.actions;
 export default webSlice.reducer;

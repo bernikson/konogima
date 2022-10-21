@@ -2,14 +2,14 @@
   margin: 2rem auto;
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 60%;
 }
 
 #anime > h1 {
   color: white;
   font-size: 1.8rem;
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
   text-align: center;
 }
 
@@ -28,6 +28,9 @@
   height: 25rem;
   background-color: lightgrey;
   border-radius: 5px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 #anime_views {
@@ -108,19 +111,20 @@
   color: lightgrey;
   font-weight: 400;
   list-style-type: none;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
 }
 
 #anime_aside_wrapper > aside:last-child > div > ul > li > span {
   color: var(--secondary);
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   margin-left: 0.4rem;
 }
 
 #anime_aside_wrapper > aside:last-child > h4 {
   font-weight: bold;
-  font-size: 1.5rem;
+  margin-top: 1rem;
+  font-size: 1.8rem;
   color: var(--secondary);
 }
 
@@ -133,8 +137,8 @@
 #anime iframe {
   margin-top: 2rem;
   width: 100%;
-  height: 35vw;
   border-radius: 5px;
+  aspect-ratio: 16 / 9;
 }
 
 #anime_comments_wrapper {
@@ -208,6 +212,9 @@
 
 .anime_user_profile {
   border-radius: 5px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   min-width: 3.5rem;
   height: 3.5rem;
   background-color: lightgrey;
@@ -217,6 +224,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .anime_comment_info span {
@@ -298,6 +306,12 @@
   right: 1.5rem;
 }
 
+#anime_info_wrapper {
+  gap: 4rem;
+  display: flex;
+  flex-direction: row;
+}
+
 #video_options > aside {
   display: flex;
   flex-direction: column;
@@ -320,6 +334,12 @@
   width: 25px;
   height: 25px;
   fill: var(--primary);
+  transform: rotate(180deg);
+  transition: 0.4s;
+}
+
+.animeDropSvg > svg {
+  transform: rotate(0deg) !important;
 }
 
 #video_options aside > ul {
@@ -329,6 +349,16 @@
   left: 0;
   top: 110%;
   width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.4s;
+  transform: translateY(1rem);
+}
+
+.triggeredAnimeDrop {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0rem) !important;
 }
 
 #video_options aside > ul > li {
@@ -347,16 +377,22 @@
   border-radius: 0px 0px 5px 5px;
 }
 
+@media screen and (max-width: 1200px) {
+  #anime {
+    width: 75%;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   #anime {
     width: 90%;
   }
-  #anime iframe {
+  /* #anime iframe {
     height: 45vw;
-  }
+  } */
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   #anime_aside_wrapper {
     flex-direction: column;
   }
@@ -364,6 +400,7 @@
     display: flex;
     gap: 3rem;
     margin: 0.5rem 0;
+    flex-direction: row;
   }
 }
 
@@ -405,9 +442,9 @@
     width: 0px;
     height: 0px;
   }
-  #anime iframe {
+  /* #anime iframe {
     height: 55vw;
-  }
+  } */
 }
 
 @media screen and (max-width: 320px) {

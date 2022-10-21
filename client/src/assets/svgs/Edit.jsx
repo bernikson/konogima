@@ -9,7 +9,7 @@ const Edit = () => {
       width="52px"
       height="52px"
       viewBox="0 0 52 52"
-      enable-background="new 0 0 52 52"
+      enableBackground="new 0 0 52 52"
       xmlSpace="preserve"
     >
       <g>

@@ -2,14 +2,12 @@ import React from "react";
 import "./Profile.css";
 import AnimeCard from "../../components/AnimeCard/AnimeCard";
 import { useRef } from "react";
-import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { uploadImage } from "../../redux/webSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { user, Token } = useSelector((state) => ({ ...state.web }));
-  const { id } = useParams();
   const imageRef = useRef(null);
   const changeAvatar = async (e) => {
     e.preventDefault();
@@ -31,7 +29,7 @@ const Profile = () => {
       ></div>
       <h1 id="profile_name">{user?.username}</h1>
       <section id="profile_status">
-        {user?.status?.map((output) => {
+        {user?.status?.map((output, index) => {
           let bgColor = "";
           let fontColor = "";
           switch (output) {
@@ -58,6 +56,7 @@ const Profile = () => {
           }
           return (
             <div
+              key={index}
               style={{ backgroundColor: `${bgColor}`, color: `${fontColor}` }}
             >
               {output}

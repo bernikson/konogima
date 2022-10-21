@@ -2,8 +2,6 @@ import React from "react";
 import "./ResetPassword.css";
 import { useParams, useNavigate } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
-import { updateAuthState } from "../../redux/webSlice";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Close from "../../assets/svgs/Close";
@@ -13,7 +11,6 @@ import { toast } from "react-hot-toast";
 const ResetPassword = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { authState } = useSelector((state) => ({ ...state.users }));
   const [resPassword, setResPasswordData] = useState({
     password: "",
     confirmPassword: "",
@@ -71,9 +68,6 @@ const ResetPassword = () => {
     const { value, name } = e.target;
     setResPasswordData({ ...resPassword, [name]: value });
   };
-  const dispatch = useDispatch();
-
-  console.log(id);
   useEffect(() => {
     const checkToken = async () => {
       try {
@@ -94,7 +88,7 @@ const ResetPassword = () => {
       }
     };
     checkToken();
-  }, [id]);
+  }, [id, navigate]);
   return (
     <main id="resetPassword">
       {!loadState && (

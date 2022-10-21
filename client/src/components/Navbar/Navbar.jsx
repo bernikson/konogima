@@ -33,7 +33,7 @@ const Navbar = () => {
             <div className={profile ? "triggerProfile" : undefined}>
               <Link to="/profile/own">პროფილი</Link>
               <Link to="/admin">ადმინი</Link>
-              <Link to="/" onClick={() => dispatch(logout())}>
+              <Link to="#" onClick={() => dispatch(logout())}>
                 გამოსვლა
               </Link>
             </div>

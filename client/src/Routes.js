@@ -16,17 +16,24 @@ import {
   addAnime,
   addUpdatedAnime,
   addAnimeSeasonRedux,
+  updateAnimeSeriesRedux,
+  getComments,
+  addComment,
+  addReply,
 } from "./redux/webSlice";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
+import NotFound from "./pages/NotFound/NotFound";
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { socket, Token, success, loading, error } = useSelector((state) => ({
-    ...state.web,
-  }));
-  const isLogged = localStorage.getItem("isLogged");
+  const { socket, Token, success, loading, error, user } = useSelector(
+    (state) => ({
+      ...state.web,
+    })
+  );
+  let isLogged = localStorage.getItem("isLogged");
   useEffect(() => {
     if (Token?.length !== 0 && Token !== null) {
       socket.emit("getUserData", Token);
@@ -44,9 +51,10 @@ const App = () => {
     const refershTokenInterval = () => {
       dispatch(getToken());
     };
-    setInterval(refershTokenInterval, 30000);
-    return () => clearInterval(refershTokenInterval);
-  }, []);
+    if (Object.values(user).length === 0) return;
+    let interval = setInterval(refershTokenInterval, 15000);
+    return () => clearInterval(interval);
+  }, [isLogged, dispatch, user]);
 
   useEffect(() => {
     socket.emit("getAnimes");
@@ -55,25 +63,165 @@ const App = () => {
     socket.on("getAnimesClient", (data) => {
       dispatch(getAnimes(data.payload));
     });
-  }, [socket]);
+  }, [socket, dispatch]);
+  useEffect(() => {
+    socket.on("getCommentsClient", (data) => {
+      dispatch(getComments(data.payload));
+    });
+  }, [socket, dispatch]);
   useEffect(() => {
     socket.on("createAnimeClient", async ({ payload }) => {
       await dispatch(addAnime({ payload }));
       navigate("/admin");
     });
-  }, [socket]);
+  }, [socket, dispatch]);
   useEffect(() => {
     socket.on("updateAnimeClient", async ({ payload }) => {
       await dispatch(addUpdatedAnime({ payload }));
       navigate("/admin");
     });
-  }, [socket]);
+  }, [socket, dispatch]);
   useEffect(() => {
-    socket.on("createAnimeSeason", async ({ payload }) => {
-      dispatch(addAnimeSeasonRedux(payload));
+    socket.on("createAnimeSeason", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      dispatch(addAnimeSeasonRedux(payload.payload));
+      return toast.success("სერია წარმატებით დაემატა", {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
     });
-  }, [socket]);
+  }, [socket, dispatch]);
 
+  useEffect(() => {
+    socket.on("updateAnimeSerie", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      dispatch(updateAnimeSeriesRedux(payload.payload));
+    });
+  }, [socket, dispatch]);
+  useEffect(() => {
+    socket.on("deleteAnimeSerie", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      toast.success("სერია წარმატებით წაიშალა", {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+
+      dispatch(updateAnimeSeriesRedux(payload.payload));
+    });
+  }, [socket, dispatch]);
+  useEffect(() => {
+    socket.on("writeCommentClient", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      dispatch(addComment(payload.payload));
+    });
+  }, [socket, dispatch]);
+  useEffect(() => {
+    socket.on("replyCommentClient", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      dispatch(addReply(payload.payload));
+    });
+  }, [socket, dispatch]);
+  useEffect(() => {
+    socket.on("likeCommentClient", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      dispatch(addReply(payload.payload));
+    });
+  }, [socket, dispatch]);
+  useEffect(() => {
+    socket.on("dislikeCommentClient", async (payload) => {
+      if (!payload.success) {
+        return toast.error(payload.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      console.log(payload);
+    });
+  }, [socket, dispatch]);
   //!Notifications
   loading &&
     toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
@@ -113,16 +261,24 @@ const App = () => {
   useEffect(() => {
     dispatch(clearStatus());
   }, [error, success, loading, dispatch]);
+  let checkAdmin = Object.values(user).length !== 0 && user.role !== 0;
   return (
     <div className="App">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/anime/:id" element={<Anime />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin_dashboard/:id" element={<AdminDashboard />} />
-        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/admin" element={checkAdmin && <Admin />} />
+        <Route
+          path="/admin_dashboard/:id"
+          element={checkAdmin && <AdminDashboard />}
+        />
+        <Route
+          path="/profile/:id"
+          element={localStorage.getItem("isLogged") === "true" && <Profile />}
+        />
         <Route path="/reset_password/:id" element={<ResetPassword />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
       <Footer />
     </div>

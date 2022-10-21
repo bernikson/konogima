@@ -14,6 +14,7 @@ import { createAnime, updateAnime } from "../../redux/webSlice";
 const AdminDashboard = () => {
   const { Token, socket, animes } = useSelector((state) => ({ ...state.web }));
   const { id } = useParams();
+  let currentAnime = animes?.find((anime) => anime._id === id);
   const [date, newDate] = useState(new Date());
   const dispatch = useDispatch();
 
@@ -24,9 +25,24 @@ const AdminDashboard = () => {
     playerThree: "",
   });
 
+  const [seasonChooser, setSeasonChooser] = useState(1);
+
   const handleSeasons = (e) => {
     const { value, name } = e.target;
     addAnimeSeasons({ ...animeSeasons, [name]: value });
+  };
+
+  const [players, updatePlayers] = useState({
+    playerOne: "",
+    playerTwo: "",
+    playerThree: "",
+    seasonId: "",
+    playerId: "",
+  });
+
+  const handlePlayers = (e) => {
+    const { value, name } = e.target;
+    updatePlayers({ ...players, [name]: value });
   };
 
   const handleCreateAnimeSeason = (e) => {
@@ -42,8 +58,7 @@ const AdminDashboard = () => {
         },
       });
     }
-    socket.emit("createSeasons", { Token, animeSeasons, animeId: id });
-    return toast.success("სერია წარმატებით დაემატა", {
+    toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
       id: "single",
       duration: 4000,
       style: {
@@ -53,6 +68,7 @@ const AdminDashboard = () => {
         boxShadow: "0px 0px 30px #D084E3",
       },
     });
+    socket.emit("createSeasons", { Token, animeSeasons, animeId: id });
   };
 
   let [animeGenres, setGenres] = useState([
@@ -100,6 +116,7 @@ const AdminDashboard = () => {
     age: "",
     description: "",
     background: "",
+    series: "",
   });
 
   useEffect(() => {
@@ -118,6 +135,7 @@ const AdminDashboard = () => {
           age,
           description,
           background,
+          series,
         } = anime;
         animeGenres.map((animeGenre) => {
           if (genres.includes(animeGenre.value)) {
@@ -136,6 +154,7 @@ const AdminDashboard = () => {
           age,
           description,
           background,
+          series,
         });
       }
     }
@@ -180,7 +199,6 @@ const AdminDashboard = () => {
       );
       loader = false;
       setAnimeData({ ...animeData, background: data.payload });
-      console.log(data);
       toast.success(data.message, {
         id: "single",
         duration: 4000,
@@ -222,6 +240,7 @@ const AdminDashboard = () => {
       age,
       description,
       background,
+      series,
     } = animeData;
     let genresArray = [];
     animeGenres.map((genre) => {
@@ -241,11 +260,11 @@ const AdminDashboard = () => {
           description,
           background,
           genres: genresArray,
+          series,
         },
         Token,
       })
     );
-    console.log(genresArray);
   };
 
   const handleUpdateAnime = () => {
@@ -260,6 +279,7 @@ const AdminDashboard = () => {
       age,
       description,
       background,
+      series,
     } = animeData;
     let genresArray = [];
     animeGenres.map((genre) => {
@@ -279,12 +299,12 @@ const AdminDashboard = () => {
           description,
           background,
           genres: genresArray,
+          series,
         },
         Token,
         animeId: id,
       })
     );
-    console.log(genresArray);
   };
   return (
     <main id="admin_dashboard">
@@ -493,6 +513,22 @@ const AdminDashboard = () => {
                 />
                 <div className="input_border"></div>
               </li>
+              <li>
+                <input
+                  type="text"
+                  placeholder="სერიების რაოდენობა"
+                  name="series"
+                  value={animeData.series}
+                  onChange={(e) => {
+                    const re = /^[0-9]*$/;
+                    if (e.target.value === "" || re.test(e.target.value)) {
+                      changeAnimeData(e);
+                    }
+                  }}
+                  autoComplete="off"
+                />
+                <div className="input_border"></div>
+              </li>
             </ul>
           </section>
           <textarea
@@ -583,23 +619,47 @@ const AdminDashboard = () => {
             <aside>
               <h1>სერიები</h1>
               <div id="admin_seasones_switch">
-                <div>
+                <div
+                  onClick={() => {
+                    if (seasonChooser !== 1) {
+                      setSeasonChooser((prevChooser) => prevChooser - 1);
+                    }
+                  }}
+                >
                   <ArrowDown />
                 </div>
-                <span>სეზონი 1</span>
-                <div>
+                <span>სეზონი {seasonChooser}</span>
+                <div
+                  onClick={() => {
+                    if (seasonChooser !== currentAnime?.seasons?.length) {
+                      setSeasonChooser((prevChooser) => prevChooser + 1);
+                    }
+                  }}
+                >
                   <ArrowDown />
                 </div>
               </div>
               <ul>
-                <li>სერია 1</li>
-                <li>სერია 2</li>
-                <li>სერია 1</li>
-                <li>სერია 2</li>
-                <li>სერია 1</li>
-                <li>სერია 2</li>
-                <li>სერია 1</li>
-                <li>სერია 2</li>
+                {currentAnime?.seasons?.map((output) => {
+                  if (output?.index === seasonChooser) {
+                    return output?.series.map((outputTwo, index) => (
+                      <li
+                        onClick={() => {
+                          updatePlayers({
+                            playerOne: outputTwo.playerOne,
+                            playerTwo: outputTwo.playerTwo,
+                            playerThree: outputTwo.playerThree,
+                            seasonId: output._id,
+                            playerId: outputTwo._id,
+                          });
+                        }}
+                        key={index}
+                      >
+                        სერია {index + 1}
+                      </li>
+                    ));
+                  }
+                })}
               </ul>
             </aside>
             <aside>
@@ -609,26 +669,116 @@ const AdminDashboard = () => {
                   <label htmlFor="">ფლეიერი 1</label>
                   <input
                     type="text"
-                    value="8JKRdJflZiQVPOmoG7xsuZatm8o0Jdi4KscucnZM"
+                    value={players.playerOne}
+                    name="playerOne"
+                    onChange={handlePlayers}
                   />
                 </div>
                 <div>
                   <label htmlFor="">ფლეიერი 2</label>
                   <input
                     type="text"
-                    value="8JKRdJflZiQVPOmoG7xsuZatm8o0Jdi4KscucnZM"
+                    value={players.playerTwo}
+                    name="playerTwo"
+                    onChange={handlePlayers}
                   />
                 </div>
                 <div>
                   <label htmlFor="">ფლეიერი 3</label>
                   <input
                     type="text"
-                    value="8JKRdJflZiQVPOmoG7xsuZatm8o0Jdi4KscucnZM"
+                    value={players.playerThree}
+                    name="playerThree"
+                    onChange={handlePlayers}
                   />
                 </div>
                 <div id="admin_season_button_wrapper">
-                  <button>წაშლა</button>
-                  <button>განახლება</button>
+                  <button
+                    onClick={() => {
+                      if (players?.seasonId === "") {
+                        return toast.error("აირჩიეთ სერია წასაშლელად", {
+                          id: "single",
+                          duration: 4000,
+                          style: {
+                            backgroundColor: "black",
+                            border: "1px solid #D084E3",
+                            color: "white",
+                            boxShadow: "0px 0px 30px #D084E3",
+                          },
+                        });
+                      }
+                      toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
+                        id: "single",
+                        duration: 4000,
+                        style: {
+                          backgroundColor: "black",
+                          border: "1px solid #D084E3",
+                          color: "white",
+                          boxShadow: "0px 0px 30px #D084E3",
+                        },
+                      });
+                      let currentSeason = currentAnime?.seasons.find(
+                        (output) => output._id === players.seasonId
+                      );
+                      if (currentSeason?.series.length === 1) {
+                        return toast.error("სეზონის პირველ სერიას ვერ წაშლით", {
+                          id: "single",
+                          duration: 4000,
+                          style: {
+                            backgroundColor: "black",
+                            border: "1px solid #D084E3",
+                            color: "white",
+                            boxShadow: "0px 0px 30px #D084E3",
+                          },
+                        });
+                      }
+                      socket.emit("deleteSeries", {
+                        Token,
+                        data: {
+                          seasonId: players?.seasonId,
+                          playerId: players?.playerId,
+                        },
+                      });
+                      updatePlayers({
+                        playerOne: "",
+                        playerTwo: "",
+                        playerThree: "",
+                        seasonId: "",
+                        playerId: "",
+                      });
+                    }}
+                  >
+                    წაშლა
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (players?.seasonId === "") {
+                        return toast.error("აირჩიეთ სერია გასანახლებლად", {
+                          id: "single",
+                          duration: 4000,
+                          style: {
+                            backgroundColor: "black",
+                            border: "1px solid #D084E3",
+                            color: "white",
+                            boxShadow: "0px 0px 30px #D084E3",
+                          },
+                        });
+                      }
+                      socket.emit("updateSeries", { Token, data: players });
+                      return toast.success("სერია წარმატებით განახლდა", {
+                        id: "single",
+                        duration: 4000,
+                        style: {
+                          backgroundColor: "black",
+                          border: "1px solid #D084E3",
+                          color: "white",
+                          boxShadow: "0px 0px 30px #D084E3",
+                        },
+                      });
+                    }}
+                  >
+                    განახლება
+                  </button>
                 </div>
               </div>
             </aside>

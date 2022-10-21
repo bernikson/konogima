@@ -9,6 +9,8 @@ const ErrorHandler = (err, req, res, next) => {
       message = "ამ სახელით უკვე დარეგისტრირებულია მომხმარებელი";
     } else if (Object.keys(err["keyValue"])[0] === "email") {
       message = "ამ ელ-ფოსტით უკვე დარეგისტრირებულია მომხმარებელი";
+    } else if (Object.keys(err["keyValue"])[0] === "name") {
+      message = "ამ სახელით უკვე შექმნილია ანიმე";
     }
     error = new ErrorResponse(message, 400);
   }

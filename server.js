@@ -20,6 +20,7 @@ const User = require("./models/userModel");
 const expressFileUpload = require("express-fileupload");
 const Anime = require("./models/animeModel");
 const Season = require("./models/seasonModel");
+const Comment = require("./models/commentModel");
 
 //! Express middlewares
 app.set("io", io);
@@ -62,17 +63,32 @@ io.on("connection", async (socket) => {
       console.log(error);
     }
   });
+  socket.on("getComments", async ({ animeId, pages }) => {
+    try {
+      const comments = await Comment.find({ animeId })
+        .populate("reply")
+        .limit(10)
+        .skip(pages * 10)
+        .sort({ createdAt: -1 });
+      io.emit("getCommentsClient", {
+        success: true,
+        payload: comments,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
   socket.on("createSeasons", async ({ Token, animeSeasons, animeId }) => {
     try {
       const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
       const user = await User.findById(decodedToken._id);
       if (!user)
-        return socket.emit("getUserDataClient", {
+        return socket.emit("createAnimeSeason", {
           success: false,
           message: "მომხმარებელი ვერ მოიძებნა",
         });
       if (user.role !== 1) {
-        return socket.emit("getUserDataClient", {
+        return socket.emit("createAnimeSeason", {
           success: false,
           message: "მომხმარებელი არ არის ადმინი",
         });
@@ -83,7 +99,7 @@ io.on("connection", async (socket) => {
       });
       let anime = await Anime.findById(animeId);
       if (!anime)
-        return socket.emit("getUserDataClient", {
+        return socket.emit("createAnimeSeason", {
           success: false,
           message: "ანიმე ვერ მოიძებნა",
         });
@@ -106,13 +122,273 @@ io.on("connection", async (socket) => {
           playerThree: animeSeasons.playerThree,
         });
         await season.save();
-        anime.seasons.push(season);
-        await anime.save();
       }
 
-      socket.emit("createAnimeSeason", {
+      io.emit("createAnimeSeason", {
         success: true,
         payload: season,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("updateSeries", async ({ Token, data }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("updateAnimeSerie", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      if (user.role !== 1) {
+        return socket.emit("updateAnimeSerie", {
+          success: false,
+          message: "მომხმარებელი არ არის ადმინი",
+        });
+      }
+      const season = await Season.findById(data.seasonId);
+      if (!season) {
+        return socket.emit("updateAnimeSerie", {
+          success: false,
+          message: "სეზონი ვერ მოიძებნა",
+        });
+      }
+      season?.series.map((output) => {
+        if (output._id.equals(data?.playerId)) {
+          output.playerOne = data.playerOne;
+          output.playerTwo = data.playerTwo;
+          output.playerThree = data.playerThree;
+          return output;
+        }
+      });
+
+      await season.save();
+      io.emit("updateAnimeSerie", {
+        success: true,
+        payload: season,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("deleteSeries", async ({ Token, data }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("deleteAnimeSerie", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      if (user.role !== 1) {
+        return socket.emit("deleteAnimeSerie", {
+          success: false,
+          message: "მომხმარებელი არ არის ადმინი",
+        });
+      }
+      const season = await Season.findById(data.seasonId);
+      if (!season) {
+        return socket.emit("deleteAnimeSerie", {
+          success: false,
+          message: "სეზონი ვერ მოიძებნა",
+        });
+      }
+      let serieIndex = season?.series?.findIndex((index) =>
+        index._id.equals(data.playerId)
+      );
+      season?.series.splice(serieIndex, 1);
+      await season.save();
+      io.emit("deleteAnimeSerie", {
+        success: true,
+        payload: season,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("giveView", async ({ animeId }) => {
+    try {
+      await Anime.findByIdAndUpdate(
+        animeId,
+        {
+          $inc: { views: 1 },
+        },
+        { new: true }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("giveLike", async ({ Token, animeId, userId }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("giveLikeClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      const anime = await Anime.findById(animeId);
+      if (anime.likes.includes(userId)) {
+        let index = anime.likes.indexOf(userId);
+        anime.likes.splice(index, 1);
+      } else {
+        if (anime.dislikes.includes(userId)) {
+          let index = anime.dislikes.indexOf(userId);
+          anime.dislikes.splice(index, 1);
+        }
+        anime.likes.push(userId);
+      }
+
+      await anime.save();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("giveDislike", async ({ Token, animeId, userId }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("giveDislikeClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      const anime = await Anime.findById(animeId);
+      if (anime.dislikes.includes(userId)) {
+        let index = anime.dislikes.indexOf(userId);
+        anime.dislikes.splice(index, 1);
+      } else {
+        if (anime.likes.includes(userId)) {
+          let index = anime.likes.indexOf(userId);
+          anime.likes.splice(index, 1);
+        }
+        anime.dislikes.push(userId);
+      }
+
+      await anime.save();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("writeComment", async ({ Token, pages, commentData }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("writeCommentClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      if (commentData.comment.length > 1000)
+        return socket.emit("writeCommentClient", {
+          success: false,
+          message: "ათას სიმბოლოზე მეტს ვერ დაწერთ კომენტარში",
+        });
+      await Comment.create(commentData);
+      let comments = await Comment.find()
+        .populate("reply")
+        .limit(10)
+        .skip(pages * 10)
+        .sort({ createdAt: -1 });
+      return io.emit("writeCommentClient", {
+        success: true,
+        payload: comments,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("likeComment", async ({ Token, animeId, commentId, userId }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("likeCommentClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      let comment = await Comment.findById(commentId);
+      if (!comment)
+        return socket.emit("likeCommentClient", {
+          success: false,
+          message: "კომენტარი ვერ მოიძებნა",
+        });
+      if (comment.likeRatio.like.includes(userId)) {
+        let index = comment?.likeRatio.like.indexOf(userId);
+        comment?.likeRatio.like.splice(index, 1);
+        comment.likeRatio.counter -= 1;
+      } else {
+        if (comment.likeRatio.dislike.includes(userId)) {
+          let index = comment.likeRatio.dislike.indexOf(userId);
+          comment.likeRatio.dislike.splice(index, 1);
+          comment.likeRatio.counter += 1;
+        }
+        comment.likeRatio.like.push(userId);
+        comment.likeRatio.counter += 1;
+      }
+      await comment.save();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("dislikeComment", async ({ Token, commentId, userId }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("dislikeCommentClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      let comment = await Comment.findById(commentId);
+      if (!comment)
+        return socket.emit("dislikeCommentClient", {
+          success: false,
+          message: "კომენტარი ვერ მოიძებნა",
+        });
+      if (comment.likeRatio.dislike.includes(userId)) {
+        let index = comment?.likeRatio.dislike.indexOf(userId);
+        comment?.likeRatio.dislike.splice(index, 1);
+        comment.likeRatio.counter += 1;
+      } else {
+        if (comment.likeRatio.like.includes(userId)) {
+          let index = comment.likeRatio.like.indexOf(userId);
+          comment.likeRatio.like.splice(index, 1);
+          comment.likeRatio.counter -= 1;
+        }
+        comment.likeRatio.dislike.push(userId);
+        comment.likeRatio.counter -= 1;
+      }
+      await comment.save();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("replyComment", async ({ Token, commentId, commentData }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("replyCommentClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      if (commentData.comment.length > 1000)
+        return socket.emit("replyCommentClient", {
+          success: false,
+          message: "ათას სიმბოლოზე მეტს ვერ დაწერთ კომენტარში",
+        });
+      const comment = await Comment.create(commentData);
+      let test = await Comment.findByIdAndUpdate(
+        commentId,
+        { $push: { reply: comment } },
+        { new: true }
+      );
+      return io.emit("replyCommentClient", {
+        success: true,
+        payload: { comment, commentId },
       });
     } catch (error) {
       console.log(error);

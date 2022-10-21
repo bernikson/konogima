@@ -82,7 +82,6 @@ const userController = {
   },
   forgotPassword: async (req, res, next) => {
     try {
-      console.log(req.body);
       const { email } = req.body;
       if (!email) return next(new ErrorResponse("შეიყვანეთ ელ-ფოსტა", 400));
       const user = await User.findOne({ email });
@@ -142,7 +141,6 @@ const userController = {
   uploadAvatar: async (req, res, next) => {
     try {
       const { file } = req.files;
-      console.log(file);
       cloudinary.v2.uploader.upload(
         file.tempFilePath,
         { folder: "Konogima" },
@@ -168,7 +166,6 @@ const userController = {
   uploadAnimeImage: async (req, res, next) => {
     try {
       const { file } = req.files;
-      console.log(file);
       cloudinary.v2.uploader.upload(
         file.tempFilePath,
         { folder: "Konogima" },
@@ -187,12 +184,12 @@ const userController = {
   },
   createAnime: async (req, res, next) => {
     try {
-      console.log(req.body);
       let io = req.app.get("io");
-      let { year, totaltime, age } = req.body;
+      let { year, totaltime, age, series } = req.body;
       if (year === "NaN") req.body.year = "";
       if (totaltime === "NaN") req.body.totaltime = "";
       if (age === "NaN") req.body.age = "";
+      if (series === "NaN") req.body.age = "";
       const anime = await Anime.create(req.body);
       res.status(200).json({ message: "ანიმე წარმატებულად შეიქმნა" });
       return io.emit("createAnimeClient", {
@@ -200,6 +197,7 @@ const userController = {
         payload: anime,
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   },
@@ -207,11 +205,37 @@ const userController = {
     try {
       const { id } = req.params;
       let io = req.app.get("io");
-      let { year, totaltime, age } = req.body;
-      if (year === "NaN") req.body.year = "";
-      if (totaltime === "NaN") req.body.totaltime = "";
-      if (age === "NaN") req.body.age = "";
-      const anime = await Anime.findByIdAndUpdate(id, req.body, { new: true });
+      let {
+        year,
+        totaltime,
+        age,
+        name,
+        voiceover,
+        translator,
+        genres,
+        director,
+        studio,
+        description,
+        background,
+        series,
+      } = req.body;
+      if (year === "NaN") year = "";
+      if (totaltime === "NaN") totaltime = "";
+      if (age === "NaN") age = "";
+      let anime = await Anime.findById(id).populate("seasons comments");
+      anime.year = year;
+      anime.totaltime = totaltime;
+      anime.age = age;
+      anime.name = name;
+      anime.voiceover = voiceover;
+      anime.translator = translator;
+      anime.genres = genres;
+      anime.director = director;
+      anime.studio = studio;
+      anime.description = description;
+      anime.background = background;
+      anime.series = series;
+      await anime.save();
       res.status(200).json({ message: "ანიმე წარმატებულად განახლდა" });
       return io.emit("updateAnimeClient", {
         success: true,

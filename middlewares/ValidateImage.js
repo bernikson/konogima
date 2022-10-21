@@ -3,7 +3,6 @@ const ErrorResponse = require("../utils/ErrorResponse.js");
 
 const validateImage = (req, res, next) => {
   try {
-    console.log(req.files);
     if (!req.files & (Object.keys(req.files).length === 0))
       return next(new ErrorResponse("სურათი არ აიტვირთა", 400));
     let file = req.files.file;

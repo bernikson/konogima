@@ -1,0 +1,49 @@
+.comment_reply {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: 0.4s;
+  animation-name: reply_anim;
+  animation-duration: 0.4s;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0px;
+  overflow: hidden;
+}
+
+.trigger_reply {
+  opacity: 1 !important;
+  visibility: visible !important;
+  max-height: 10rem !important;
+}
+
+.comment_reply textarea {
+  resize: none;
+  background-color: lightgrey;
+  border-radius: 5px;
+  height: 8rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.comment_reply textarea:focus {
+  outline: none;
+}
+
+#comment_reply_button {
+  border: none;
+  padding: 0.4rem 1.1rem;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: 0.4s;
+  background-color: var(--secondary);
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 0.5rem;
+}
+
+#comment_reply_button:hover {
+  transform: translateY(-0.2rem);
+}

@@ -52,16 +52,42 @@ const AnimeSchema = new Schema(
       type: String,
       required: [true, "შეიყვანეთ აღწერა"],
       minlength: [3, "აღწერა უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს"],
-      maxlength: [24, "აღწერა უნდა შეიცავდეს მაქსიმუმ 3000 სიმბოლოს"],
+      maxlength: [3000, "აღწერა უნდა შეიცავდეს მაქსიმუმ 3000 სიმბოლოს"],
     },
     background: {
       type: String,
       required: [true, "მიუთითეთ ანიმეს სურათი"],
     },
+    series: Number,
     seasons: [
       {
         type: Schema.Types.ObjectId,
         ref: "Seasons",
+      },
+    ],
+    views: {
+      type: Number,
+      default: 0,
+    },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+        default: [],
+      },
+    ],
+    dislikes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+        default: [],
+      },
+    ],
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comments",
+        default: [],
       },
     ],
   },
