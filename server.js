@@ -21,6 +21,7 @@ const expressFileUpload = require("express-fileupload");
 const Anime = require("./models/animeModel");
 const Season = require("./models/seasonModel");
 const Comment = require("./models/commentModel");
+const path = require("path");
 
 //! Express middlewares
 app.set("io", io);
@@ -453,6 +454,11 @@ io.on("connection", async (socket) => {
       console.log(error);
     }
   });
+});
+
+app.use(express.static(path.join(__dirname, "/client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 
 //! Connections
