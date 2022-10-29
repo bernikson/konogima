@@ -6,25 +6,23 @@ import Views from "../../assets/svgs/Views";
 import ArrowDown from "../../assets/svgs/ArrowDown";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { updateAuthState, clearComments } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
 
 const Anime = () => {
   //! Intiaializations
-  const iframeRef = useRef();
-
   const dispatch = useDispatch();
 
   const { animes, socket, Token, user, comments } = useSelector((state) => ({
     ...state.web,
   }));
+
   //! ----------------------------
 
   //! states
-  const { id } = useParams();
-
+  const animeIdentification = useParams().id;
   const [filteredArray, setFilteredArray] = useState([]);
 
   const [pageCounter, SetPageCounter] = useState(0);
@@ -44,9 +42,9 @@ const Anime = () => {
 
   //? Displays which serie data user chose
   const [playerDetails, setPlayerDetails] = useState({
-    season: "",
-    series: "",
-    player: "",
+    season: 1,
+    series: 1,
+    player: 1,
   });
 
   //? Displays which serie to play
@@ -60,50 +58,13 @@ const Anime = () => {
 
   const [dislikes, setDislikes] = useState([]);
 
-  //! ---------------------------
+  const [focus, setFocus] = useState(false);
 
-  //! useEffects
-  //* Gets comments
-  useEffect(() => {
-    console.log("first");
-    socket.emit("getComments", { animeId: id, pages: pageCounter });
-  }, [id, pageCounter, socket]);
+  const [commentCount, setCommentCount] = useState(0);
 
-  useEffect(() => {
-    console.log("third");
-    let editableComments = [...comments];
-    let sortedComments = editableComments?.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
-    console.log(pageCounter * 10);
-    // let filteredComments = sortedComments.slice(pageCounter * 10, 10);
-    let filteredComments = sortedComments.filter(
-      (arr, index) => index < (pageCounter + 1) * 10
-    );
+  const [currentAnime, setCurrentAnime] = useState({});
 
-    console.log(sortedComments); // length is 14
-    console.log(filteredComments); // []
-    setFilteredArray(filteredComments);
-  }, [comments]);
-
-  //* Clears comment data on leave
-  useEffect(() => {
-    return () => {
-      dispatch(clearComments());
-    };
-  }, [dispatch]);
-
-  //! ---------------------------
-
-  const currentAnime = animes?.find((anime) => anime._id === id);
-  let totalSeries = 0;
-  currentAnime?.seasons?.forEach((season) => {
-    season?.series?.forEach(() => {
-      totalSeries += 1;
-    });
-  });
-
-  const writeComment = () => {
+  const writeComment = useCallback(() => {
     if (Object.values(user).length === 0) return dispatch(updateAuthState(1));
     if (comment === "")
       return toast.error("ცარიელ კომენტარს ვერ დაწერთ!", {
@@ -130,26 +91,85 @@ const Anime = () => {
     let commentData = {
       username: user?.username,
       comment,
-      animeId: id,
+      animeId: animeIdentification,
       avatar: user?.avatar,
     };
-    socket.emit("writeComment", { Token, commentData, pages: pageCounter });
+    SetPageCounter(0);
+    socket.emit("writeComment", { Token, commentData, pages: 0 });
+
     setComment("");
-  };
+  }, [Token, animeIdentification, comment, dispatch, socket, user]);
+
+  //! ---------------------------
+
+  //! useEffects
+
+  useEffect(() => {
+    setCurrentAnime(animes?.find((anime) => anime._id === animeIdentification));
+  }, [animeIdentification, setCurrentAnime, animes]);
+  useEffect(() => {
+    socket.emit("getComments", {
+      animeId: animeIdentification,
+      pages: pageCounter,
+    });
+  }, [animeIdentification, pageCounter, socket]);
+
+  useEffect(() => {
+    let editableComments = [...comments];
+    let sortedComments = editableComments?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    let filteredComments = sortedComments.filter(
+      (arr, index) => index < (pageCounter + 1) * 10
+    );
+    setFilteredArray(filteredComments);
+  }, [comments, pageCounter]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearComments());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (focus && (event.code === "Enter" || event.code === "NumpadEnter")) {
+        writeComment();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [comment, focus, writeComment]);
+
+  useEffect(() => {
+    if (currentAnime !== undefined) {
+      if (Object.values(currentAnime)?.length !== 0) {
+        socket.emit("getCommentsCount", { animeId: currentAnime?._id });
+      }
+    }
+  }, [socket, currentAnime, filteredArray]);
+
+  useEffect(() => {
+    socket.on("getCommentsCountClient", (data) => {
+      setCommentCount(data);
+    });
+  }, [socket]);
 
   useEffect(() => {
     if (currentAnime?.seasons !== undefined) {
       setSeriesData(currentAnime?.seasons[0]?.series);
     }
-  }, [currentAnime]);
-
-  useEffect(() => {
     if (
       currentAnime?.seasons !== undefined &&
       currentAnime?.seasons?.length !== 0
     ) {
       setSerieToPlay(currentAnime?.seasons[0]?.series[0]);
     }
+    setViews(currentAnime?.views);
+    setDislikes(currentAnime?.dislikes);
+    setLikes(currentAnime?.likes);
   }, [currentAnime]);
 
   useEffect(() => {
@@ -159,21 +179,61 @@ const Anime = () => {
   }, [currentAnime, serieToPlay]);
 
   useEffect(() => {
-    setViews(currentAnime?.views);
-  }, [currentAnime]);
+    if (Object.values(user).length === 0) return;
+
+    // let checkAnime = true;
+    // for (const iterator of user?.watchLater) {
+    //   if (iterator?.anime?._id === animeIdentification) {
+    //     checkAnime = false;
+    //   }
+    // }
+    socket.emit("watchLater", {
+      Token,
+      animeId: animeIdentification,
+      playerOptions: {
+        season: playerDetails.season,
+        series: playerDetails.series,
+        player: playerDetails.player,
+        playerToUse,
+      },
+      // update: checkAnime,
+    });
+  }, [
+    user,
+    animeIdentification,
+    socket,
+    Token,
+    playerDetails.player,
+    playerDetails.season,
+    playerDetails.series,
+    playerToUse,
+  ]);
+
   useEffect(() => {
-    setLikes(currentAnime?.likes);
-  }, [currentAnime]);
+    socket.emit("giveView", { animeId: animeIdentification });
+  }, [animeIdentification, socket]);
+
   useEffect(() => {
-    setDislikes(currentAnime?.dislikes);
-  }, [currentAnime]);
-  useEffect(() => {
-    iframeRef.current.onblur = () => {
-      alert("hi");
-      setViews((prevViews) => prevViews + 1);
-      socket.emit("giveView", { animeId: currentAnime?._id });
-    };
-  }, [iframeRef, currentAnime?._id, socket]);
+    if (Object.values(user).length !== 0) {
+      for (const iterator of user?.watchLater) {
+        setPlayerDetails({
+          season: iterator?.playerDetails?.season,
+          series: iterator?.playerDetails?.series,
+          player: iterator?.playerDetails?.player,
+        });
+      }
+    }
+  }, [user]);
+
+  //! ---------------------------
+
+  let totalSeries = 0;
+  currentAnime?.seasons?.forEach((season) => {
+    season?.series?.forEach(() => {
+      totalSeries += 1;
+    });
+  });
+
   return (
     <main id="anime">
       <h1>{currentAnime?.name}</h1>
@@ -314,7 +374,7 @@ const Anime = () => {
         </aside>
       </section>
       <div id="iframe_wrapper">
-        <iframe ref={iframeRef} src={playerToUse} title="Anime player"></iframe>
+        <iframe src={playerToUse} title="Anime player"></iframe>
         <div id="video_options">
           <aside>
             <div
@@ -438,12 +498,14 @@ const Anime = () => {
       <section id="anime_comments_wrapper">
         <div id="anime_comments_count">
           <Comment width="40" />
-          <span>31 კომენტარი</span>
+          <span>{commentCount} კომენტარი</span>
         </div>
         <textarea
           cols="30"
           rows="10"
           value={comment}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
         <button id="anime_add_comment" onClick={writeComment}>
@@ -452,18 +514,28 @@ const Anime = () => {
         <section id="anime_comments">
           {filteredArray?.map((output, index) => {
             if (!output.isChild) {
-              return <CommentCard id={id} key={index} data={output} />;
+              return (
+                <CommentCard
+                  id={animeIdentification}
+                  key={index}
+                  data={output}
+                />
+              );
+            } else {
+              return undefined;
             }
           })}
         </section>
-        <button
-          className="anime_load_comments"
-          onClick={() => {
-            SetPageCounter((prevCounter) => prevCounter + 1);
-          }}
-        >
-          დამატებითი კომენტარების ჩატვირთვა
-        </button>
+        {filteredArray?.length >= 10 && filteredArray?.length < commentCount && (
+          <button
+            className="anime_load_comments"
+            onClick={() => {
+              SetPageCounter((prevCounter) => prevCounter + 1);
+            }}
+          >
+            დამატებითი კომენტარების ჩატვირთვა
+          </button>
+        )}
       </section>
     </main>
   );

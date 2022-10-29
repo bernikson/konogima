@@ -124,13 +124,14 @@ const webSlice = createSlice({
   initialState: {
     user: {},
     authState: 0,
-    socket: io.connect("http://localhost:5000"),
+    socket: io.connect("https://konogima-test"),
     success: null,
     error: null,
     loading: false,
     Token: null,
     animes: [],
     comments: [],
+    sortedAnimes: "",
   },
   reducers: {
     updateAuthState: (state, { payload }) => {
@@ -292,10 +293,8 @@ const webSlice = createSlice({
       });
     },
     addReply: (state, { payload }) => {
-      console.log(payload);
       state.comments = state.comments.map((output) => {
         if (output._id === payload.commentId) {
-          console.log("hi");
           output.reply.push(payload.comment);
           return output;
         } else {
@@ -304,11 +303,32 @@ const webSlice = createSlice({
       });
     },
     getComments: (state, { payload }) => {
-      console.log("second");
       payload.forEach((arr) => state.comments.push(arr));
     },
     clearComments: (state, { payload }) => {
       state.comments = [];
+    },
+    updateWatchLater: (state, { payload }) => {
+      if (!payload.update) {
+        state.user?.watchLater?.map((iterator) => {
+          if (iterator?.anime === payload.animeId) {
+            console.log(iterator);
+            iterator.anime = payload.animeId;
+            iterator.playerDetails = payload.playerOptions;
+            return iterator;
+          } else {
+            return [];
+          }
+        });
+      } else {
+        state.user?.watchLater.push({
+          anime: payload?.animeId,
+          playerDetails: payload?.playerOptions,
+        });
+      }
+    },
+    sortAnimes: (state, { payload }) => {
+      state.sortedAnimes = payload;
     },
   },
   extraReducers: {
@@ -437,5 +457,7 @@ export const {
   likeReplyComment,
   dislikeReplyComment,
   clearComments,
+  sortAnimes,
+  updateWatchLater,
 } = webSlice.actions;
 export default webSlice.reducer;

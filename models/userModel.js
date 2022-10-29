@@ -42,6 +42,20 @@ const UserSchema = new Schema(
       type: [String],
       default: ["მომხმარებელი"],
     },
+    watchLater: [
+      {
+        anime: {
+          type: Schema.Types.ObjectId,
+          ref: "Animes",
+        },
+        playerDetails: {
+          season: Number,
+          series: Number,
+          player: Number,
+          playerToUse: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

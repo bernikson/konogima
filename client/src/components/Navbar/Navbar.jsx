@@ -1,20 +1,63 @@
 import React from "react";
 import "./Navbar.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Auth from "../Auth/Auth";
-import { updateAuthState, logout } from "../../redux/webSlice";
+import { updateAuthState, logout, sortAnimes } from "../../redux/webSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [scrollNav, setScrollNav] = useState(false);
+  const changeNavBg = () => {
+    window.scrollY >= 100 ? setScrollNav(true) : setScrollNav(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", changeNavBg);
+    return () => {
+      window.removeEventListener("scroll", changeNavBg);
+    };
+  }, []);
   const { user } = useSelector((state) => ({ ...state.web }));
   const [dropdown, triggerDropdown] = useState(false);
   const [profile, triggerProfile] = useState(false);
   const [navState, setNavState] = useState(0);
+  let animeGenres = [
+    "საბრძოლო ხელოვნება",
+    "სათავგადასავლო",
+    "სამეცნიერო ფანტასტიკა",
+    "რომანტიკა",
+    "სამურაი",
+    "საშინელებათა",
+    "ფანტაზია",
+    "ფსიქოლოგიური",
+    "შოუჯო",
+    "შოუნენი",
+    "ყოველდღიურობა",
+    "დემონები",
+    "ვამპირები",
+    "დეტექტივი",
+    "ზებუნებრივი",
+    "დრამა",
+    "სუპერ-ძალები",
+    "სპორტი",
+    "თამაში",
+    "სკოლა",
+    "თრილერი",
+    "სეინენი",
+    "ისტორიული",
+    "სამხედრო",
+    "პოსტ-აპოკალიფსური",
+    "მუსიკალური",
+    "კომედია",
+    "მაგია",
+    "მისტიკა",
+    "მეხა",
+  ];
   return (
-    <nav>
+    <nav className={scrollNav ? "scrollNav" : undefined}>
       <div id="nav_logo" onClick={() => navigate("/")}></div>
       <aside>
         {localStorage.getItem("isLogged") !== "true" ? (
@@ -57,36 +100,11 @@ const Navbar = () => {
             </div>
             {navState === 0 && (
               <ul>
-                <li>საბრძოლო ხელოვნება</li>
-                <li>სათავგადასავლო</li>
-                <li>სამეცნიერო-ფანტასტიკა</li>
-                <li>რომანტიკა</li>
-                <li>სამურაი</li>
-                <li>საშინელებათა</li>
-                <li>ფანტაზია</li>
-                <li>ფსიქოლოგიური</li>
-                <li>შოუჯო</li>
-                <li>შოუნენი</li>
-                <li>ყოველდღიურობა</li>
-                <li>დემონები</li>
-                <li>ვამპირები</li>
-                <li>დეტექტივი</li>
-                <li>ზებუნებრივი</li>
-                <li>დრამა</li>
-                <li>სუპერ-ძალები</li>
-                <li>სპორტი</li>
-                <li>თამაში</li>
-                <li>სკოლა</li>
-                <li>თრილერი</li>
-                <li>სეინენი</li>
-                <li>ისტორიული</li>
-                <li>სამხედრო</li>
-                <li>პოსტ-აპოკალიფსური</li>
-                <li>მუსიკალური</li>
-                <li>კომედია</li>
-                <li>მაგია</li>
-                <li>მისტიკა</li>
-                <li>მეხა</li>
+                {animeGenres?.map((anime, index) => (
+                  <li onClick={() => dispatch(sortAnimes(anime))} key={index}>
+                    {anime}
+                  </li>
+                ))}
               </ul>
             )}
             {navState === 1 && (

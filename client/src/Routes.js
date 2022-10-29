@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -20,20 +20,32 @@ import {
   getComments,
   addComment,
   addReply,
+  sortAnimes,
 } from "./redux/webSlice";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
 import NotFound from "./pages/NotFound/NotFound";
 
 const App = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { socket, Token, success, loading, error, user } = useSelector(
-    (state) => ({
+  const { socket, Token, success, loading, error, user, sortedAnimes } =
+    useSelector((state) => ({
       ...state.web,
-    })
-  );
+    }));
   let isLogged = localStorage.getItem("isLogged");
+  useEffect(() => {
+    if (sortedAnimes.length !== 0) {
+      navigate("/");
+    }
+  }, [sortedAnimes]);
+  useEffect(() => {
+    if (pathname !== "/") dispatch(sortAnimes(""));
+  }, [navigate, dispatch]);
   useEffect(() => {
     if (Token?.length !== 0 && Token !== null) {
       socket.emit("getUserData", Token);
@@ -273,10 +285,7 @@ const App = () => {
           path="/admin_dashboard/:id"
           element={checkAdmin && <AdminDashboard />}
         />
-        <Route
-          path="/profile/:id"
-          element={localStorage.getItem("isLogged") === "true" && <Profile />}
-        />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/reset_password/:id" element={<ResetPassword />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>

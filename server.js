@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://konogima-test",
   },
 });
 
@@ -26,7 +26,7 @@ const Comment = require("./models/commentModel");
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "https://konogima-test" }));
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);
@@ -37,7 +37,9 @@ io.on("connection", async (socket) => {
   socket.on("getUserData", async (token) => {
     try {
       const decodedToken = JWT.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decodedToken._id);
+      const user = await User.findById(decodedToken._id).populate(
+        "watchLater.anime"
+      );
       if (!user)
         return socket.emit("getUserDataClient", {
           success: false,
@@ -54,7 +56,9 @@ io.on("connection", async (socket) => {
   });
   socket.on("getAnimes", async () => {
     try {
-      const animes = await Anime.find().populate("seasons");
+      const animes = await Anime.find()
+        .sort({ updatedAt: -1 })
+        .populate("seasons");
       io.emit("getAnimesClient", {
         success: true,
         payload: animes,
@@ -287,7 +291,7 @@ io.on("connection", async (socket) => {
           message: "ათას სიმბოლოზე მეტს ვერ დაწერთ კომენტარში",
         });
       await Comment.create(commentData);
-      let comments = await Comment.find()
+      let comments = await Comment.find({ animeId: commentData?.animeId })
         .populate("reply")
         .limit(10)
         .skip(pages * 10)
@@ -381,7 +385,7 @@ io.on("connection", async (socket) => {
           message: "ათას სიმბოლოზე მეტს ვერ დაწერთ კომენტარში",
         });
       const comment = await Comment.create(commentData);
-      let test = await Comment.findByIdAndUpdate(
+      await Comment.findByIdAndUpdate(
         commentId,
         { $push: { reply: comment } },
         { new: true }
@@ -389,6 +393,59 @@ io.on("connection", async (socket) => {
       return io.emit("replyCommentClient", {
         success: true,
         payload: { comment, commentId },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("getCommentsCount", async ({ animeId }) => {
+    try {
+      const commentsCount = await Comment.find({ animeId }).countDocuments();
+      socket.emit("getCommentsCountClient", commentsCount);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("watchLater", async ({ animeId, Token, playerOptions }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("writeCommentClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      let update = true;
+      user?.watchLater?.map((iterator) => {
+        if (iterator?.anime.equals(animeId)) {
+          iterator.anime = animeId;
+          iterator.playerDetails = playerOptions;
+          update = false;
+          return iterator;
+        }
+      });
+      if (update) {
+        user.watchLater.push({
+          anime: animeId,
+          playerDetails: playerOptions,
+        });
+      }
+
+      await user.save();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  socket.on("getSpecificUserData", async ({ username }) => {
+    try {
+      const user = await User.findOne({ username }).populate(
+        "watchLater.anime"
+      );
+      if (!user)
+        return socket.emit("getSpecificUserDataClient", { success: false });
+      socket.emit("getSpecificUserDataClient", {
+        success: true,
+        payload: user,
       });
     } catch (error) {
       console.log(error);

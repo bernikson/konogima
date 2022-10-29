@@ -1,6 +1,6 @@
 import React from "react";
 
-const Views = ({ width, height, fill }) => {
+const Views = React.memo(({ width, height, fill }) => {
   return (
     <svg
       width={width}
@@ -41,6 +41,6 @@ const Views = ({ width, height, fill }) => {
       <g></g>
     </svg>
   );
-};
+});
 
 export default Views;

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Comment = ({ width, height, fill }) => {
+const Comment = React.memo(({ width, height, fill }) => {
   return (
     <svg
       version="1.1"
@@ -27,6 +27,6 @@ const Comment = ({ width, height, fill }) => {
       />
     </svg>
   );
-};
+});
 
 export default Comment;

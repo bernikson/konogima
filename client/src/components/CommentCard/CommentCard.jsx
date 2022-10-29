@@ -3,7 +3,7 @@ import "./CommentCard.css";
 import { useDispatch, useSelector } from "react-redux";
 import Dislike from "../../assets/svgs/Dislike";
 import Like from "../../assets/svgs/Like";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   updateAuthState,
   likeAnimeComment,
@@ -12,12 +12,28 @@ import {
   dislikeReplyComment,
 } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CommentCard = ({ data, id }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { Token, user, socket } = useSelector((state) => ({ ...state.web }));
   const [replyComment, triggerReplyComment] = useState(false);
   const [replyData, setReplyData] = useState("");
+  const [focus, setFocus] = useState(false);
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (focus && (event.code === "Enter" || event.code === "NumpadEnter")) {
+        console.log(focus + "inner");
+        createReply();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [replyData, focus]);
 
   const createReply = () => {
     if (Object.values(user).length === 0) return dispatch(updateAuthState(1));
@@ -57,8 +73,9 @@ const CommentCard = ({ data, id }) => {
   return (
     <article className="anime_comment">
       <div
+        onClick={() => navigate(`/profile/${data.username}`)}
         className="anime_user_profile"
-        style={{ backgroundImage: `url(${data?.avatar})` }}
+        style={{ backgroundImage: `url(${data?.avatar})`, cursor: "pointer" }}
       ></div>
       <div className="anime_comment_info">
         <span>{data?.username}</span>
@@ -129,6 +146,8 @@ const CommentCard = ({ data, id }) => {
             cols="30"
             rows="10"
             value={replyData}
+            onFocus={() => setFocus(true)}
+            onBlur={() => setFocus(false)}
             onChange={(e) => setReplyData(e.target.value)}
           ></textarea>
           <button id="comment_reply_button" onClick={createReply}>
@@ -138,8 +157,12 @@ const CommentCard = ({ data, id }) => {
         {data?.reply?.map((output, index) => (
           <article className="anime_comment" key={index}>
             <div
+              onClick={() => navigate(`/profile/${output.username}`)}
               className="anime_user_profile"
-              style={{ backgroundImage: `url(${output?.avatar})` }}
+              style={{
+                backgroundImage: `url(${output?.avatar})`,
+                cursor: "pointer",
+              }}
             ></div>
             <div className="anime_comment_info">
               <span>{output?.username}</span>

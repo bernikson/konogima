@@ -1,6 +1,8 @@
 #home {
   width: 70%;
   margin: auto;
+  margin-bottom: 2rem;
+  min-height: calc(100vh - 272px);
 }
 
 #home > section {
@@ -28,7 +30,7 @@
   width: 15rem !important;
 }
 
-#home > section > h1 {
+#home > section h1 {
   font-size: 1.3rem;
   background-color: var(--secondary);
   width: fit-content;
@@ -38,9 +40,22 @@
   margin-top: 3rem;
 }
 
+#home > section button {
+  font-size: 1.1rem;
+  color: #ff7675;
+  width: fit-content;
+  font-weight: bold;
+  padding: 0.5rem 1.2rem;
+  margin: 1rem 0rem;
+  margin-top: 3rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 #home_popular > article > div:nth-child(2) {
-  width: 20rem !important;
-  height: 25rem !important;
+  width: 22rem !important;
+  height: 27rem !important;
 }
 
 #home > h1 {
@@ -70,6 +85,12 @@
 
 #home > button:hover {
   transform: translateY(-0.3rem);
+}
+
+.home_anime_filter_text {
+  font-size: 1.8rem;
+  color: var(--secondary);
+  font-weight: bold;
 }
 
 @media screen and (max-width: 1200px) {

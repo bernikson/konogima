@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dislike = ({ width, height, fill }) => {
+const Dislike = React.memo(({ width, height, fill }) => {
   return (
     <svg
       width={width}
@@ -24,6 +24,6 @@ const Dislike = ({ width, height, fill }) => {
       <rect x="10" y="16.667" width="16.667" height="43.333" />
     </svg>
   );
-};
+});
 
 export default Dislike;

@@ -3,12 +3,31 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.3rem 2rem;
   user-select: none;
   position: sticky;
   top: 0;
   background-color: black;
   z-index: 10;
+}
+
+nav::after {
+  content: "";
+  display: block;
+  height: 0.2rem;
+  background-color: var(--secondary);
+  position: absolute;
+  left: 40%;
+  width: 20%;
+  top: 100%;
+  transition: 0.4s;
+  opacity: 0;
+}
+
+.scrollNav::after {
+  left: 0% !important;
+  width: 100%;
+  opacity: 1 !important;
 }
 
 nav > aside {
