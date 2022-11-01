@@ -79,6 +79,10 @@ const Profile = () => {
                 case "მთარგმელი":
                   bgColor = "#7bed9f";
                   break;
+                case "ადმინისტრატორი":
+                  bgColor = "black";
+                  fontColor = "red";
+                  break;
                 default:
                   bgColor = "yellow";
                   fontColor = "black";

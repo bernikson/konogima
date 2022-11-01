@@ -166,15 +166,16 @@ const userController = {
   uploadAnimeImage: async (req, res, next) => {
     try {
       const { file } = req.files;
+      console.log(file.tempFilePath);
       cloudinary.v2.uploader.upload(
         file.tempFilePath,
-        { folder: "Konogima" },
+        { folder: "Konogima", fetch_format: "auto", quality: "auto:eco" },
         async (error, result) => {
           error && console.log(error);
           removeImage(file.tempFilePath);
           res.status(200).json({
             message: "ანიმეს სურათი შეიცვალა",
-            payload: result.secure_url,
+            payload: result?.secure_url,
           });
         }
       );

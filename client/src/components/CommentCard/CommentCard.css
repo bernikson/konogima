@@ -27,6 +27,11 @@
   font-weight: bold;
 }
 
+.anime_comment_name_wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
 .comment_reply textarea:focus {
   outline: none;
 }

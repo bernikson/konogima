@@ -25,9 +25,9 @@ const Navbar = () => {
   const [profile, triggerProfile] = useState(false);
   const [navState, setNavState] = useState(0);
   let animeGenres = [
-    "საბრძოლო ხელოვნება",
+    "საბრძოლო_ხელოვნება",
     "სათავგადასავლო",
-    "სამეცნიერო ფანტასტიკა",
+    "სამეცნიერო_ფანტასტიკა",
     "რომანტიკა",
     "სამურაი",
     "საშინელებათა",
@@ -58,7 +58,14 @@ const Navbar = () => {
   ];
   return (
     <nav className={scrollNav ? "scrollNav" : undefined}>
-      <div id="nav_logo" onClick={() => navigate("/")}></div>
+      <div
+        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+        onClick={() => navigate("/")}
+      >
+        <div id="nav_logo"></div>
+        <span className="nav_logo_name">Konogima</span>
+      </div>
+
       <aside>
         {localStorage.getItem("isLogged") !== "true" ? (
           <div id="nav_auth">
@@ -75,7 +82,7 @@ const Navbar = () => {
           >
             <div className={profile ? "triggerProfile" : undefined}>
               <Link to="/profile/own">პროფილი</Link>
-              <Link to="/admin">ადმინი</Link>
+              {user?.role === 1 && <Link to="/admin">ადმინი</Link>}
               <Link to="#" onClick={() => dispatch(logout())}>
                 გამოსვლა
               </Link>
@@ -123,4 +130,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

@@ -32,6 +32,10 @@ const CommentSchema = new Schema(
         default: 0,
       },
     },
+    status: {
+      type: [String],
+      default: ["მომხმარებელი"],
+    },
 
     reply: [
       {

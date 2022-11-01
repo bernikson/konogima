@@ -7,7 +7,11 @@ import ArrowDown from "../../assets/svgs/ArrowDown";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useCallback } from "react";
-import { updateAuthState, clearComments } from "../../redux/webSlice";
+import {
+  updateAuthState,
+  clearComments,
+  sortAnimes,
+} from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
 
@@ -93,7 +97,9 @@ const Anime = () => {
       comment,
       animeId: animeIdentification,
       avatar: user?.avatar,
+      status: user?.status,
     };
+    console.log(commentData.status);
     SetPageCounter(0);
     socket.emit("writeComment", { Token, commentData, pages: 0 });
 
@@ -180,13 +186,6 @@ const Anime = () => {
 
   useEffect(() => {
     if (Object.values(user).length === 0) return;
-
-    // let checkAnime = true;
-    // for (const iterator of user?.watchLater) {
-    //   if (iterator?.anime?._id === animeIdentification) {
-    //     checkAnime = false;
-    //   }
-    // }
     socket.emit("watchLater", {
       Token,
       animeId: animeIdentification,
@@ -196,7 +195,6 @@ const Anime = () => {
         player: playerDetails.player,
         playerToUse,
       },
-      // update: checkAnime,
     });
   }, [
     user,
@@ -345,6 +343,7 @@ const Anime = () => {
                           <span
                             key={index}
                             style={{ color: "#55efc4", cursor: "pointer" }}
+                            onClick={() => dispatch(sortAnimes(genre))}
                           >
                             {genre}
                           </span>

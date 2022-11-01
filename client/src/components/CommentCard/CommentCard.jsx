@@ -64,6 +64,7 @@ const CommentCard = ({ data, id }) => {
       comment: replyData,
       avatar: user?.avatar,
       isChild: true,
+      status: user?.status,
     };
 
     socket.emit("replyComment", { Token, commentId: data?._id, commentData });
@@ -78,7 +79,54 @@ const CommentCard = ({ data, id }) => {
         style={{ backgroundImage: `url(${data?.avatar})`, cursor: "pointer" }}
       ></div>
       <div className="anime_comment_info">
-        <span>{data?.username}</span>
+        <div className="anime_comment_name_wrapper">
+          <span>{data?.username}</span>
+          {data?.status?.map((output, index) => {
+            let bgColor = "";
+            let fontColor = "";
+            switch (output) {
+              case "მომხმარებელი":
+                bgColor = "#3498db";
+                break;
+              case "დეველოპერი":
+                bgColor = "#130f40";
+                fontColor = "red";
+                break;
+              case "VIP":
+                bgColor = "#f1c40f";
+                break;
+              case "გამხმოვანებელი":
+                bgColor = "#16a085";
+                break;
+              case "მთარგმელი":
+                bgColor = "#7bed9f";
+                break;
+              case "ადმინისტრატორი":
+                bgColor = "black";
+                fontColor = "red";
+                break;
+              default:
+                bgColor = "yellow";
+                fontColor = "black";
+                break;
+            }
+            return (
+              <div
+                key={index}
+                style={{
+                  backgroundColor: `${bgColor}`,
+                  color: `${fontColor}`,
+                  fontWeight: "bold",
+                  padding: "0.1rem 0.8rem",
+                  borderRadius: "5px",
+                }}
+              >
+                {output}
+              </div>
+            );
+          })}
+        </div>
+
         <p>{data?.comment}</p>
         <div className="anime_comment_actions_wrapper">
           {data?._id && (
@@ -165,7 +213,53 @@ const CommentCard = ({ data, id }) => {
               }}
             ></div>
             <div className="anime_comment_info">
-              <span>{output?.username}</span>
+              <div className="anime_comment_name_wrapper">
+                <span>{output?.username}</span>
+                {output?.status?.map((output, index) => {
+                  let bgColor = "";
+                  let fontColor = "";
+                  switch (output) {
+                    case "მომხმარებელი":
+                      bgColor = "#3498db";
+                      break;
+                    case "დეველოპერი":
+                      bgColor = "#130f40";
+                      fontColor = "red";
+                      break;
+                    case "VIP":
+                      bgColor = "#f1c40f";
+                      break;
+                    case "გამხმოვანებელი":
+                      bgColor = "#16a085";
+                      break;
+                    case "მთარგმელი":
+                      bgColor = "#7bed9f";
+                      break;
+                    case "ადმინისტრატორი":
+                      bgColor = "black";
+                      fontColor = "red";
+                      break;
+                    default:
+                      bgColor = "yellow";
+                      fontColor = "black";
+                      break;
+                  }
+                  return (
+                    <div
+                      key={index}
+                      style={{
+                        backgroundColor: `${bgColor}`,
+                        color: `${fontColor}`,
+                        fontWeight: "bold",
+                        padding: "0.1rem 0.8rem",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {output}
+                    </div>
+                  );
+                })}
+              </div>
               <p>{output?.comment}</p>
               <div className="anime_comment_actions_wrapper">
                 {output?._id && (

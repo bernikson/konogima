@@ -1,10 +1,8 @@
 import React from "react";
 import "./AdminDashboard.css";
 import Tick from "../../assets/svgs/Tick";
-import Calendar from "../../assets/svgs/Calendar";
 import ArrowDown from "../../assets/svgs/ArrowDown";
 import { useState, useRef, useEffect } from "react";
-import "react-calendar/dist/Calendar.css";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -15,7 +13,6 @@ const AdminDashboard = () => {
   const { Token, socket, animes } = useSelector((state) => ({ ...state.web }));
   const { id } = useParams();
   let currentAnime = animes?.find((anime) => anime._id === id);
-  const [date, newDate] = useState(new Date());
   const dispatch = useDispatch();
 
   const [animeSeasons, addAnimeSeasons] = useState({
@@ -72,9 +69,9 @@ const AdminDashboard = () => {
   };
 
   let [animeGenres, setGenres] = useState([
-    { value: "საბრძოლო ხელოვნება", state: false },
+    { value: "საბრძოლო_ხელოვნება", state: false },
     { value: "სათავგადასავლო", state: false },
-    { value: "სამეცნიერო ფანტასტიკა", state: false },
+    { value: "სამეცნიერო_ფანტასტიკა", state: false },
     { value: "რომანტიკა", state: false },
     { value: "სამურაი", state: false },
     { value: "საშინელებათა", state: false },
@@ -166,8 +163,6 @@ const AdminDashboard = () => {
     playerThree: false,
   });
   const [genresDropdown, triggerGenresDropdown] = useState(false);
-  const [calendarDropdown, triggerCalendarDropdown] = useState(false);
-  const [seasonCounter, setSeasonCounter] = useState(0);
 
   const changeAvatar = async (e) => {
     e.preventDefault();
