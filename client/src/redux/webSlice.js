@@ -124,7 +124,7 @@ const webSlice = createSlice({
   initialState: {
     user: {},
     authState: 0,
-    socket: io.connect("http://localhost:5000"),
+    socket: io.connect("https://konogima-test.herokuapp.com/"),
     success: null,
     error: null,
     loading: false,
