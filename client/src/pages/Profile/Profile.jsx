@@ -76,7 +76,7 @@ const Profile = () => {
                 case "გამხმოვანებელი":
                   bgColor = "#16a085";
                   break;
-                case "მთარგმელი":
+                case "მთარგმნელი":
                   bgColor = "#7bed9f";
                   break;
                 case "ადმინისტრატორი":

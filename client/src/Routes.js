@@ -44,7 +44,7 @@ const App = () => {
     }
   }, [sortedAnimes]);
   useEffect(() => {
-    if (pathname !== "/") dispatch(sortAnimes(""));
+    if (pathname !== "/") dispatch(sortAnimes([]));
   }, [navigate, dispatch]);
   useEffect(() => {
     if (Token?.length !== 0 && Token !== null) {

@@ -1,6 +1,6 @@
 #anime_card {
-  width: 15rem;
-  height: 20rem;
+  /* width: 15rem;
+  height: 20rem; */
   background-color: lightgrey;
   border-radius: 10px;
   display: flex;
@@ -15,6 +15,7 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+  aspect-ratio: 7/10;
 }
 
 #anime_card:hover {

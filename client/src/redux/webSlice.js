@@ -110,6 +110,7 @@ export const updateAnime = createAsyncThunk(
   "user/updateAnime",
   async ({ payload, Token, animeId }, { rejectWithValue }) => {
     try {
+      console.log(payload);
       const { data } = await api.updateAnimeAPI(payload, Token, animeId);
       return data;
     } catch (error) {
@@ -131,7 +132,7 @@ const webSlice = createSlice({
     Token: null,
     animes: [],
     comments: [],
-    sortedAnimes: "",
+    sortedAnimes: [],
   },
   reducers: {
     updateAuthState: (state, { payload }) => {

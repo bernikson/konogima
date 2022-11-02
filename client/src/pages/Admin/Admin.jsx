@@ -10,28 +10,30 @@ const Admin = () => {
   const navigate = useNavigate();
   return (
     <main id="admin">
-      {animes?.map((anime, index) => {
-        return (
-          <article
-            key={index}
-            className="admin_anime"
-            style={{ backgroundImage: `url(${anime?.background})` }}
-            onClick={() => navigate(`/admin_dashboard/${anime?._id}`)}
-          >
-            <div>
-              <Edit />
-            </div>
-          </article>
-        );
-      })}
+      <section>
+        {animes?.map((anime, index) => {
+          return (
+            <article
+              key={index}
+              className="admin_anime"
+              style={{ backgroundImage: `url(${anime?.background})` }}
+              onClick={() => navigate(`/admin_dashboard/${anime?._id}`)}
+            >
+              <div>
+                <Edit />
+              </div>
+            </article>
+          );
+        })}
 
-      <div
-        id="admin_anime_add"
-        onClick={() => navigate("/admin_dashboard/new")}
-      >
-        <span>ანიმეს დამატება</span>
-        <Add />
-      </div>
+        <div
+          id="admin_anime_add"
+          onClick={() => navigate("/admin_dashboard/new")}
+        >
+          <span>ანიმეს დამატება</span>
+          <Add />
+        </div>
+      </section>
     </main>
   );
 };

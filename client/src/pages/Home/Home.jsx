@@ -44,9 +44,10 @@ const Home = () => {
   useEffect(() => {
     if (sortedAnimes.length === 0) return;
     let foundAnime = animes.filter((anime) => {
-      if (anime.genres.includes(sortedAnimes)) return anime;
+      if (anime.genres.includes(sortedAnimes[0])) return anime;
       return null;
     });
+    console.log(foundAnime);
     if (foundAnime === undefined) return setAllArr([]);
     setAllArr(foundAnime);
   }, [sortedAnimes, animes]);
@@ -83,9 +84,6 @@ const Home = () => {
                     },
                     1600: {
                       slidesPerView: 4,
-                    },
-                    1800: {
-                      slidesPerView: 5,
                     },
                   }}
                   navigation={true}
@@ -125,12 +123,20 @@ const Home = () => {
 
           <section id="all">
             <div style={{ display: "flex", gap: "1rem" }}>
-              <h1>ყველა ანიმე</h1>
+              <h1
+                style={{ cursor: "pointer" }}
+                onClick={async () => {
+                  await dispatch(sortAnimes(animes));
+                  await setAllArr(animes);
+                }}
+              >
+                ყველა ანიმე
+              </h1>
               {sortedAnimes?.length !== 0 && (
                 <button
                   onClick={() => {
                     setAllArr(animes);
-                    dispatch(sortAnimes(""));
+                    dispatch(sortAnimes([]));
                   }}
                 >
                   უკან დაბრუნება

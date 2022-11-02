@@ -98,7 +98,7 @@ const CommentCard = ({ data, id }) => {
               case "გამხმოვანებელი":
                 bgColor = "#16a085";
                 break;
-              case "მთარგმელი":
+              case "მთარგმნელი":
                 bgColor = "#7bed9f";
                 break;
               case "ადმინისტრატორი":
@@ -232,7 +232,7 @@ const CommentCard = ({ data, id }) => {
                     case "გამხმოვანებელი":
                       bgColor = "#16a085";
                       break;
-                    case "მთარგმელი":
+                    case "მთარგმნელი":
                       bgColor = "#7bed9f";
                       break;
                     case "ადმინისტრატორი":

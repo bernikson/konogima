@@ -318,8 +318,12 @@ const Anime = () => {
                 <span>{currentAnime?.voiceover}</span>
               </li>
               <li>
-                მთარგმელი:
+                მთარგმნელი:
                 <span>{currentAnime?.translator}</span>
+              </li>
+              <li>
+                განრიგი:
+                <span>{currentAnime?.uploadDate}</span>
               </li>
               <li>
                 სტატუსი:
@@ -343,7 +347,7 @@ const Anime = () => {
                           <span
                             key={index}
                             style={{ color: "#55efc4", cursor: "pointer" }}
-                            onClick={() => dispatch(sortAnimes(genre))}
+                            onClick={() => dispatch(sortAnimes([genre]))}
                           >
                             {genre}
                           </span>

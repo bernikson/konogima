@@ -22,9 +22,9 @@ const AnimeSchema = new Schema(
     },
     translator: {
       type: String,
-      required: [true, "შეიყვანეთ მთარგმელის სახელი"],
-      minlength: [3, "მთარგმელის სახელი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს"],
-      maxlength: [24, "მთარგმელის სახელი უნდა შეიცავდეს მაქსიმუმ 20 სიმბოლოს"],
+      required: [true, "შეიყვანეთ მთარგმნელის სახელი"],
+      minlength: [3, "მთარგმნელის სახელი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს"],
+      maxlength: [24, "მთარგმნელის სახელი უნდა შეიცავდეს მაქსიმუმ 20 სიმბოლოს"],
     },
     totaltime: Number,
     genres: {
@@ -57,6 +57,10 @@ const AnimeSchema = new Schema(
     background: {
       type: String,
       required: [true, "მიუთითეთ ანიმეს სურათი"],
+    },
+    uploadDate: {
+      type: String,
+      required: [true, "მიუთითეთ განრიგი"],
     },
     series: Number,
     seasons: [

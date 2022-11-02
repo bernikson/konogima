@@ -98,7 +98,7 @@ const AdminDashboard = () => {
     { value: "კომედია", state: false },
     { value: "მაგია", state: false },
     { value: "მისტიკა", state: false },
-    { value: "მეხა", state: false },
+    { value: "მექა", state: false },
   ]);
 
   const [animeData, setAnimeData] = useState({
@@ -114,6 +114,7 @@ const AdminDashboard = () => {
     description: "",
     background: "",
     series: "",
+    uploadDate: "",
   });
 
   useEffect(() => {
@@ -133,6 +134,7 @@ const AdminDashboard = () => {
           description,
           background,
           series,
+          uploadDate,
         } = anime;
         animeGenres.map((animeGenre) => {
           if (genres.includes(animeGenre.value)) {
@@ -152,6 +154,7 @@ const AdminDashboard = () => {
           description,
           background,
           series,
+          uploadDate,
         });
       }
     }
@@ -236,11 +239,13 @@ const AdminDashboard = () => {
       description,
       background,
       series,
+      uploadDate,
     } = animeData;
     let genresArray = [];
     animeGenres.map((genre) => {
       if (genre.state) genresArray.push(genre.value);
     });
+
     dispatch(
       createAnime({
         payload: {
@@ -256,6 +261,7 @@ const AdminDashboard = () => {
           background,
           genres: genresArray,
           series,
+          uploadDate,
         },
         Token,
       })
@@ -275,6 +281,7 @@ const AdminDashboard = () => {
       description,
       background,
       series,
+      uploadDate,
     } = animeData;
     let genresArray = [];
     animeGenres.map((genre) => {
@@ -295,6 +302,7 @@ const AdminDashboard = () => {
           background,
           genres: genresArray,
           series,
+          uploadDate,
         },
         Token,
         animeId: id,
@@ -402,9 +410,20 @@ const AdminDashboard = () => {
               <li>
                 <input
                   type="text"
-                  placeholder="მთარგმელი"
+                  placeholder="მთარგმნელი"
                   name="translator"
                   value={animeData.translator}
+                  onChange={changeAnimeData}
+                  autoComplete="off"
+                />
+                <div className="input_border"></div>
+              </li>
+              <li>
+                <input
+                  type="text"
+                  placeholder="განრიგი"
+                  name="uploadDate"
+                  value={animeData.uploadDate}
                   onChange={changeAnimeData}
                   autoComplete="off"
                 />

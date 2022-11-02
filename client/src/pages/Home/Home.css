@@ -16,7 +16,7 @@
 
 #home > section > article {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
 }
 
@@ -139,7 +139,7 @@
   }
 }
 
-@media screen and (max-width: 525px) {
+/* @media screen and (max-width: 570px) {
   #anime_card {
     width: 80% !important;
     margin: auto !important;
@@ -148,10 +148,7 @@
     margin: auto !important;
     width: 80% !important;
   }
-  #home_popular > article > div:nth-child(2) {
-    width: 80% !important;
-  }
-}
+} */
 
 @media screen and (max-width: 400px) {
   #anime_card {

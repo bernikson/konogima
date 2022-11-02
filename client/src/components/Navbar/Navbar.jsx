@@ -54,7 +54,7 @@ const Navbar = () => {
     "კომედია",
     "მაგია",
     "მისტიკა",
-    "მეხა",
+    "მექა",
   ];
   return (
     <nav className={scrollNav ? "scrollNav" : undefined}>
@@ -108,7 +108,7 @@ const Navbar = () => {
             {navState === 0 && (
               <ul>
                 {animeGenres?.map((anime, index) => (
-                  <li onClick={() => dispatch(sortAnimes(anime))} key={index}>
+                  <li onClick={() => dispatch(sortAnimes([anime]))} key={index}>
                     {anime}
                   </li>
                 ))}
