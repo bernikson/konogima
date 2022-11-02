@@ -45,7 +45,7 @@
   background-position: center;
   cursor: pointer;
   background-repeat: no-repeat;
-  background-image: url("../../assets/images/konogima-logo.png");
+  background-image: url("../../assets/images/konogima-logo.webp");
 }
 
 @media screen and (max-width: 900px) {

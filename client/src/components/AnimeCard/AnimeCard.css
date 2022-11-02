@@ -13,6 +13,8 @@
   justify-self: flex-start;
   background-size: cover;
   width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 #anime_card:hover {
@@ -22,34 +24,42 @@
   background-color: white;
   align-self: flex-end;
   width: fit-content;
-  padding: 0.3rem 1rem;
+  padding: 0.2rem 0.8rem;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 #anime_card > div {
-  width: 10rem;
+  position: absolute;
   display: flex;
-  background-color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 10px;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
   transition: 0.2s ease-in-out;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 #anime_card > div > svg {
-  transition: 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+  width: 5em;
+  transform: scale(0.5);
+  transition: 0.4s ease;
+  fill: var(--secondary);
 }
 
 #anime_card > div:hover {
-  background-color: black;
+  background-color: hsla(210, 100%, 0%, 0.9);
 }
 
 #anime_card > div:hover svg {
-  fill: white;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
 }
 
 #anime_card > div:hover span {

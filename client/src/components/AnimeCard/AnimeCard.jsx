@@ -20,7 +20,6 @@ const AnimeCard = ({ anime }) => {
         {totalSeries} / {anime?.series}
       </h4>
       <div onClick={() => navigate(`/anime/${anime._id}`)}>
-        <span>ჩვენება</span>
         <Play width="25px" />
       </div>
     </div>

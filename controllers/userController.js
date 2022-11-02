@@ -44,6 +44,7 @@ const userController = {
       if (req.cookies["Token"]) req.cookies["Token"] = "";
       const accessToken = user.createToken("access");
       const refreshToken = user.createToken("refresh");
+      console.log(refreshToken);
       user.createCookie(res, refreshToken);
       return res.status(200).json({
         message: "წარმატებულად შევიდა მომხმარებელი",
@@ -143,7 +144,7 @@ const userController = {
       const { file } = req.files;
       cloudinary.v2.uploader.upload(
         file.tempFilePath,
-        { folder: "Konogima" },
+        { folder: "Konogima", format: "webp", quality: "auto:eco" },
         async (error, result) => {
           error && console.log(error);
           removeImage(file.tempFilePath);
@@ -169,7 +170,7 @@ const userController = {
       console.log(file.tempFilePath);
       cloudinary.v2.uploader.upload(
         file.tempFilePath,
-        { folder: "Konogima", fetch_format: "auto", quality: "auto:eco" },
+        { folder: "Konogima", format: "webp", quality: "auto:eco" },
         async (error, result) => {
           error && console.log(error);
           removeImage(file.tempFilePath);

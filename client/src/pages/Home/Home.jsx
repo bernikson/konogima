@@ -1,7 +1,7 @@
 import "./Home.css";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import AnimeCard from "../../components/AnimeCard/AnimeCard";
+
 import { sortAnimes } from "../../redux/webSlice";
 import PuffLoader from "react-spinners/PuffLoader";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,6 +9,8 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+
+const AnimeCard = lazy(() => import("../../components/AnimeCard/AnimeCard"));
 
 const Home = () => {
   //! Initializations
@@ -92,7 +94,9 @@ const Home = () => {
                 >
                   {popularAnimes?.map((anime, index) => (
                     <SwiperSlide>
-                      <AnimeCard key={index} anime={anime} />
+                      <Suspense fallback={<div>Loading...</div>}>
+                        <AnimeCard key={index} anime={anime} />
+                      </Suspense>
                     </SwiperSlide>
                   ))}
                 </Swiper>
@@ -110,7 +114,9 @@ const Home = () => {
                   <article>
                     {Object.values(user).length !== 0 &&
                       user?.watchLater?.map((output, index) => (
-                        <AnimeCard key={index} anime={output?.anime} />
+                        <Suspense fallback={<div>Loading...</div>}>
+                          <AnimeCard key={index} anime={output?.anime} />
+                        </Suspense>
                       ))}
                   </article>
                 </>
@@ -134,7 +140,9 @@ const Home = () => {
 
             <article>
               {allArr?.map((anime, index) => (
-                <AnimeCard key={index} anime={anime} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AnimeCard key={index} anime={anime} />
+                </Suspense>
               ))}
             </article>
             {allArr.length === 0 && (
