@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "https://konogima-test.herokuapp.com//",
+  "proxy": "https://konogima-test.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
