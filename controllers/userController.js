@@ -203,6 +203,22 @@ const userController = {
       next(error);
     }
   },
+  deleteAnime: async (req, res, next) => {
+    try {
+      const { animeId } = req.body;
+      let io = req.app.get("io");
+      console.log(req.body);
+      await Anime.findByIdAndDelete(animeId);
+      res.status(200).json({ message: "ანიმე წარმატებულად წაიშალა" });
+      return io.emit("deleteAnimeClient", {
+        success: true,
+        payload: animeId,
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  },
   updateAnime: async (req, res, next) => {
     try {
       const { id } = req.params;

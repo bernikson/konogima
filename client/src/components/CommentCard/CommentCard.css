@@ -52,3 +52,11 @@
 #comment_reply_button:hover {
   transform: translateY(-0.2rem);
 }
+
+.delComment {
+  color: black !important;
+  font-weight: bold !important;
+  background-color: red;
+  padding: 0.5rem 0.8rem;
+  border-radius: 5px;
+}

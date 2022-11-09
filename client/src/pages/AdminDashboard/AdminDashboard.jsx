@@ -7,7 +7,11 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { createAnime, updateAnime } from "../../redux/webSlice";
+import {
+  createAnime,
+  updateAnime,
+  deleteAnimeThunk,
+} from "../../redux/webSlice";
 
 const AdminDashboard = () => {
   const { Token, socket, animes } = useSelector((state) => ({ ...state.web }));
@@ -99,6 +103,7 @@ const AdminDashboard = () => {
     { value: "მაგია", state: false },
     { value: "მისტიკა", state: false },
     { value: "მექა", state: false },
+    { value: "მოქმედებითი", state: false },
   ]);
 
   const [animeData, setAnimeData] = useState({
@@ -552,17 +557,30 @@ const AdminDashboard = () => {
             onChange={changeAnimeData}
             autoComplete="off"
           />
-          <button
-            onClick={() => {
-              if (id === "new") {
-                addAnime();
-              } else {
-                handleUpdateAnime();
-              }
-            }}
-          >
-            {id === "new" ? "შენახვა" : "განახლება"}
-          </button>
+          <div>
+            {" "}
+            {id !== "new" && (
+              <button
+                className="deleteAnime"
+                onClick={() =>
+                  dispatch(deleteAnimeThunk({ payload: id, Token }))
+                }
+              >
+                წაშლა
+              </button>
+            )}
+            <button
+              onClick={() => {
+                if (id === "new") {
+                  addAnime();
+                } else {
+                  handleUpdateAnime();
+                }
+              }}
+            >
+              {id === "new" ? "შენახვა" : "განახლება"}
+            </button>
+          </div>
         </aside>
       </aside>
       {id !== "new" && (

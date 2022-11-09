@@ -23,11 +23,7 @@ const Footer = () => {
       <div onClick={() => navigate("/")} id="footer_logo"></div>
       <aside id="footer_right">
         <button>Privacy Policy</button>
-        {Object.values(user).length !== 0 && (
-          <button onClick={() => navigate(`/profile/own`)}>
-            {user?.email}
-          </button>
-        )}
+        <button>konogimacom@gmail.com</button>
       </aside>
     </footer>
   );

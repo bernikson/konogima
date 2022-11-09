@@ -55,6 +55,7 @@ const Navbar = () => {
     "მაგია",
     "მისტიკა",
     "მექა",
+    "მოქმედებითი",
   ];
   return (
     <nav className={scrollNav ? "scrollNav" : undefined}>

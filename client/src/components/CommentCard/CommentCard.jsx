@@ -4,13 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Dislike from "../../assets/svgs/Dislike";
 import Like from "../../assets/svgs/Like";
 import { useState, useEffect } from "react";
-import {
-  updateAuthState,
-  likeAnimeComment,
-  dislikeAnimeComment,
-  likeReplyComment,
-  dislikeReplyComment,
-} from "../../redux/webSlice";
+import { updateAuthState } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -21,11 +15,17 @@ const CommentCard = ({ data, id }) => {
   const [replyComment, triggerReplyComment] = useState(false);
   const [replyData, setReplyData] = useState("");
   const [focus, setFocus] = useState(false);
+  const [replies, setReplies] = useState(data);
+
+  useEffect(() => {
+    data?.reply?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    setReplies(data);
+  }, [data]);
 
   useEffect(() => {
     const listener = (event) => {
       if (focus && (event.code === "Enter" || event.code === "NumpadEnter")) {
-        console.log(focus + "inner");
+        event.preventDefault();
         createReply();
       }
     };
@@ -34,6 +34,32 @@ const CommentCard = ({ data, id }) => {
       document.removeEventListener("keydown", listener);
     };
   }, [replyData, focus]);
+  useEffect(() => {
+    socket.on("replyCommentClient", async (response) => {
+      if (!response.success) {
+        return toast.error(response.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
+        });
+      }
+      if (data?._id === response.payload.commentId) {
+        setReplies((prevReply) => {
+          console.log(prevReply);
+          prevReply.reply.push(response.payload.comment);
+          prevReply.reply.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          return prevReply;
+        });
+      }
+    });
+  }, [socket, data, replies]);
 
   const createReply = () => {
     if (Object.values(user).length === 0) return dispatch(updateAuthState(1));
@@ -71,17 +97,132 @@ const CommentCard = ({ data, id }) => {
     setReplyData("");
   };
 
+  const likeComment = (payload) => {
+    if (replies?.likeRatio.like.includes(payload.userId)) {
+      let index = replies?.likeRatio.like.indexOf(payload.userId);
+      setReplies((prevReplies) => {
+        prevReplies?.likeRatio.like.splice(index, 1);
+        prevReplies.likeRatio.counter -= 1;
+        console.log(prevReplies);
+        return { ...prevReplies };
+      });
+    } else {
+      if (replies?.likeRatio.dislike.includes(payload.userId)) {
+        let index = replies?.likeRatio.dislike.indexOf(payload.userId);
+        setReplies((prevReplies) => {
+          replies?.likeRatio.dislike.splice(index, 1);
+          replies.likeRatio.counter += 1;
+          return { ...prevReplies };
+        });
+      }
+      setReplies((prevReplies) => {
+        replies?.likeRatio.like.push(payload.userId);
+        replies.likeRatio.counter += 1;
+        return { ...prevReplies };
+      });
+    }
+  };
+
+  const dislikeComment = (payload) => {
+    if (replies?.likeRatio.dislike.includes(payload.userId)) {
+      let index = replies?.likeRatio.dislike.indexOf(payload.userId);
+      setReplies((prevReplies) => {
+        prevReplies?.likeRatio.dislike.splice(index, 1);
+        prevReplies.likeRatio.counter += 1;
+        console.log(prevReplies);
+        return { ...prevReplies };
+      });
+    } else {
+      if (replies?.likeRatio.like.includes(payload.userId)) {
+        let index = replies?.likeRatio.like.indexOf(payload.userId);
+        setReplies((prevReplies) => {
+          replies?.likeRatio.like.splice(index, 1);
+          replies.likeRatio.counter -= 1;
+          return { ...prevReplies };
+        });
+      }
+      setReplies((prevReplies) => {
+        replies?.likeRatio.dislike.push(payload.userId);
+        replies.likeRatio.counter -= 1;
+        return { ...prevReplies };
+      });
+    }
+  };
+
+  const likeReplyComment = (payload) => {
+    replies?.reply.map((output) => {
+      if (output._id === payload.commentId) {
+        if (output?.likeRatio.like.includes(payload.userId)) {
+          console.log(output?.likeRatio.like);
+          let index = output?.likeRatio.like.indexOf(payload.userId);
+          setReplies((prevReplies) => {
+            output?.likeRatio.like.splice(index, 1);
+            output.likeRatio.counter -= 1;
+            return { ...prevReplies };
+          });
+        } else {
+          if (output?.likeRatio.dislike.includes(payload.userId)) {
+            let index = output?.likeRatio.dislike.indexOf(payload.userId);
+            setReplies((prevReplies) => {
+              output?.likeRatio.dislike.splice(index, 1);
+              output.likeRatio.counter += 1;
+              return { ...prevReplies };
+            });
+          }
+          setReplies((prevReplies) => {
+            output?.likeRatio.like.push(payload.userId);
+            output.likeRatio.counter += 1;
+            return { ...prevReplies };
+          });
+        }
+      }
+    });
+  };
+
+  const dislikeReplyComment = (payload) => {
+    replies?.reply.map((output) => {
+      if (output._id === payload.commentId) {
+        if (output?.likeRatio.dislike.includes(payload.userId)) {
+          console.log(output?.likeRatio.dislike);
+          let index = output?.likeRatio.dislike.indexOf(payload.userId);
+          setReplies((prevReplies) => {
+            output?.likeRatio.dislike.splice(index, 1);
+            output.likeRatio.counter += 1;
+            return { ...prevReplies };
+          });
+        } else {
+          if (output?.likeRatio.like.includes(payload.userId)) {
+            let index = output?.likeRatio.like.indexOf(payload.userId);
+            setReplies((prevReplies) => {
+              output?.likeRatio.like.splice(index, 1);
+              output.likeRatio.counter -= 1;
+              return { ...prevReplies };
+            });
+          }
+          setReplies((prevReplies) => {
+            output?.likeRatio.dislike.push(payload.userId);
+            output.likeRatio.counter -= 1;
+            return { ...prevReplies };
+          });
+        }
+      }
+    });
+  };
+
   return (
     <article className="anime_comment">
       <div
-        onClick={() => navigate(`/profile/${data.username}`)}
+        onClick={() => navigate(`/profile/${replies.username}`)}
         className="anime_user_profile"
-        style={{ backgroundImage: `url(${data?.avatar})`, cursor: "pointer" }}
+        style={{
+          backgroundImage: `url(${replies?.avatar})`,
+          cursor: "pointer",
+        }}
       ></div>
       <div className="anime_comment_info">
         <div className="anime_comment_name_wrapper">
-          <span>{data?.username}</span>
-          {data?.status?.map((output, index) => {
+          <span>{replies?.username}</span>
+          {replies?.status?.map((output, index) => {
             let bgColor = "";
             let fontColor = "";
             switch (output) {
@@ -127,45 +268,41 @@ const CommentCard = ({ data, id }) => {
           })}
         </div>
 
-        <p>{data?.comment}</p>
+        <p>{replies?.comment}</p>
         <div className="anime_comment_actions_wrapper">
-          {data?._id && (
+          {replies?._id && (
             <div>
               <div
                 onClick={() => {
                   if (Object.values(user).length === 0)
                     return dispatch(updateAuthState(1));
-                  dispatch(
-                    likeAnimeComment({
-                      commentId: data?._id,
-                      userId: user?._id,
-                    })
-                  );
+                  likeComment({
+                    commentId: replies?._id,
+                    userId: user?._id,
+                  });
                   socket.emit("likeComment", {
                     Token,
                     animeId: id,
-                    commentId: data?._id,
+                    commentId: replies?._id,
                     userId: user?._id,
                   });
                 }}
               >
                 <Like width="30" />
               </div>
-              <span>{data?.likeRatio?.counter || 0}</span>
+              <span>{replies?.likeRatio?.counter || 0}</span>
               <div
                 onClick={() => {
                   if (Object.values(user).length === 0)
                     return dispatch(updateAuthState(1));
-                  dispatch(
-                    dislikeAnimeComment({
-                      commentId: data?._id,
-                      userId: user?._id,
-                    })
-                  );
+                  dislikeComment({
+                    commentId: replies?._id,
+                    userId: user?._id,
+                  });
                   socket.emit("dislikeComment", {
                     Token,
                     animeId: id,
-                    commentId: data?._id,
+                    commentId: replies?._id,
                     userId: user?._id,
                   });
                 }}
@@ -174,16 +311,27 @@ const CommentCard = ({ data, id }) => {
               </div>
             </div>
           )}
-          {data?._id && (
+          {replies?._id && (
             <span onClick={() => triggerReplyComment(!replyComment)}>
               პასუხი
             </span>
           )}
+
           <span>
-            {new Date(data?.createdAt).toLocaleString() === "Invalid Date"
+            {new Date(replies?.createdAt).toLocaleString() === "Invalid Date"
               ? new Date().toLocaleString()
-              : new Date(data?.createdAt).toLocaleString()}
+              : new Date(replies?.createdAt).toLocaleString()}
           </span>
+          {(user?.role === 1 || user?.username === data?.username) && (
+            <span
+              className="delComment"
+              onClick={() =>
+                socket.emit("deleteComment", { Token, commentId: data?._id })
+              }
+            >
+              წაშლა
+            </span>
+          )}
         </div>
         <div
           className={`comment_reply ${
@@ -202,7 +350,7 @@ const CommentCard = ({ data, id }) => {
             გამოეხმაურე
           </button>
         </div>
-        {data?.reply?.map((output, index) => (
+        {replies?.reply?.map((output, index) => (
           <article className="anime_comment" key={index}>
             <div
               onClick={() => navigate(`/profile/${output.username}`)}
@@ -268,13 +416,11 @@ const CommentCard = ({ data, id }) => {
                       onClick={() => {
                         if (Object.values(user).length === 0)
                           return dispatch(updateAuthState(1));
-                        dispatch(
-                          likeReplyComment({
-                            fatherCommentId: data?._id,
-                            commentId: output?._id,
-                            userId: user?._id,
-                          })
-                        );
+                        likeReplyComment({
+                          fatherCommentId: replies?._id,
+                          commentId: output?._id,
+                          userId: user?._id,
+                        });
                         socket.emit("likeComment", {
                           Token,
                           animeId: id,
@@ -290,13 +436,12 @@ const CommentCard = ({ data, id }) => {
                       onClick={() => {
                         if (Object.values(user).length === 0)
                           return dispatch(updateAuthState(1));
-                        dispatch(
-                          dislikeReplyComment({
-                            fatherCommentId: data?._id,
-                            commentId: output?._id,
-                            userId: user?._id,
-                          })
-                        );
+                        dislikeReplyComment({
+                          fatherCommentId: data?._id,
+                          commentId: output?._id,
+                          userId: user?._id,
+                        });
+
                         socket.emit("dislikeComment", {
                           Token,
                           animeId: id,
@@ -315,6 +460,19 @@ const CommentCard = ({ data, id }) => {
                     ? new Date().toLocaleString()
                     : new Date(output?.createdAt).toLocaleString()}
                 </span>
+                {(user?.role === 1 || user?.username === output?.username) && (
+                  <span
+                    className="delComment"
+                    onClick={() =>
+                      socket.emit("deleteComment", {
+                        Token,
+                        commentId: output?._id,
+                      })
+                    }
+                  >
+                    წაშლა
+                  </span>
+                )}
               </div>
             </div>
           </article>

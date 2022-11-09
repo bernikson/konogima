@@ -68,7 +68,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.methods.createToken = function (tokenType) {
-  let expireTime = tokenType === "access" ? "35s" : "7d";
+  let expireTime = tokenType === "access" ? "30m" : "7d";
   return JWT.sign({ _id: this._id }, process.env.JWT_SECRET, {
     expiresIn: expireTime,
   });

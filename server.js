@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://konogima-test.herokuapp.com",
+    origin: "https://konogima-test.herokuapp.com/",
   },
 });
 
@@ -30,7 +30,7 @@ app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
-  cors({ credentials: true, origin: "https://konogima-test.herokuapp.com" })
+  cors({ credentials: true, origin: "https://konogima-test.herokuapp.com/" })
 );
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
@@ -42,9 +42,9 @@ io.on("connection", async (socket) => {
   socket.on("getUserData", async (token) => {
     try {
       const decodedToken = JWT.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decodedToken._id).populate(
-        "watchLater.anime"
-      );
+      const user = await User.findById(decodedToken._id)
+        .populate("watchLater.anime")
+        .populate({ path: "watchLater.anime", populate: { path: "seasons" } });
       if (!user)
         return socket.emit("getUserDataClient", {
           success: false,
@@ -415,17 +415,16 @@ io.on("connection", async (socket) => {
     try {
       const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
       const user = await User.findById(decodedToken._id);
-      if (!user)
-        return socket.emit("writeCommentClient", {
-          success: false,
-          message: "მომხმარებელი ვერ მოიძებნა",
-        });
       let update = true;
+      console.log("two values");
       user?.watchLater?.map((iterator) => {
         if (iterator?.anime.equals(animeId)) {
           iterator.anime = animeId;
           iterator.playerDetails = playerOptions;
+          console.log("same value detected");
           update = false;
+          return iterator;
+        } else {
           return iterator;
         }
       });
@@ -435,8 +434,15 @@ io.on("connection", async (socket) => {
           playerDetails: playerOptions,
         });
       }
-
+      const currentAnime = await Anime.findById(animeId);
       await user.save();
+      return socket.emit("watchLaterClient", {
+        success: true,
+        payload: {
+          anime: currentAnime,
+          playerDetails: playerOptions,
+        },
+      });
     } catch (error) {
       console.log(error);
     }
@@ -456,6 +462,36 @@ io.on("connection", async (socket) => {
       console.log(error);
     }
   });
+  socket.on("deleteComment", async ({ Token, commentId }) => {
+    try {
+      const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken._id);
+      if (!user)
+        return socket.emit("deleteCommentClient", {
+          success: false,
+          message: "მომხმარებელი ვერ მოიძებნა",
+        });
+      await Comment.findByIdAndDelete(commentId);
+      io.emit("deleteCommentClientStuff", {
+        success: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  // socket.on("deleteAnime", async ({ animeId }) => {
+  //   try {
+  //     const animes = await Anime.find()
+  //       .sort({ updatedAt: -1 })
+  //       .populate("seasons");
+  //     io.emit("getAnimesClient", {
+  //       success: true,
+  //       payload: animes,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // });
 });
 
 app.use(express.static(path.join(__dirname, "/client/build")));

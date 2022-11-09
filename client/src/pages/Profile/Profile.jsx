@@ -13,6 +13,11 @@ const Profile = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user, Token, socket } = useSelector((state) => ({ ...state.web }));
+  useEffect(() => {
+    if (Object.values(user).length === 0) {
+      navigate("/");
+    }
+  }, [user]);
   const imageRef = useRef(null);
   const changeAvatar = async (e) => {
     e.preventDefault();
@@ -117,7 +122,10 @@ const Profile = () => {
             accept="image/png, image/jpeg, image/webp"
           />
           <section id="profile_watch_later">
-            <h4>{id === "own" ? "გააგრძელე ყურება" : "უყურებს ანიმეებს"}</h4>
+            {user?.watchLater.length !== 0 && (
+              <h4>{id === "own" ? "გააგრძელე ყურება" : "უყურებს ანიმეებს"}</h4>
+            )}
+
             <article id="profile_watch_later_animes">
               {Object.values(userData).length !== 0 &&
                 userData?.watchLater?.map((output, index) => (

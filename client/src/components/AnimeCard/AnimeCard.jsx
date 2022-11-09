@@ -7,7 +7,7 @@ const AnimeCard = ({ anime }) => {
   const navigate = useNavigate();
   let totalSeries = 0;
   anime?.seasons?.map((season) => {
-    season?.series?.map(() => {
+    season?.series?.forEach(() => {
       totalSeries += 1;
     });
   });
@@ -16,10 +16,16 @@ const AnimeCard = ({ anime }) => {
       id="anime_card"
       style={{ backgroundImage: `url(${anime?.background})` }}
     >
-      <h4>
-        {totalSeries} / {anime?.series}
-      </h4>
-      <div onClick={() => navigate(`/anime/${anime._id}`)}>
+      <div id="anime_info">
+        <h4>
+          {totalSeries} / {anime?.series}
+        </h4>
+        {anime?.age >= 18 && <span>18+</span>}
+      </div>
+      <div
+        onClick={() => navigate(`/anime/${anime._id}`)}
+        className="anime_hover"
+      >
         <Play width="25px" />
       </div>
     </div>

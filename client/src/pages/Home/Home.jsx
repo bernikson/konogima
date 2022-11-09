@@ -47,7 +47,6 @@ const Home = () => {
       if (anime.genres.includes(sortedAnimes[0])) return anime;
       return null;
     });
-    console.log(foundAnime);
     if (foundAnime === undefined) return setAllArr([]);
     setAllArr(foundAnime);
   }, [sortedAnimes, animes]);
@@ -79,11 +78,26 @@ const Home = () => {
                     100: {
                       slidesPerView: 1,
                     },
-                    530: {
+                    580: {
                       slidesPerView: 2,
                     },
-                    1600: {
+                    870: {
+                      slidesPerView: 3,
+                    },
+                    1000: {
+                      slidesPerView: 2,
+                    },
+                    1120: {
+                      slidesPerView: 3,
+                    },
+                    1500: {
                       slidesPerView: 4,
+                    },
+                    1870: {
+                      slidesPerView: 5,
+                    },
+                    2250: {
+                      slidesPerView: 6,
                     },
                   }}
                   navigation={true}

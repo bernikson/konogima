@@ -22,6 +22,17 @@ export const createAnimeAPI = (paylaod, Token) =>
       Authorization: `Bearer ${Token}`,
     },
   });
+export const deleteAnimeAPI = (paylaod, Token) =>
+  axios.post(
+    "/api/user/deleteAnime",
+    { animeId: paylaod },
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${Token}`,
+      },
+    }
+  );
 
 export const updateAnimeAPI = (paylaod, Token, animeId) =>
   axios.patch(`/api/user/updateAnime/${animeId}`, paylaod, {

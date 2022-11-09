@@ -106,6 +106,20 @@ export const createAnime = createAsyncThunk(
   }
 );
 
+export const deleteAnimeThunk = createAsyncThunk(
+  "user/deleteAnime",
+  async ({ payload, Token }, { rejectWithValue }) => {
+    try {
+      console.log(payload);
+      const { data } = await api.deleteAnimeAPI(payload, Token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const updateAnime = createAsyncThunk(
   "user/updateAnime",
   async ({ payload, Token, animeId }, { rejectWithValue }) => {
@@ -125,7 +139,7 @@ const webSlice = createSlice({
   initialState: {
     user: {},
     authState: 0,
-    socket: io.connect("https://konogima-test.herokuapp.com"),
+    socket: io.connect("https://konogima-test.herokuapp.com/"),
     success: null,
     error: null,
     loading: false,
@@ -148,6 +162,14 @@ const webSlice = createSlice({
     getAnimes: (state, { payload }) => {
       state.animes = payload;
     },
+    deleteAnime: (state, { payload }) => {
+      state.animes.map((output, index) => {
+        if (output._id === payload.payload) {
+          state.animes.splice(index, 1);
+          return output;
+        }
+      });
+    },
     addAnime: (state, { payload }) => {
       state.animes.push(payload.payload);
     },
@@ -159,6 +181,46 @@ const webSlice = createSlice({
           return anime;
         } else {
           return anime;
+        }
+      });
+    },
+    likeAnime: (state, { payload }) => {
+      const { animeId, userId } = payload;
+      state.animes.map((output) => {
+        if (output._id === animeId) {
+          if (output.likes.includes(userId)) {
+            let index = output.likes.indexOf(userId);
+            output.likes.splice(index, 1);
+          } else {
+            if (output.dislikes.includes(userId)) {
+              let index = output.dislikes.indexOf(userId);
+              output.dislikes.splice(index, 1);
+            }
+            output.likes.push(userId);
+          }
+          return output;
+        } else {
+          return output;
+        }
+      });
+    },
+    dislikeAnime: (state, { payload }) => {
+      const { animeId, userId } = payload;
+      state.animes.map((output) => {
+        if (output._id === animeId) {
+          if (output.dislikes.includes(userId)) {
+            let index = output.dislikes.indexOf(userId);
+            output.dislikes.splice(index, 1);
+          } else {
+            if (output.likes.includes(userId)) {
+              let index = output.likes.indexOf(userId);
+              output.likes.splice(index, 1);
+            }
+            output.dislikes.push(userId);
+          }
+          return output;
+        } else {
+          return output;
         }
       });
     },
@@ -189,55 +251,6 @@ const webSlice = createSlice({
           return output;
         } else {
           return output;
-        }
-      });
-    },
-    addComment: (state, { payload }) => {
-      state.comments = payload;
-    },
-    likeAnimeComment: (state, { payload }) => {
-      state.comments = state.comments.map((comment) => {
-        if (comment._id === payload.commentId) {
-          if (comment?.likeRatio.like.includes(payload.userId)) {
-            let index = comment?.likeRatio.like.indexOf(payload.userId);
-            comment?.likeRatio.like.splice(index, 1);
-            comment.likeRatio.counter -= 1;
-          } else {
-            if (comment?.likeRatio.dislike.includes(payload.userId)) {
-              let index = comment?.likeRatio.dislike.indexOf(payload.userId);
-              comment?.likeRatio.dislike.splice(index, 1);
-              comment.likeRatio.counter += 1;
-            }
-            comment?.likeRatio.like.push(payload.userId);
-            comment.likeRatio.counter += 1;
-          }
-
-          return comment;
-        } else {
-          return comment;
-        }
-      });
-    },
-    dislikeAnimeComment: (state, { payload }) => {
-      state.comments = state.comments.map((comment) => {
-        if (comment._id === payload.commentId) {
-          if (comment?.likeRatio.dislike.includes(payload.userId)) {
-            let index = comment?.likeRatio.dislike.indexOf(payload.userId);
-            comment?.likeRatio.dislike.splice(index, 1);
-            comment.likeRatio.counter += 1;
-          } else {
-            if (comment?.likeRatio.like.includes(payload.userId)) {
-              let index = comment?.likeRatio.like.indexOf(payload.userId);
-              comment?.likeRatio.like.splice(index, 1);
-              comment.likeRatio.counter -= 1;
-            }
-            comment?.likeRatio.dislike.push(payload.userId);
-            comment.likeRatio.counter -= 1;
-          }
-
-          return comment;
-        } else {
-          return comment;
         }
       });
     },
@@ -330,6 +343,24 @@ const webSlice = createSlice({
     },
     sortAnimes: (state, { payload }) => {
       state.sortedAnimes = payload;
+    },
+    addWatchLater: (state, { payload }) => {
+      let update = true;
+      console.log("hello");
+      state.user.watchLater.map((output) => {
+        console.log(output?.anime?._id);
+        console.log(payload.payload.anime);
+        if (output?.anime?._id === payload.payload.anime._id) {
+          output.playerDetails = payload.payload.playerDetails;
+          update = false;
+          return output;
+        } else {
+          return output;
+        }
+      });
+      if (update) {
+        state.user.watchLater.push(payload.payload);
+      }
     },
   },
   extraReducers: {
@@ -425,6 +456,19 @@ const webSlice = createSlice({
       state.success = null;
       state.loading = false;
     },
+    [deleteAnimeThunk.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteAnimeThunk.fulfilled]: (state, { payload }) => {
+      state.success = payload.message;
+      state.loading = false;
+      state.error = null;
+    },
+    [deleteAnimeThunk.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.success = null;
+      state.loading = false;
+    },
     [updateAnime.pending]: (state) => {
       state.loading = true;
     },
@@ -460,5 +504,9 @@ export const {
   clearComments,
   sortAnimes,
   updateWatchLater,
+  likeAnime,
+  addWatchLater,
+  dislikeAnime,
+  deleteAnime,
 } = webSlice.actions;
 export default webSlice.reducer;

@@ -11,6 +11,9 @@ import {
   updateAuthState,
   clearComments,
   sortAnimes,
+  likeAnime,
+  addWatchLater,
+  dislikeAnime,
 } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
@@ -19,15 +22,16 @@ const Anime = () => {
   //! Intiaializations
   const dispatch = useDispatch();
 
-  const { animes, socket, Token, user, comments } = useSelector((state) => ({
+  const { animes, socket, Token, user } = useSelector((state) => ({
     ...state.web,
   }));
 
   //! ----------------------------
 
   //! states
+  const [comments, setComments] = useState([]);
+
   const animeIdentification = useParams().id;
-  const [filteredArray, setFilteredArray] = useState([]);
 
   const [pageCounter, SetPageCounter] = useState(0);
 
@@ -99,7 +103,6 @@ const Anime = () => {
       avatar: user?.avatar,
       status: user?.status,
     };
-    console.log(commentData.status);
     SetPageCounter(0);
     socket.emit("writeComment", { Token, commentData, pages: 0 });
 
@@ -113,23 +116,17 @@ const Anime = () => {
   useEffect(() => {
     setCurrentAnime(animes?.find((anime) => anime._id === animeIdentification));
   }, [animeIdentification, setCurrentAnime, animes]);
-  useEffect(() => {
-    socket.emit("getComments", {
-      animeId: animeIdentification,
-      pages: pageCounter,
-    });
-  }, [animeIdentification, pageCounter, socket]);
 
-  useEffect(() => {
-    let editableComments = [...comments];
-    let sortedComments = editableComments?.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
-    let filteredComments = sortedComments.filter(
-      (arr, index) => index < (pageCounter + 1) * 10
-    );
-    setFilteredArray(filteredComments);
-  }, [comments, pageCounter]);
+  // useEffect(() => {
+  //   let editableComments = [...comments];
+  //   let sortedComments = editableComments?.sort(
+  //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  //   );
+  //   let filteredComments = sortedComments.filter(
+  //     (arr, index) => index < (pageCounter + 1) * 10
+  //   );
+  //   setFilteredArray(filteredComments);
+  // }, [comments, pageCounter]);
 
   useEffect(() => {
     return () => {
@@ -140,6 +137,7 @@ const Anime = () => {
   useEffect(() => {
     const listener = (event) => {
       if (focus && (event.code === "Enter" || event.code === "NumpadEnter")) {
+        event.preventDefault();
         writeComment();
       }
     };
@@ -155,7 +153,7 @@ const Anime = () => {
         socket.emit("getCommentsCount", { animeId: currentAnime?._id });
       }
     }
-  }, [socket, currentAnime, filteredArray]);
+  }, [socket, currentAnime, comments]);
 
   useEffect(() => {
     socket.on("getCommentsCountClient", (data) => {
@@ -186,6 +184,7 @@ const Anime = () => {
 
   useEffect(() => {
     if (Object.values(user).length === 0) return;
+    if (playerToUse === undefined) return;
     socket.emit("watchLater", {
       Token,
       animeId: animeIdentification,
@@ -196,16 +195,7 @@ const Anime = () => {
         playerToUse,
       },
     });
-  }, [
-    user,
-    animeIdentification,
-    socket,
-    Token,
-    playerDetails.player,
-    playerDetails.season,
-    playerDetails.series,
-    playerToUse,
-  ]);
+  }, [playerToUse, socket]);
 
   useEffect(() => {
     socket.emit("giveView", { animeId: animeIdentification });
@@ -213,15 +203,67 @@ const Anime = () => {
 
   useEffect(() => {
     if (Object.values(user).length !== 0) {
-      for (const iterator of user?.watchLater) {
-        setPlayerDetails({
-          season: iterator?.playerDetails?.season,
-          series: iterator?.playerDetails?.series,
-          player: iterator?.playerDetails?.player,
+      user?.watchLater.map((iterator) => {
+        if (iterator.anime._id === animeIdentification) {
+          setPlayerDetails({
+            season: iterator?.playerDetails?.season,
+            series: iterator?.playerDetails?.series,
+            player: iterator?.playerDetails?.player,
+          });
+        } else {
+          return undefined;
+        }
+      });
+    }
+  }, [user, animeIdentification]);
+
+  //! ---------------------------------------------------------------------
+  //! COMMENTS
+
+  const [refreshComments, triggerRefreshComments] = useState(false);
+
+  useEffect(() => {
+    socket.emit("getComments", {
+      animeId: animeIdentification,
+      pages: pageCounter,
+    });
+  }, [socket, animeIdentification, pageCounter, refreshComments]);
+
+  useEffect(() => {
+    socket.on("getCommentsClient", (response) => {
+      if (pageCounter === 0) return setComments(response.payload);
+      setComments([...comments, ...response.payload]);
+    });
+  }, [socket, pageCounter, comments]);
+
+  useEffect(() => {
+    socket.on("deleteCommentClientStuff", (response) => {
+      SetPageCounter(0);
+      triggerRefreshComments(!refreshComments);
+    });
+  }, [socket, comments]);
+
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+
+  useEffect(() => {
+    socket.on("writeCommentClient", async (response) => {
+      if (!response.success) {
+        return toast.error(response.message, {
+          id: "single",
+          duration: 4000,
+          style: {
+            backgroundColor: "black",
+            border: "1px solid #D084E3",
+            color: "white",
+            boxShadow: "0px 0px 30px #D084E3",
+          },
         });
       }
-    }
-  }, [user]);
+      setComments(response.payload);
+    });
+  }, [socket, dispatch]);
 
   //! ---------------------------
 
@@ -256,21 +298,17 @@ const Anime = () => {
                     userId: user?._id,
                     animeId: currentAnime?._id,
                   });
-                  if (likes.includes(user?._id)) {
-                    setLikes(likes.filter((like) => like._id === user?._id));
-                  } else {
-                    if (dislikes.includes(user?._id)) {
-                      setDislikes(
-                        dislikes.filter((dislike) => dislike._id === user?._id)
-                      );
-                    }
-                    setLikes((oldLikes) => [...oldLikes, user?._id]);
-                  }
+                  dispatch(
+                    likeAnime({
+                      animeId: animeIdentification,
+                      userId: user?._id,
+                    })
+                  );
                 }
               }}
             >
               <Like width="40px" />
-              <span>{likes?.length}</span>
+              <span>{currentAnime?.likes?.length}</span>
             </div>
             <div
               onClick={() => {
@@ -282,16 +320,12 @@ const Anime = () => {
                     userId: user?._id,
                     animeId: currentAnime?._id,
                   });
-                  if (dislikes.includes(user?._id)) {
-                    setDislikes(
-                      dislikes.filter((dislike) => dislike._id === user?._id)
-                    );
-                  } else {
-                    if (likes.includes(user?._id)) {
-                      setLikes(likes.filter((like) => like._id === user?._id));
-                    }
-                    setDislikes((oldDislikes) => [...oldDislikes, user?._id]);
-                  }
+                  dispatch(
+                    dislikeAnime({
+                      animeId: animeIdentification,
+                      userId: user?._id,
+                    })
+                  );
                 }
               }}
             >
@@ -515,7 +549,7 @@ const Anime = () => {
           დაპოსტე კომენტარი
         </button>
         <section id="anime_comments">
-          {filteredArray?.map((output, index) => {
+          {comments?.map((output, index) => {
             if (!output.isChild) {
               return (
                 <CommentCard
@@ -529,7 +563,7 @@ const Anime = () => {
             }
           })}
         </section>
-        {filteredArray?.length >= 10 && filteredArray?.length < commentCount && (
+        {comments?.length >= 10 && comments?.length < commentCount && (
           <button
             className="anime_load_comments"
             onClick={() => {

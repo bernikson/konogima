@@ -17,10 +17,10 @@ import {
   addUpdatedAnime,
   addAnimeSeasonRedux,
   updateAnimeSeriesRedux,
-  getComments,
-  addComment,
+  addWatchLater,
   addReply,
   sortAnimes,
+  deleteAnime,
 } from "./redux/webSlice";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
@@ -64,7 +64,7 @@ const App = () => {
       dispatch(getToken());
     };
     if (Object.values(user).length === 0) return;
-    let interval = setInterval(refershTokenInterval, 15000);
+    let interval = setInterval(refershTokenInterval, 1000 * 60 * 30);
     return () => clearInterval(interval);
   }, [isLogged, dispatch, user]);
 
@@ -77,13 +77,15 @@ const App = () => {
     });
   }, [socket, dispatch]);
   useEffect(() => {
-    socket.on("getCommentsClient", (data) => {
-      dispatch(getComments(data.payload));
+    socket.on("createAnimeClient", async ({ payload }) => {
+      await dispatch(addAnime({ payload }));
+      console.log("hi");
+      navigate("/admin");
     });
   }, [socket, dispatch]);
   useEffect(() => {
-    socket.on("createAnimeClient", async ({ payload }) => {
-      await dispatch(addAnime({ payload }));
+    socket.on("deleteAnimeClient", async ({ payload }) => {
+      await dispatch(deleteAnime({ payload }));
       navigate("/admin");
     });
   }, [socket, dispatch]);
@@ -166,40 +168,7 @@ const App = () => {
       dispatch(updateAnimeSeriesRedux(payload.payload));
     });
   }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("writeCommentClient", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      dispatch(addComment(payload.payload));
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("replyCommentClient", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      dispatch(addReply(payload.payload));
-    });
-  }, [socket, dispatch]);
+
   useEffect(() => {
     socket.on("likeCommentClient", async (payload) => {
       if (!payload.success) {
@@ -234,6 +203,13 @@ const App = () => {
       console.log(payload);
     });
   }, [socket, dispatch]);
+
+  useEffect(() => {
+    socket.on("watchLaterClient", async (payload) => {
+      dispatch(addWatchLater(payload));
+    });
+  }, [socket, dispatch]);
+
   //!Notifications
   loading &&
     toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
