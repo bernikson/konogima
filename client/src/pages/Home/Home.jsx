@@ -51,6 +51,10 @@ const Home = () => {
     setAllArr(foundAnime);
   }, [sortedAnimes, animes]);
 
+  // useEffect(() => {
+  //   user?.watchLater?.sort((a, b) => b?.anime?.views - a?.anime?.views);
+  // }, [user]);
+
   //! -----------------------------------------------------------
 
   return (
@@ -115,7 +119,7 @@ const Home = () => {
               </>
             )}
           </section>
-
+          <article className="ADMain">სარეკლამო ადგილი</article>
           <section id="home_last_played">
             {isLogged === "true" &&
               sortedAnimes.length === 0 &&
@@ -134,7 +138,7 @@ const Home = () => {
                 </>
               )}
           </section>
-
+          <article className="ADMain">სარეკლამო ადგილი</article>
           <section id="all">
             <div style={{ display: "flex", gap: "1rem" }}>
               <h1
@@ -171,6 +175,7 @@ const Home = () => {
               </span>
             )}
           </section>
+          <article className="ADMain">სარეკლამო ადგილი</article>
         </>
       ) : (
         <PuffLoader
@@ -182,6 +187,8 @@ const Home = () => {
         />
       )}
       {/* <button>მეტის ჩატვირთვა</button> */}
+      <article className="ADFirst">სარეკლამო ადგილი</article>
+      <article className="ADSecond">სარეკლამო ადგილი</article>
     </main>
   );
 };

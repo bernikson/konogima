@@ -5,7 +5,7 @@
 }
 
 :root {
-  --secondary: #d084e3;
+  --secondary: hsl(288, 63%, 70%);
 }
 
 body {
@@ -17,6 +17,80 @@ body {
 
 button {
   border: none;
+}
+
+.ADFirst {
+  height: 70vh;
+  width: 15rem;
+  position: fixed;
+  background-color: #b33939;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.ADSecond {
+  height: 70vh;
+  width: 15rem;
+  position: fixed;
+  background-color: #b33939;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.ADMain {
+  height: 12rem;
+  width: calc(100% - 2rem);
+  background-color: #b33939;
+  right: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 2rem auto;
+  display: none;
+}
+
+@media screen and (max-width: 1800px) {
+  .ADFirst,
+  .ADSecond {
+    width: 12rem;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .ADFirst,
+  .ADSecond {
+    width: 10rem;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .ADFirst,
+  .ADSecond {
+    display: none;
+  }
+  .ADMain {
+    display: flex;
+  }
 }
 
 ::-webkit-scrollbar {

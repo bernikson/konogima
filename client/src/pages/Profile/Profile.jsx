@@ -121,6 +121,9 @@ const Profile = () => {
             type="file"
             accept="image/png, image/jpeg, image/webp"
           />
+          <article className="ADMain" style={{ width: "100%" }}>
+            სარეკლამო ადგილი
+          </article>
           <section id="profile_watch_later">
             {user?.watchLater.length !== 0 && (
               <h4>{id === "own" ? "გააგრძელე ყურება" : "უყურებს ანიმეებს"}</h4>
@@ -133,6 +136,8 @@ const Profile = () => {
                 ))}
             </article>
           </section>
+          <article className="ADFirst">სარეკლამო ადგილი</article>
+          <article className="ADSecond">სარეკლამო ადგილი</article>
         </>
       ) : (
         <PuffLoader

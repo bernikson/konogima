@@ -276,7 +276,9 @@ const Anime = () => {
 
   return (
     <main id="anime">
-      <h1>{currentAnime?.name}</h1>
+      {currentAnime?.name?.split("/").map((output) => (
+        <h1>{output}</h1>
+      ))}
       <section id="anime_aside_wrapper">
         <aside>
           <div
@@ -410,8 +412,18 @@ const Anime = () => {
           <p>{currentAnime?.description}</p>
         </aside>
       </section>
+      <article className="ADMain" style={{ width: "100%" }}>
+        სარეკლამო ადგილი
+      </article>
       <div id="iframe_wrapper">
-        <iframe src={playerToUse} title="Anime player"></iframe>
+        <iframe
+          src={playerToUse}
+          frameborder="0"
+          title="Anime player"
+          allowfullscreen="true"
+          webkitallowfullscreen="true"
+          mozallowfullscreen="true"
+        ></iframe>
         <div id="video_options">
           <aside>
             <div
@@ -484,6 +496,7 @@ const Anime = () => {
               ))}
             </ul>
           </aside>
+
           <aside>
             <div
               className={animeOptions.player ? "animeDropSvg" : undefined}
@@ -532,6 +545,7 @@ const Anime = () => {
           </aside>
         </div>
       </div>
+
       <section id="anime_comments_wrapper">
         <div id="anime_comments_count">
           <Comment width="40" />
@@ -548,6 +562,9 @@ const Anime = () => {
         <button id="anime_add_comment" onClick={writeComment}>
           დაპოსტე კომენტარი
         </button>
+        <article className="ADMain" style={{ width: "100%" }}>
+          სარეკლამო ადგილი
+        </article>
         <section id="anime_comments">
           {comments?.map((output, index) => {
             if (!output.isChild) {
@@ -574,6 +591,8 @@ const Anime = () => {
           </button>
         )}
       </section>
+      <article className="ADFirst">სარეკლამო ადგილი</article>
+      <article className="ADSecond">სარეკლამო ადგილი</article>
     </main>
   );
 };

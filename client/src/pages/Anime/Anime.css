@@ -9,8 +9,12 @@
   color: white;
   font-size: 1.8rem;
   font-weight: bold;
-  margin-bottom: 4rem;
   text-align: center;
+  margin-top: 1rem;
+}
+
+#anime > h1:nth-child(2) {
+  margin-bottom: 4rem;
 }
 
 #anime_aside_wrapper {

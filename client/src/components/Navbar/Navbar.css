@@ -15,7 +15,12 @@ nav::after {
   content: "";
   display: block;
   height: 0.2rem;
-  background-color: var(--secondary);
+  background: linear-gradient(
+    90deg,
+    hsla(288, 63%, 70%, 0.3) 9.92%,
+    hsl(288, 63%, 70%) 49.71%,
+    hsla(288, 63%, 70%, 0.3) 90.26%
+  );
   position: absolute;
   left: 40%;
   width: 20%;

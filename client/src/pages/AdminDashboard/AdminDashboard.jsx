@@ -104,6 +104,7 @@ const AdminDashboard = () => {
     { value: "მისტიკა", state: false },
     { value: "მექა", state: false },
     { value: "მოქმედებითი", state: false },
+    { value: "ეჩი", state: false },
   ]);
 
   const [animeData, setAnimeData] = useState({
@@ -815,6 +816,8 @@ const AdminDashboard = () => {
               </div>
             </aside>
           </section>
+          <article className="ADFirst">სარეკლამო ადგილი</article>
+          <article className="ADSecond">სარეკლამო ადგილი</article>
         </aside>
       )}
     </main>

@@ -11,10 +11,21 @@ const Footer = () => {
   return (
     <footer id="footer">
       <aside id="footer_left">
-        <div>
+        <div
+          onClick={() =>
+            window.open(
+              "https://www.facebook.com/profile.php?id=100087225231718",
+              "_blank"
+            )
+          }
+        >
           <Facebook width="20" />
         </div>
-        <div>
+        <div
+          onClick={() =>
+            window.open("https://www.tiktok.com/@konogimacom?lang=en", "_blank")
+          }
+        >
           <Tiktok width="20" />
         </div>
         <div></div>
