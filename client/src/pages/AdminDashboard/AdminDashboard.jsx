@@ -105,6 +105,8 @@ const AdminDashboard = () => {
     { value: "მექა", state: false },
     { value: "მოქმედებითი", state: false },
     { value: "ეჩი", state: false },
+    { value: "ჰარემი", state: false },
+    { value: "ფილმი", state: false },
   ]);
 
   const [animeData, setAnimeData] = useState({
@@ -256,7 +258,7 @@ const AdminDashboard = () => {
       createAnime({
         payload: {
           name,
-          year: parseInt(year),
+          year,
           voiceover,
           translator,
           totaltime: parseInt(totaltime),
@@ -297,7 +299,7 @@ const AdminDashboard = () => {
       updateAnime({
         payload: {
           name,
-          year: parseInt(year),
+          year,
           voiceover,
           translator,
           totaltime: parseInt(totaltime),

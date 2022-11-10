@@ -188,7 +188,6 @@ const userController = {
     try {
       let io = req.app.get("io");
       let { year, totaltime, age, series } = req.body;
-      if (year === "NaN") req.body.year = "";
       if (totaltime === "NaN") req.body.totaltime = "";
       if (age === "NaN") req.body.age = "";
       if (series === "NaN") req.body.age = "";
@@ -238,7 +237,6 @@ const userController = {
         series,
         uploadDate,
       } = req.body;
-      if (year === "NaN") year = "";
       if (totaltime === "NaN") totaltime = "";
       if (age === "NaN") age = "";
       let anime = await Anime.findById(id).populate("seasons comments");

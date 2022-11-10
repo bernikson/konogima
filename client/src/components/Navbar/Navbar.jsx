@@ -57,6 +57,8 @@ const Navbar = () => {
     "მექა",
     "მოქმედებითი",
     "ეჩი",
+    "ჰარემი",
+    "ფილმი",
   ];
   return (
     <nav className={scrollNav ? "scrollNav" : undefined}>
