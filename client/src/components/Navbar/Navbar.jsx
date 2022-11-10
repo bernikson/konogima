@@ -59,6 +59,8 @@ const Navbar = () => {
     "ეჩი",
     "ჰარემი",
     "ფილმი",
+    "ისეკაი",
+    "რეინკარნაცია",
   ];
   return (
     <nav className={scrollNav ? "scrollNav" : undefined}>

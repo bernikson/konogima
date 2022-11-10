@@ -107,6 +107,8 @@ const AdminDashboard = () => {
     { value: "ეჩი", state: false },
     { value: "ჰარემი", state: false },
     { value: "ფილმი", state: false },
+    { value: "ისეკაი", state: false },
+    { value: "რეინკარნაცია", state: false },
   ]);
 
   const [animeData, setAnimeData] = useState({
@@ -394,12 +396,7 @@ const AdminDashboard = () => {
                   placeholder="წელი"
                   name="year"
                   value={animeData.year}
-                  onChange={(e) => {
-                    const re = /^[0-9]*$/;
-                    if (e.target.value === "" || re.test(e.target.value)) {
-                      changeAnimeData(e);
-                    }
-                  }}
+                  onChange={changeAnimeData}
                   autoComplete="off"
                 />
                 <div className="input_border"></div>
