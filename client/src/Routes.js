@@ -80,19 +80,21 @@ const App = () => {
     socket.on("createAnimeClient", async ({ payload }) => {
       await dispatch(addAnime({ payload }));
       console.log("hi");
-      navigate("/admin");
+      if (user?.role === 1) navigate("/admin");
     });
   }, [socket, dispatch]);
   useEffect(() => {
     socket.on("deleteAnimeClient", async ({ payload }) => {
       await dispatch(deleteAnime({ payload }));
-      navigate("/admin");
+      if (user?.role === 1) navigate("/admin");
     });
   }, [socket, dispatch]);
   useEffect(() => {
     socket.on("updateAnimeClient", async ({ payload }) => {
       await dispatch(addUpdatedAnime({ payload }));
-      navigate("/admin");
+      if (user?.role === 1) navigate("/admin");
+      console.log(user);
+      console.log(user?.role);
     });
   }, [socket, dispatch]);
   useEffect(() => {

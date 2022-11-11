@@ -16,7 +16,7 @@ import {
 
 const Auth = () => {
   const dispatch = useDispatch();
-  const { authState, success, loading, error } = useSelector((state) => ({
+  const { authState } = useSelector((state) => ({
     ...state.web,
   }));
   const [registerData, setRegisterData] = useState({

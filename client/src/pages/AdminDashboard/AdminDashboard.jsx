@@ -125,6 +125,7 @@ const AdminDashboard = () => {
     background: "",
     series: "",
     uploadDate: "",
+    status: "მიმდინარე",
   });
 
   useEffect(() => {
@@ -145,6 +146,7 @@ const AdminDashboard = () => {
           background,
           series,
           uploadDate,
+          status,
         } = anime;
         animeGenres.map((animeGenre) => {
           if (genres.includes(animeGenre.value)) {
@@ -165,6 +167,7 @@ const AdminDashboard = () => {
           background,
           series,
           uploadDate,
+          status,
         });
       }
     }
@@ -176,6 +179,7 @@ const AdminDashboard = () => {
     playerThree: false,
   });
   const [genresDropdown, triggerGenresDropdown] = useState(false);
+  const [statusDropdown, triggerStatusDropdown] = useState(false);
 
   const changeAvatar = async (e) => {
     e.preventDefault();
@@ -250,6 +254,7 @@ const AdminDashboard = () => {
       background,
       series,
       uploadDate,
+      status,
     } = animeData;
     let genresArray = [];
     animeGenres.map((genre) => {
@@ -272,6 +277,7 @@ const AdminDashboard = () => {
           genres: genresArray,
           series,
           uploadDate,
+          status,
         },
         Token,
       })
@@ -292,6 +298,7 @@ const AdminDashboard = () => {
       background,
       series,
       uploadDate,
+      status,
     } = animeData;
     let genresArray = [];
     animeGenres.map((genre) => {
@@ -313,6 +320,7 @@ const AdminDashboard = () => {
           genres: genresArray,
           series,
           uploadDate,
+          status,
         },
         Token,
         animeId: id,
@@ -547,6 +555,60 @@ const AdminDashboard = () => {
                   autoComplete="off"
                 />
                 <div className="input_border"></div>
+              </li>
+              <li>
+                <div
+                  className={`admin_dropdown_header ${
+                    statusDropdown
+                      ? "triggered_gernes_header_dropdown"
+                      : undefined
+                  }`}
+                  onClick={() => triggerStatusDropdown(!statusDropdown)}
+                >
+                  <span>სტატუსი</span>
+                  <ArrowDown />
+                </div>
+                <div
+                  id="anime_genres_dropdown"
+                  className={
+                    statusDropdown ? "triggered_gernes_dropdown" : undefined
+                  }
+                >
+                  <ul>
+                    <li
+                      onClick={() =>
+                        setAnimeData({ ...animeData, status: "მიმდინარე" })
+                      }
+                    >
+                      <div
+                        className={
+                          animeData?.status === "მიმდინარე"
+                            ? "modified_genre"
+                            : undefined
+                        }
+                      >
+                        <Tick />
+                      </div>
+                      <span>მიმდინარე</span>
+                    </li>
+                    <li
+                      onClick={() =>
+                        setAnimeData({ ...animeData, status: "დასრულებული" })
+                      }
+                    >
+                      <div
+                        className={
+                          animeData?.status === "დასრულებული"
+                            ? "modified_genre"
+                            : undefined
+                        }
+                      >
+                        <Tick />
+                      </div>
+                      <span>დასრულებული</span>
+                    </li>
+                  </ul>
+                </div>
               </li>
             </ul>
           </section>

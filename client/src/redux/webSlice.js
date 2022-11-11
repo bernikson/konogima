@@ -110,7 +110,6 @@ export const deleteAnimeThunk = createAsyncThunk(
   "user/deleteAnime",
   async ({ payload, Token }, { rejectWithValue }) => {
     try {
-      console.log(payload);
       const { data } = await api.deleteAnimeAPI(payload, Token);
       return data;
     } catch (error) {
@@ -124,7 +123,6 @@ export const updateAnime = createAsyncThunk(
   "user/updateAnime",
   async ({ payload, Token, animeId }, { rejectWithValue }) => {
     try {
-      console.log(payload);
       const { data } = await api.updateAnimeAPI(payload, Token, animeId);
       return data;
     } catch (error) {
@@ -326,7 +324,6 @@ const webSlice = createSlice({
       if (!payload.update) {
         state.user?.watchLater?.map((iterator) => {
           if (iterator?.anime === payload.animeId) {
-            console.log(iterator);
             iterator.anime = payload.animeId;
             iterator.playerDetails = payload.playerOptions;
             return iterator;
@@ -346,10 +343,7 @@ const webSlice = createSlice({
     },
     addWatchLater: (state, { payload }) => {
       let update = true;
-      console.log("hello");
       state.user.watchLater.map((output) => {
-        console.log(output?.anime?._id);
-        console.log(payload.payload.anime);
         if (output?.anime?._id === payload.payload.anime._id) {
           output.playerDetails = payload.payload.playerDetails;
           update = false;

@@ -236,6 +236,7 @@ const userController = {
         background,
         series,
         uploadDate,
+        status,
       } = req.body;
       if (totaltime === "NaN") totaltime = "";
       if (age === "NaN") age = "";
@@ -253,6 +254,7 @@ const userController = {
       anime.background = background;
       anime.series = series;
       anime.uploadDate = uploadDate;
+      anime.status = status;
       await anime.save();
       res.status(200).json({ message: "ანიმე წარმატებულად განახლდა" });
       return io.emit("updateAnimeClient", {

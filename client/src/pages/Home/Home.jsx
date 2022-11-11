@@ -75,9 +75,6 @@ const Home = () => {
                   }}
                   loop={true}
                   loopFillGroupWithBlank={true}
-                  pagination={{
-                    clickable: true,
-                  }}
                   breakpoints={{
                     100: {
                       slidesPerView: 1,
@@ -105,7 +102,7 @@ const Home = () => {
                     },
                   }}
                   navigation={true}
-                  modules={[Autoplay, Pagination, Navigation]}
+                  modules={[Autoplay, Navigation]}
                   className="mySwiper"
                 >
                   {popularAnimes?.map((anime, index) => (
@@ -120,24 +117,86 @@ const Home = () => {
             )}
           </section>
           <article className="ADMain">სარეკლამო ადგილი</article>
-          <section id="home_last_played">
-            {isLogged === "true" &&
-              sortedAnimes.length === 0 &&
-              Object.values(user).length !== 0 &&
-              user?.watchLater.length !== 0 && (
-                <>
-                  <h1>გააგრძელე ყურება</h1>
-                  <article>
-                    {Object.values(user).length !== 0 &&
-                      user?.watchLater?.map((output, index) => (
-                        <Suspense fallback={<div>Loading...</div>}>
-                          <AnimeCard key={index} anime={output?.anime} />
-                        </Suspense>
-                      ))}
-                  </article>
-                </>
-              )}
-          </section>
+          {user?.watchLater?.length >= 5 ? (
+            <section id="home_last_played">
+              {isLogged === "true" &&
+                sortedAnimes.length === 0 &&
+                Object.values(user).length !== 0 &&
+                user?.watchLater.length !== 0 && (
+                  <>
+                    <h1>გააგრძელე ყურება</h1>
+                    <Swiper
+                      slidesPerView={3}
+                      spaceBetween={33}
+                      slidesPerGroup={1}
+                      autoplay={{
+                        delay: 2500,
+                        disableOnInteraction: false,
+                      }}
+                      loop={true}
+                      loopFillGroupWithBlank={true}
+                      breakpoints={{
+                        100: {
+                          slidesPerView: 1,
+                        },
+                        580: {
+                          slidesPerView: 2,
+                        },
+                        870: {
+                          slidesPerView: 3,
+                        },
+                        1000: {
+                          slidesPerView: 2,
+                        },
+                        1120: {
+                          slidesPerView: 3,
+                        },
+                        1500: {
+                          slidesPerView: 4,
+                        },
+                        1870: {
+                          slidesPerView: 5,
+                        },
+                        2250: {
+                          slidesPerView: 6,
+                        },
+                      }}
+                      navigation={true}
+                      modules={[Autoplay, Navigation]}
+                      className="mySwiper"
+                    >
+                      {Object.values(user).length !== 0 &&
+                        user?.watchLater?.map((output, index) => (
+                          <SwiperSlide>
+                            <Suspense fallback={<div>Loading...</div>}>
+                              <AnimeCard key={index} anime={output?.anime} />
+                            </Suspense>
+                          </SwiperSlide>
+                        ))}
+                    </Swiper>
+                  </>
+                )}
+            </section>
+          ) : (
+            <section id="home_last_played">
+              {isLogged === "true" &&
+                sortedAnimes.length === 0 &&
+                Object.values(user).length !== 0 &&
+                user?.watchLater.length !== 0 && (
+                  <>
+                    <h1>გააგრძელე ყურება</h1>
+                    <article>
+                      {Object.values(user).length !== 0 &&
+                        user?.watchLater?.map((output, index) => (
+                          <Suspense fallback={<div>Loading...</div>}>
+                            <AnimeCard key={index} anime={output?.anime} />
+                          </Suspense>
+                        ))}
+                    </article>
+                  </>
+                )}
+            </section>
+          )}
           <article className="ADMain">სარეკლამო ადგილი</article>
           <section id="all">
             <div style={{ display: "flex", gap: "1rem" }}>

@@ -363,7 +363,7 @@ const Anime = () => {
               </li>
               <li>
                 სტატუსი:
-                <span>მიმდინარე</span>
+                <span>{currentAnime?.status}</span>
               </li>
             </ul>
             <ul>

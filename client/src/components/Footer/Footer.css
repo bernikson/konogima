@@ -16,6 +16,13 @@
   display: flex;
   justify-content: center;
   gap: 3rem;
+  align-items: center;
+}
+
+#footer_left > div {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff3f34;
 }
 
 #footer_left > div > svg {
@@ -35,7 +42,6 @@
   border-radius: 7px;
   font-size: 1.1rem;
   font-weight: bold;
-  cursor: pointer;
 }
 
 #footer_logo {

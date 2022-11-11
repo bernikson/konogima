@@ -62,6 +62,10 @@ const AnimeSchema = new Schema(
       type: String,
       required: [true, "მიუთითეთ განრიგი"],
     },
+    status: {
+      type: String,
+      required: [true, "მიუთითეთ სტატუსი"],
+    },
     series: Number,
     seasons: [
       {

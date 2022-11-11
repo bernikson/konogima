@@ -2,15 +2,19 @@ import React from "react";
 import Play from "../../assets/svgs/Play";
 import "./AnimeCard.css";
 import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
 
 const AnimeCard = ({ anime }) => {
+  const [totalSeries, setTotalSeries] = useState(0);
   const navigate = useNavigate();
-  let totalSeries = 0;
-  anime?.seasons?.map((season) => {
-    season?.series?.forEach(() => {
-      totalSeries += 1;
+  useMemo(() => {
+    anime?.seasons?.forEach((season) => {
+      season?.series?.forEach(() => {
+        setTotalSeries((prevSeries) => prevSeries + 1);
+      });
     });
-  });
+  }, [anime]);
+
   return (
     <div
       id="anime_card"
@@ -32,4 +36,4 @@ const AnimeCard = ({ anime }) => {
   );
 };
 
-export default AnimeCard;
+export default React.memo(AnimeCard);

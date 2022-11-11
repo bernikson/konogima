@@ -12,6 +12,7 @@ const Footer = () => {
     <footer id="footer">
       <aside id="footer_left">
         <div
+          style={{ cursor: "pointer" }}
           onClick={() =>
             window.open(
               "https://www.facebook.com/profile.php?id=100087225231718",
@@ -22,18 +23,18 @@ const Footer = () => {
           <Facebook width="20" />
         </div>
         <div
+          style={{ cursor: "pointer" }}
           onClick={() =>
             window.open("https://www.tiktok.com/@konogimacom?lang=en", "_blank")
           }
         >
           <Tiktok width="20" />
         </div>
-        <div></div>
-        <div></div>
+        <div>18+</div>
       </aside>
       <div onClick={() => navigate("/")} id="footer_logo"></div>
       <aside id="footer_right">
-        <button>Privacy Policy</button>
+        <button style={{ cursor: "pointer" }}>Privacy Policy</button>
         <button>konogimacom@gmail.com</button>
       </aside>
     </footer>
