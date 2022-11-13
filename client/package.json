@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "http://129.159.149.73",
+  "proxy": "https://konogima.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
