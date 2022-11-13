@@ -137,7 +137,7 @@ const webSlice = createSlice({
   initialState: {
     user: {},
     authState: 0,
-    socket: io.connect("https://konogima-test.herokuapp.com"),
+    socket: io.connect("http://129.159.149.73"),
     success: null,
     error: null,
     loading: false,
@@ -169,6 +169,7 @@ const webSlice = createSlice({
       });
     },
     addAnime: (state, { payload }) => {
+      console.log("hey");
       state.animes.push(payload.payload);
     },
     addUpdatedAnime: (state, { payload }) => {

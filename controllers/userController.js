@@ -193,6 +193,7 @@ const userController = {
       if (series === "NaN") req.body.age = "";
       const anime = await Anime.create(req.body);
       res.status(200).json({ message: "ანიმე წარმატებულად შეიქმნა" });
+      console.log("server test");
       return io.emit("createAnimeClient", {
         success: true,
         payload: anime,

@@ -1,14 +1,13 @@
 import React from "react";
 import Close from "../../assets/svgs/Close";
 import "./Auth.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Tick from "../../assets/svgs/Tick";
 import { updateAuthState } from "../../redux/webSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import {
   login,
-  clearStatus,
   register,
   forgotPassword,
   resetPassword,
@@ -97,23 +96,6 @@ const Auth = () => {
       });
     }
     await dispatch(forgotPassword({ email }));
-    localStorage.getItem("isLogged") === "true" && dispatch(updateAuthState(0));
-  };
-  const handleResetPassword = async () => {
-    const { email, password } = registerData;
-    if (email === "") {
-      return toast.error("შეიყვანეთ ინფორმაცია", {
-        id: "single",
-        duration: 4000,
-        style: {
-          backgroundColor: "black",
-          border: "1px solid #D084E3",
-          color: "white",
-          boxShadow: "0px 0px 30px #D084E3",
-        },
-      });
-    }
-    await dispatch(resetPassword({ email, password }));
     localStorage.getItem("isLogged") === "true" && dispatch(updateAuthState(0));
   };
 

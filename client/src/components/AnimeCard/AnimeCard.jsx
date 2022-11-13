@@ -2,17 +2,18 @@ import React from "react";
 import Play from "../../assets/svgs/Play";
 import "./AnimeCard.css";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 const AnimeCard = ({ anime }) => {
   const [totalSeries, setTotalSeries] = useState(0);
   const navigate = useNavigate();
-  useMemo(() => {
+  useEffect(() => {
     anime?.seasons?.forEach((season) => {
       season?.series?.forEach(() => {
         setTotalSeries((prevSeries) => prevSeries + 1);
       });
     });
+    return () => setTotalSeries(0);
   }, [anime]);
 
   return (

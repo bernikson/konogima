@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://konogima-test.herokuapp.com",
+    origin: "http://129.159.149.73",
   },
 });
 
@@ -29,9 +29,7 @@ app.use(compression());
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(
-  cors({ credentials: true, origin: "https://konogima-test.herokuapp.com" })
-);
+app.use(cors({ credentials: true, origin: "http://129.159.149.73" }));
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);

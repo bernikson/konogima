@@ -418,9 +418,9 @@ const Anime = () => {
       <div id="iframe_wrapper">
         <iframe
           src={playerToUse}
-          frameborder="0"
+          frameBorder="0"
           title="Anime player"
-          allowfullscreen="true"
+          allowFullScreen="true"
           webkitallowfullscreen="true"
           mozallowfullscreen="true"
         ></iframe>

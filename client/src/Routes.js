@@ -25,40 +25,147 @@ import {
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
 import NotFound from "./pages/NotFound/NotFound";
+import { useMemo, useCallback } from "react";
 
 const App = () => {
+  //! Initialiations
   const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { socket, Token, success, loading, error, user, sortedAnimes } =
     useSelector((state) => ({
       ...state.web,
     }));
-  let isLogged = localStorage.getItem("isLogged");
+  let isLogged = useMemo(() => localStorage.getItem("isLogged"), []);
+  let checkAdmin = useMemo(
+    () => Object.values(user).length !== 0 && user.role !== 0,
+    [user]
+  );
+
+  const ErrorHandler = (type, message) => {
+    if (type === "error") {
+      return toast.error(message, {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    } else if (type === "success") {
+      return toast.success(message, {
+        id: "single",
+        duration: 4000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    } else {
+      return toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
+        id: "single",
+        duration: 8000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  //! -------------------------------------------------
+
+  //! Use effects
+
   useEffect(() => {
     if (sortedAnimes.length !== 0) {
       navigate("/");
     }
   }, [sortedAnimes]);
+
   useEffect(() => {
     if (pathname !== "/") dispatch(sortAnimes([]));
   }, [navigate, dispatch]);
+
   useEffect(() => {
     if (Token?.length !== 0 && Token !== null) {
       socket.emit("getUserData", Token);
     }
   }, [socket, Token]);
+
+  useEffect(() => {
+    socket.on("createAnimeClient", onCreateAnimeClient);
+    async function onCreateAnimeClient({ payload }) {
+      await dispatch(addAnime({ payload }));
+      if (checkAdmin) navigate("/admin");
+    }
+
+    socket.on("deleteAnimeClient", onDeleteAnimeClient);
+    async function onDeleteAnimeClient({ payload }) {
+      await dispatch(deleteAnime({ payload }));
+      if (checkAdmin) navigate("/admin");
+    }
+
+    socket.on("updateAnimeClient", onUpdateAnimeClient);
+    async function onUpdateAnimeClient({ payload }) {
+      await dispatch(addUpdatedAnime({ payload }));
+      if (checkAdmin) navigate("/admin");
+    }
+
+    return () => {
+      socket.off("createAnimeClient", onCreateAnimeClient);
+      socket.off("deleteAnimeClient", onDeleteAnimeClient);
+      socket.off("updateAnimeClient", onUpdateAnimeClient);
+    };
+  }, [socket, dispatch, user, checkAdmin, navigate]);
+
   useEffect(() => {
     socket.on("getUserDataClient", (data) => {
       dispatch(updateUserState(data.payload));
     });
+    socket.on("getAnimesClient", (data) => {
+      dispatch(getAnimes(data.payload));
+    });
+    socket.on("createAnimeSeason", async (payload) => {
+      if (!payload.success) return ErrorHandler("error", payload.message);
+      ErrorHandler("success", "სერია წარმატებით დაემატა");
+      dispatch(addAnimeSeasonRedux(payload.payload));
+    });
+    socket.on("updateAnimeSerie", async (payload) => {
+      if (!payload.success) return ErrorHandler("error", payload.message);
+      dispatch(updateAnimeSeriesRedux(payload.payload));
+    });
+    socket.on("likeCommentClient", async (payload) => {
+      if (!payload.success) return ErrorHandler("error", payload.message);
+      dispatch(addReply(payload.payload));
+    });
+    socket.on("deleteAnimeSerie", async (payload) => {
+      if (!payload.success) return ErrorHandler("error", payload.message);
+      dispatch(updateAnimeSeriesRedux(payload.payload));
+      return ErrorHandler("success", "სერია წარმატებით წაიშალა");
+    });
+    socket.on("dislikeCommentClient", async (payload) => {
+      if (!payload.success) return ErrorHandler("error", payload.message);
+    });
+    socket.on("watchLaterClient", async (payload) => {
+      dispatch(addWatchLater(payload));
+    });
   }, [socket, dispatch]);
+
   useEffect(() => {
     isLogged === "true" && dispatch(getToken());
   }, [isLogged, dispatch]);
+
   useEffect(() => {
     const refershTokenInterval = () => {
       dispatch(getToken());
@@ -71,187 +178,19 @@ const App = () => {
   useEffect(() => {
     socket.emit("getAnimes");
   }, [socket]);
-  useEffect(() => {
-    socket.on("getAnimesClient", (data) => {
-      dispatch(getAnimes(data.payload));
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("createAnimeClient", async ({ payload }) => {
-      await dispatch(addAnime({ payload }));
-      console.log("hi");
-      if (user?.role === 1) navigate("/admin");
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("deleteAnimeClient", async ({ payload }) => {
-      await dispatch(deleteAnime({ payload }));
-      if (user?.role === 1) navigate("/admin");
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("updateAnimeClient", async ({ payload }) => {
-      await dispatch(addUpdatedAnime({ payload }));
-      if (user?.role === 1) navigate("/admin");
-      console.log(user);
-      console.log(user?.role);
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("createAnimeSeason", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      dispatch(addAnimeSeasonRedux(payload.payload));
-      return toast.success("სერია წარმატებით დაემატა", {
-        id: "single",
-        duration: 4000,
-        style: {
-          backgroundColor: "black",
-          border: "1px solid #D084E3",
-          color: "white",
-          boxShadow: "0px 0px 30px #D084E3",
-        },
-      });
-    });
-  }, [socket, dispatch]);
-
-  useEffect(() => {
-    socket.on("updateAnimeSerie", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      dispatch(updateAnimeSeriesRedux(payload.payload));
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("deleteAnimeSerie", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      toast.success("სერია წარმატებით წაიშალა", {
-        id: "single",
-        duration: 4000,
-        style: {
-          backgroundColor: "black",
-          border: "1px solid #D084E3",
-          color: "white",
-          boxShadow: "0px 0px 30px #D084E3",
-        },
-      });
-
-      dispatch(updateAnimeSeriesRedux(payload.payload));
-    });
-  }, [socket, dispatch]);
-
-  useEffect(() => {
-    socket.on("likeCommentClient", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      dispatch(addReply(payload.payload));
-    });
-  }, [socket, dispatch]);
-  useEffect(() => {
-    socket.on("dislikeCommentClient", async (payload) => {
-      if (!payload.success) {
-        return toast.error(payload.message, {
-          id: "single",
-          duration: 4000,
-          style: {
-            backgroundColor: "black",
-            border: "1px solid #D084E3",
-            color: "white",
-            boxShadow: "0px 0px 30px #D084E3",
-          },
-        });
-      }
-      console.log(payload);
-    });
-  }, [socket, dispatch]);
-
-  useEffect(() => {
-    socket.on("watchLaterClient", async (payload) => {
-      dispatch(addWatchLater(payload));
-    });
-  }, [socket, dispatch]);
-
-  //!Notifications
-  loading &&
-    toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
-      id: "single",
-      duration: 4000,
-      style: {
-        backgroundColor: "black",
-        border: "1px solid #D084E3",
-        color: "white",
-        boxShadow: "0px 0px 30px #D084E3",
-      },
-    });
-  error &&
-    toast.error(error, {
-      id: "single",
-      duration: 4000,
-      style: {
-        backgroundColor: "black",
-        border: "1px solid #D084E3",
-        color: "white",
-        boxShadow: "0px 0px 30px #D084E3",
-      },
-    });
-
-  success &&
-    toast.success(success, {
-      id: "single",
-      duration: 4000,
-      style: {
-        backgroundColor: "black",
-        border: "1px solid #D084E3",
-        color: "white",
-        boxShadow: "0px 0px 30px #D084E3",
-      },
-    });
 
   useEffect(() => {
     dispatch(clearStatus());
   }, [error, success, loading, dispatch]);
-  let checkAdmin = Object.values(user).length !== 0 && user.role !== 0;
+
+  //! -------------------------------------------------
+
+  //!Notifications
+  loading && ErrorHandler();
+  error && ErrorHandler("error", error);
+
+  success && ErrorHandler("success", success);
+
   return (
     <div className="App">
       <Navbar />
