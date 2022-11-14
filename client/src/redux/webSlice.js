@@ -137,7 +137,7 @@ const webSlice = createSlice({
   initialState: {
     user: {},
     authState: 0,
-    socket: io.connect("https://konogima.com"),
+    socket: io.connect("http://localhost:5000"),
     success: null,
     error: null,
     loading: false,
@@ -145,6 +145,8 @@ const webSlice = createSlice({
     animes: [],
     comments: [],
     sortedAnimes: [],
+    searchedAnimes: [],
+    filteredAnimes: "ნახვებით",
   },
   reducers: {
     updateAuthState: (state, { payload }) => {
@@ -342,6 +344,12 @@ const webSlice = createSlice({
     sortAnimes: (state, { payload }) => {
       state.sortedAnimes = payload;
     },
+    searchAnimes: (state, { payload }) => {
+      state.searchedAnimes = payload;
+    },
+    filterAnimes: (state, { payload }) => {
+      state.filteredAnimes = payload;
+    },
     addWatchLater: (state, { payload }) => {
       let update = true;
       state.user.watchLater.map((output) => {
@@ -503,5 +511,7 @@ export const {
   addWatchLater,
   dislikeAnime,
   deleteAnime,
+  searchAnimes,
+  filterAnimes,
 } = webSlice.actions;
 export default webSlice.reducer;

@@ -2,7 +2,7 @@ import "./Home.css";
 import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { sortAnimes } from "../../redux/webSlice";
+import { sortAnimes, searchAnimes } from "../../redux/webSlice";
 import PuffLoader from "react-spinners/PuffLoader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -15,9 +15,10 @@ const AnimeCard = lazy(() => import("../../components/AnimeCard/AnimeCard"));
 const Home = () => {
   //! Initializations
   const dispatch = useDispatch();
-  const { animes, user, sortedAnimes } = useSelector((state) => ({
-    ...state.web,
-  }));
+  const { animes, user, sortedAnimes, searchedAnimes, filteredAnimes } =
+    useSelector((state) => ({
+      ...state.web,
+    }));
   //! -----------------------------------------------------------
 
   //! useStates
@@ -38,14 +39,40 @@ const Home = () => {
   }, [animes]);
 
   useEffect(() => {
-    setAllArr(animes);
+    let anims = [...animes];
+    if (filteredAnimes === "მოწონებით") {
+      anims.sort((a, b) => b?.likes?.length - a?.likes?.length);
+    } else if (filteredAnimes === "ნახვებით") {
+      anims.sort((a, b) => b?.views - a?.views);
+    } else {
+      anims.sort((a, b) => b?.createdAt - a?.createdAt);
+    }
+    setAllArr(anims);
+  }, [animes, filteredAnimes]);
+
+  useEffect(() => {
+    if (sortedAnimes.length === 0) {
+      setAllArr(animes);
+    }
+  }, [sortedAnimes.length]);
+
+  useEffect(() => {
+    dispatch(searchAnimes(animes));
   }, [animes]);
 
   useEffect(() => {
+    setAllArr(searchedAnimes);
+  }, [searchedAnimes.length]);
+
+  useEffect(() => {
     if (sortedAnimes.length === 0) return;
-    let foundAnime = animes.filter((anime) => {
-      if (anime.genres.includes(sortedAnimes[0])) return anime;
-      return null;
+    let foundAnime = [];
+    sortedAnimes.forEach((output) => {
+      animes?.forEach((outputTwo) => {
+        if (outputTwo?.genres?.includes(output)) {
+          foundAnime.push(outputTwo);
+        }
+      });
     });
     if (foundAnime === undefined) return setAllArr([]);
     setAllArr(foundAnime);

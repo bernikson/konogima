@@ -244,10 +244,6 @@ const Anime = () => {
   }, [socket, comments]);
 
   useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
-  useEffect(() => {
     socket.on("writeCommentClient", async (response) => {
       if (!response.success) {
         return toast.error(response.message, {

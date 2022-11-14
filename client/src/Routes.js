@@ -167,15 +167,6 @@ const App = () => {
   }, [isLogged, dispatch]);
 
   useEffect(() => {
-    const refershTokenInterval = () => {
-      dispatch(getToken());
-    };
-    if (Object.values(user).length === 0) return;
-    let interval = setInterval(refershTokenInterval, 1000 * 60 * 30);
-    return () => clearInterval(interval);
-  }, [isLogged, dispatch, user]);
-
-  useEffect(() => {
     socket.emit("getAnimes");
   }, [socket]);
 

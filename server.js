@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://konogima.com",
+    origin: "http://localhost:3000",
   },
 });
 
@@ -29,7 +29,7 @@ app.use(compression());
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "https://konogima.com" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);
@@ -414,12 +414,10 @@ io.on("connection", async (socket) => {
       const decodedToken = JWT.verify(Token, process.env.JWT_SECRET);
       const user = await User.findById(decodedToken._id);
       let update = true;
-      console.log("two values");
       user?.watchLater?.map((iterator) => {
         if (iterator?.anime.equals(animeId)) {
           iterator.anime = animeId;
           iterator.playerDetails = playerOptions;
-          console.log("same value detected");
           update = false;
           return iterator;
         } else {
@@ -477,19 +475,6 @@ io.on("connection", async (socket) => {
       console.log(error);
     }
   });
-  // socket.on("deleteAnime", async ({ animeId }) => {
-  //   try {
-  //     const animes = await Anime.find()
-  //       .sort({ updatedAt: -1 })
-  //       .populate("seasons");
-  //     io.emit("getAnimesClient", {
-  //       success: true,
-  //       payload: animes,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
 });
 
 app.use(express.static(path.join(__dirname, "/client/build")));

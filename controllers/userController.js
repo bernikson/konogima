@@ -21,12 +21,11 @@ const userController = {
         return next(new ErrorResponse("შეიყვანეთ ყველა მონაცემი", 400));
       const user = await User.create(req.body);
       if (req.cookies["Token"]) req.cookies["Token"] = "";
-      const accessToken = user.createToken("access");
       const refreshToken = user.createToken("refresh");
       user.createCookie(res, refreshToken);
       return res.status(200).json({
         message: "მომხმარებელი წარმატებულად დარეგისტრირდა",
-        payload: accessToken,
+        payload: refreshToken,
       });
     } catch (error) {
       return next(error);
@@ -42,13 +41,11 @@ const userController = {
       const isMatch = await user.comparePasswords(password);
       if (!isMatch) return next(new ErrorResponse("არასწორი პაროლი", 400));
       if (req.cookies["Token"]) req.cookies["Token"] = "";
-      const accessToken = user.createToken("access");
       const refreshToken = user.createToken("refresh");
-      console.log(refreshToken);
       user.createCookie(res, refreshToken);
       return res.status(200).json({
         message: "წარმატებულად შევიდა მომხმარებელი",
-        payload: accessToken,
+        payload: refreshToken,
       });
     } catch (error) {
       next(error);
@@ -67,8 +64,7 @@ const userController = {
             400
           )
         );
-      const accessToken = user.createToken("access");
-      return res.status(200).json({ payload: accessToken });
+      return res.status(200).json({ payload: Token });
     } catch (error) {
       next(error);
     }
@@ -167,7 +163,6 @@ const userController = {
   uploadAnimeImage: async (req, res, next) => {
     try {
       const { file } = req.files;
-      console.log(file.tempFilePath);
       cloudinary.v2.uploader.upload(
         file.tempFilePath,
         { folder: "Konogima", format: "webp", quality: "auto:eco" },
@@ -193,13 +188,11 @@ const userController = {
       if (series === "NaN") req.body.age = "";
       const anime = await Anime.create(req.body);
       res.status(200).json({ message: "ანიმე წარმატებულად შეიქმნა" });
-      console.log("server test");
       return io.emit("createAnimeClient", {
         success: true,
         payload: anime,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
@@ -215,7 +208,6 @@ const userController = {
         payload: animeId,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
