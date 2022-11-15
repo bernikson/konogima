@@ -488,7 +488,7 @@ mongoose
   .then(() => console.log(`Database connected`))
   .catch((error) => console.log(`Database error: ${error}`));
 
-server.listen(process.env.PORT || 5000, (error) => {
+server.listen(5000, (error) => {
   error && console.log(`Server error: ${error}`);
   console.log(`Server connected`);
 });
