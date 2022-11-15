@@ -137,7 +137,7 @@ const webSlice = createSlice({
   initialState: {
     user: {},
     authState: 0,
-    socket: io.connect("https://www.konogima.com"),
+    socket: io.connect("https://konogima.com"),
     success: null,
     error: null,
     loading: false,
