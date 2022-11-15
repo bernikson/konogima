@@ -116,6 +116,18 @@
   font-weight: bold;
 }
 
+@media screen and (max-width: 1870px) {
+  #home > section > article {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (max-width: 1325px) {
+  #home > section > article {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
 @media screen and (max-width: 1200px) {
   #home_popular > article {
     display: grid !important;
@@ -136,6 +148,12 @@
 @media screen and (max-width: 1000px) {
   #home {
     width: 90%;
+  }
+}
+
+@media screen and (max-width: 710px) {
+  #home > section > article {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
 }
 

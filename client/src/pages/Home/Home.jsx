@@ -106,22 +106,22 @@ const Home = () => {
                     100: {
                       slidesPerView: 1,
                     },
-                    580: {
+                    430: {
                       slidesPerView: 2,
                     },
-                    870: {
+                    640: {
                       slidesPerView: 3,
                     },
-                    1000: {
-                      slidesPerView: 2,
-                    },
-                    1120: {
-                      slidesPerView: 3,
-                    },
-                    1500: {
+                    950: {
                       slidesPerView: 4,
                     },
-                    1870: {
+                    1000: {
+                      slidesPerView: 3,
+                    },
+                    1220: {
+                      slidesPerView: 4,
+                    },
+                    1660: {
                       slidesPerView: 5,
                     },
                     2250: {
@@ -166,22 +166,22 @@ const Home = () => {
                         100: {
                           slidesPerView: 1,
                         },
-                        580: {
+                        430: {
                           slidesPerView: 2,
                         },
-                        870: {
+                        640: {
                           slidesPerView: 3,
                         },
-                        1000: {
-                          slidesPerView: 2,
-                        },
-                        1120: {
-                          slidesPerView: 3,
-                        },
-                        1500: {
+                        950: {
                           slidesPerView: 4,
                         },
-                        1870: {
+                        1000: {
+                          slidesPerView: 3,
+                        },
+                        1220: {
+                          slidesPerView: 4,
+                        },
+                        1660: {
                           slidesPerView: 5,
                         },
                         2250: {

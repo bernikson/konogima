@@ -248,6 +248,13 @@ nav > aside {
   display: none;
 }
 
+.res_login {
+  display: none;
+  color: var(--secondary);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 #new_nav {
   width: 15rem;
   height: 100vh;
@@ -430,6 +437,12 @@ nav > aside {
 @media screen and (max-width: 590px) {
   nav {
     padding: 1rem;
+  }
+  .nav_logo_name {
+    transform: translate(0);
+  }
+  .res_login {
+    display: block;
   }
 
   #nav_res_menu_trigger {

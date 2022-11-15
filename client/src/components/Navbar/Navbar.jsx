@@ -195,6 +195,15 @@ const Navbar = () => {
             </div>
           </div>
         )}
+        {localStorage.getItem("isLogged") !== "true" && (
+          <span
+            onClick={() => dispatch(updateAuthState(1))}
+            className="res_login"
+          >
+            შესვლა
+          </span>
+        )}
+
         <div id="nav_menu">
           <div
             id="nav_menu_logo"

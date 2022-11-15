@@ -60,7 +60,7 @@ io.on("connection", async (socket) => {
   socket.on("getAnimes", async () => {
     try {
       const animes = await Anime.find()
-        .sort({ updatedAt: -1 })
+        .sort({ createdAt: -1 })
         .populate("seasons");
       io.emit("getAnimesClient", {
         success: true,

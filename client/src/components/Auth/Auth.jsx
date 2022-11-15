@@ -12,6 +12,10 @@ import {
   forgotPassword,
   resetPassword,
 } from "../../redux/webSlice";
+import User from "../../assets/svgs/User";
+import Email from "../../assets/svgs/Email";
+import Password from "../../assets/svgs/Password";
+import ConfPassword from "../../assets/svgs/ConfPassword";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -143,306 +147,328 @@ const Auth = () => {
 
   return (
     <section className={`parentAuth ${authStateClass}`}>
-      <section className="auth">
-        {authState !== 3 || authState !== 3 ? (
-          <div className="auth_nav">
-            <div>
-              <button onClick={() => dispatch(updateAuthState(2))}>
-                რეგისტრაცია
-              </button>
-              <button onClick={() => dispatch(updateAuthState(1))}>
-                შესვლა
-              </button>
+      <article>
+        <section id="auth_background"></section>
+        <section className="auth">
+          {authState !== 3 || authState !== 3 ? (
+            <div className="auth_nav">
+              <div>
+                <button onClick={() => dispatch(updateAuthState(2))}>
+                  რეგისტრაცია
+                </button>
+                <button onClick={() => dispatch(updateAuthState(1))}>
+                  შესვლა
+                </button>
+              </div>
+              <div onClick={() => dispatch(updateAuthState(0))}>
+                <Close />
+              </div>
             </div>
-            <div onClick={() => dispatch(updateAuthState(0))}>
-              <Close />
+          ) : (
+            <div className="auth_nav">
+              <div>
+                <button onClick={() => dispatch(updateAuthState(3))}>
+                  პაროლის აღდგენა
+                </button>
+                <button onClick={() => dispatch(updateAuthState(1))}>
+                  შესვლა
+                </button>
+              </div>
+              <div onClick={() => dispatch(updateAuthState(0))}>
+                <Close />
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="auth_nav">
-            <div>
-              <button onClick={() => dispatch(updateAuthState(3))}>
-                პაროლის აღდგენა
-              </button>
-              <button onClick={() => dispatch(updateAuthState(1))}>
-                შესვლა
-              </button>
-            </div>
-            <div onClick={() => dispatch(updateAuthState(0))}>
-              <Close />
-            </div>
-          </div>
-        )}
-        <article id="auth_switch">
-          {authState === 3 && (
-            <form action="" autoComplete="off">
-              <div className="auth_input_wrapper">
-                <input
-                  type="text"
-                  placeholder="შეიყვანეთ ელ-ფოსტა"
-                  name="email"
-                  value={registerData.email}
-                  onChange={handleRegisterChange}
-                  onFocus={() => setRegisterFocusData({ email: true })}
-                  onBlur={() => setRegisterFocusData({ email: false })}
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    registerData.email !== "" && registerFocusData.email
-                      ? { opacity: "1", height: "30px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("email") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="#ff3f34" />
-                  )}
-                  <span
+          )}
+          <article id="auth_switch">
+            {authState === 3 && (
+              <form action="" autoComplete="off">
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <Email />
+                    <input
+                      type="text"
+                      placeholder="შეიყვანეთ ელ-ფოსტა"
+                      name="email"
+                      value={registerData.email}
+                      onChange={handleRegisterChange}
+                      onFocus={() => setRegisterFocusData({ email: true })}
+                      onBlur={() => setRegisterFocusData({ email: false })}
+                    />
+                  </fieldset>
+
+                  <div
+                    className="preError"
                     style={
-                      handleValidate("email")
-                        ? { color: "#55efc4" }
-                        : { color: "#ff3f34" }
+                      registerData.email !== "" && registerFocusData.email
+                        ? { opacity: "1", height: "30px" }
+                        : { opacity: "0", height: "0" }
                     }
                   >
-                    ელ-ფოსტა უნდა იყოს სწორი
-                  </span>
+                    {handleValidate("email") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="#ff3f34" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("email")
+                          ? { color: "#55efc4" }
+                          : { color: "#ff3f34" }
+                      }
+                    >
+                      ელ-ფოსტა უნდა იყოს სწორი
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </form>
-          )}
-          {(authState === 1 || authState === 0) && (
-            <form action="" autoComplete="off">
-              <div className="auth_input_wrapper">
-                <input
-                  type="text"
-                  placeholder="შეიყვანეთ ელ-ფოსტა"
-                  name="email"
-                  value={loginData.email}
-                  onChange={handleLoginChange}
-                />
-                <div></div>
-              </div>
-              <div className="auth_input_wrapper">
-                <input
-                  type="password"
-                  placeholder="შეიყვანეთ პაროლი"
-                  name="password"
-                  value={loginData.password}
-                  onChange={handleLoginChange}
-                />
-                <div></div>
-              </div>
-              <span
-                id="password_forgot"
-                onClick={() => dispatch(updateAuthState(3))}
-              >
-                დაგავიწყდათ პაროლი?
-              </span>
-            </form>
-          )}
+              </form>
+            )}
+            {(authState === 1 || authState === 0) && (
+              <form action="" autoComplete="off">
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <Email />
+                    <input
+                      type="text"
+                      placeholder="შეიყვანეთ ელ-ფოსტა"
+                      name="email"
+                      value={loginData.email}
+                      onChange={handleLoginChange}
+                    />
+                  </fieldset>
+                </div>
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <Password />
+                    <input
+                      type="password"
+                      placeholder="შეიყვანეთ პაროლი"
+                      name="password"
+                      value={loginData.password}
+                      onChange={handleLoginChange}
+                    />
+                  </fieldset>
+                </div>
+                <span
+                  id="password_forgot"
+                  onClick={() => dispatch(updateAuthState(3))}
+                >
+                  დაგავიწყდათ პაროლი?
+                </span>
+              </form>
+            )}
+            {authState === 2 && (
+              <form action="" autoComplete="off">
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <User />
+                    <input
+                      type="text"
+                      placeholder="შეიყვანეთ სახელი"
+                      name="username"
+                      value={registerData.username}
+                      onChange={handleRegisterChange}
+                      onFocus={() => setRegisterFocusData({ username: true })}
+                      onBlur={() => setRegisterFocusData({ username: false })}
+                    />
+                  </fieldset>
+
+                  <div
+                    className="preError"
+                    style={
+                      registerData.username !== "" && registerFocusData.username
+                        ? { opacity: "1", height: "50px" }
+                        : { opacity: "0", height: "0" }
+                    }
+                  >
+                    {handleValidate("username") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="#ff3f34" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("username")
+                          ? { color: "#55efc4" }
+                          : { color: "#ff3f34" }
+                      }
+                    >
+                      სახელი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს და მაქსიმუმ 24-ს
+                    </span>
+                  </div>
+                </div>
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <Email />
+                    <input
+                      type="text"
+                      placeholder="შეიყვანეთ ელ-ფოსტა"
+                      name="email"
+                      value={registerData.email}
+                      onChange={handleRegisterChange}
+                      onFocus={() => setRegisterFocusData({ email: true })}
+                      onBlur={() => setRegisterFocusData({ email: false })}
+                    />
+                  </fieldset>
+
+                  <div
+                    className="preError"
+                    style={
+                      registerData.email !== "" && registerFocusData.email
+                        ? { opacity: "1", height: "30px" }
+                        : { opacity: "0", height: "0" }
+                    }
+                  >
+                    {handleValidate("email") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="#ff3f34" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("email")
+                          ? { color: "#55efc4" }
+                          : { color: "#ff3f34" }
+                      }
+                    >
+                      ელ-ფოსტა უნდა იყოს სწორი
+                    </span>
+                  </div>
+                </div>
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <Password />
+                    <input
+                      type="password"
+                      placeholder="შეიყვანეთ პაროლი"
+                      name="password"
+                      value={registerData.password}
+                      onChange={handleRegisterChange}
+                      onFocus={() => setRegisterFocusData({ password: true })}
+                      onBlur={() => setRegisterFocusData({ password: false })}
+                    />
+                  </fieldset>
+
+                  <div
+                    className="preError"
+                    style={
+                      registerData.password !== "" && registerFocusData.password
+                        ? { opacity: "1", height: "50px" }
+                        : { opacity: "0", height: "0" }
+                    }
+                  >
+                    {handleValidate("password") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="#ff3f34" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("password")
+                          ? { color: "#55efc4" }
+                          : { color: "#ff3f34" }
+                      }
+                    >
+                      პაროლი უნდა შეიცავდეს ციფრებს და იწყებოდეს დიდი ასუთი
+                    </span>
+                  </div>
+                </div>
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <ConfPassword />
+                    <input
+                      type="password"
+                      placeholder="გაიმეორეთ პაროლი"
+                      name="confirmPassword"
+                      value={registerData.confirmPassword}
+                      onChange={handleRegisterChange}
+                      onFocus={() =>
+                        setRegisterFocusData({ confirmPassword: true })
+                      }
+                      onBlur={() =>
+                        setRegisterFocusData({ confirmPassword: false })
+                      }
+                    />
+                  </fieldset>
+
+                  <div
+                    className="preError"
+                    style={
+                      registerData.confirmPassword !== "" &&
+                      registerFocusData.confirmPassword
+                        ? { opacity: "1", height: "50px" }
+                        : { opacity: "0", height: "0" }
+                    }
+                  >
+                    {handleValidate("confirmPassword") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="red" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("confirmPassword")
+                          ? { color: "#55efc4" }
+                          : { color: "red" }
+                      }
+                    >
+                      პაროლები უნდა ემთხვეოდეს
+                    </span>
+                  </div>
+                </div>
+              </form>
+            )}
+          </article>
           {authState === 2 && (
-            <form action="" autoComplete="off">
-              <div className="auth_input_wrapper">
-                <input
-                  type="text"
-                  placeholder="შეიყვანეთ სახელი"
-                  name="username"
-                  value={registerData.username}
-                  onChange={handleRegisterChange}
-                  onFocus={() => setRegisterFocusData({ username: true })}
-                  onBlur={() => setRegisterFocusData({ username: false })}
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    registerData.username !== "" && registerFocusData.username
-                      ? { opacity: "1", height: "50px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("username") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="#ff3f34" />
-                  )}
-                  <span
-                    style={
-                      handleValidate("username")
-                        ? { color: "#55efc4" }
-                        : { color: "#ff3f34" }
-                    }
-                  >
-                    სახელი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს და მაქსიმუმ 24-ს
-                  </span>
-                </div>
-              </div>
-              <div className="auth_input_wrapper">
-                <input
-                  type="text"
-                  placeholder="შეიყვანეთ ელ-ფოსტა"
-                  name="email"
-                  value={registerData.email}
-                  onChange={handleRegisterChange}
-                  onFocus={() => setRegisterFocusData({ email: true })}
-                  onBlur={() => setRegisterFocusData({ email: false })}
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    registerData.email !== "" && registerFocusData.email
-                      ? { opacity: "1", height: "30px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("email") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="#ff3f34" />
-                  )}
-                  <span
-                    style={
-                      handleValidate("email")
-                        ? { color: "#55efc4" }
-                        : { color: "#ff3f34" }
-                    }
-                  >
-                    ელ-ფოსტა უნდა იყოს სწორი
-                  </span>
-                </div>
-              </div>
-              <div className="auth_input_wrapper">
-                <input
-                  type="password"
-                  placeholder="შეიყვანეთ პაროლი"
-                  name="password"
-                  value={registerData.password}
-                  onChange={handleRegisterChange}
-                  onFocus={() => setRegisterFocusData({ password: true })}
-                  onBlur={() => setRegisterFocusData({ password: false })}
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    registerData.password !== "" && registerFocusData.password
-                      ? { opacity: "1", height: "50px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("password") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="#ff3f34" />
-                  )}
-                  <span
-                    style={
-                      handleValidate("password")
-                        ? { color: "#55efc4" }
-                        : { color: "#ff3f34" }
-                    }
-                  >
-                    პაროლი უნდა შეიცავდეს ციფრებს და იწყებოდეს დიდი ასუთი
-                  </span>
-                </div>
-              </div>
-              <div className="auth_input_wrapper">
-                <input
-                  type="password"
-                  placeholder="გაიმეორეთ პაროლი"
-                  name="confirmPassword"
-                  value={registerData.confirmPassword}
-                  onChange={handleRegisterChange}
-                  onFocus={() =>
-                    setRegisterFocusData({ confirmPassword: true })
-                  }
-                  onBlur={() =>
-                    setRegisterFocusData({ confirmPassword: false })
-                  }
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    registerData.confirmPassword !== "" &&
-                    registerFocusData.confirmPassword
-                      ? { opacity: "1", height: "50px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("confirmPassword") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="red" />
-                  )}
-                  <span
-                    style={
-                      handleValidate("confirmPassword")
-                        ? { color: "#55efc4" }
-                        : { color: "red" }
-                    }
-                  >
-                    პაროლები უნდა ემთხვეოდეს
-                  </span>
-                </div>
-              </div>
-            </form>
-          )}
-        </article>
-        {authState === 2 && (
-          <button
-            onClick={() => {
-              if (
+            <button
+              onClick={() => {
+                if (
+                  handleValidate("username") &&
+                  handleValidate("password") &&
+                  handleValidate("email") &&
+                  handleValidate("confirmPassword")
+                ) {
+                  handleRegister();
+                }
+              }}
+              style={
                 handleValidate("username") &&
                 handleValidate("password") &&
                 handleValidate("email") &&
                 handleValidate("confirmPassword")
-              ) {
-                handleRegister();
+                  ? undefined
+                  : {
+                      backgroundColor: "transparent",
+                      color: "#55efc4",
+                      cursor: "not-allowed",
+                    }
               }
-            }}
-            style={
-              handleValidate("username") &&
-              handleValidate("password") &&
-              handleValidate("email") &&
-              handleValidate("confirmPassword")
-                ? undefined
-                : {
-                    backgroundColor: "transparent",
-                    color: "#55efc4",
-                    cursor: "not-allowed",
-                  }
-            }
-          >
-            რეგისტრაცია
-          </button>
-        )}
-        {authState === 3 && (
-          <button
-            onClick={() => {
-              if (handleValidate("email")) {
-                handleForgotPassword();
+            >
+              რეგისტრაცია
+            </button>
+          )}
+          {authState === 3 && (
+            <button
+              onClick={() => {
+                if (handleValidate("email")) {
+                  handleForgotPassword();
+                }
+              }}
+              style={
+                handleValidate("email")
+                  ? undefined
+                  : {
+                      backgroundColor: "transparent",
+                      color: "#55efc4",
+                      cursor: "not-allowed",
+                    }
               }
-            }}
-            style={
-              handleValidate("email")
-                ? undefined
-                : {
-                    backgroundColor: "transparent",
-                    color: "#55efc4",
-                    cursor: "not-allowed",
-                  }
-            }
-          >
-            გაგზავნა
-          </button>
-        )}
-        {authState === 1 && <button onClick={handleLogin}>შესვლა</button>}
-      </section>
+            >
+              გაგზავნა
+            </button>
+          )}
+          {authState === 1 && <button onClick={handleLogin}>შესვლა</button>}
+        </section>
+      </article>
     </section>
   );
 };

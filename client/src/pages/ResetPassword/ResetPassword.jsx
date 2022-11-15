@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import Close from "../../assets/svgs/Close";
 import Tick from "../../assets/svgs/Tick";
 import { toast } from "react-hot-toast";
+import Password from "../../assets/svgs/Password";
+import ConfPassword from "../../assets/svgs/ConfPassword";
+import Key from "../../assets/svgs/Key";
 
 const ResetPassword = () => {
   const { id } = useParams();
@@ -92,105 +95,116 @@ const ResetPassword = () => {
   return (
     <main id="resetPassword">
       {!loadState && (
-        <section className="auth resetPasswordForm">
-          <span id="reset_password_label">პაროლის აღდგენა</span>
-          <article id="auth_switch">
-            <form action="" autoComplete="off">
-              <div className="auth_input_wrapper">
-                <input
-                  type="password"
-                  placeholder="შეიყვანეთ პაროლი"
-                  name="password"
-                  value={resPassword.password}
-                  onChange={handlePasswordChange}
-                  onFocus={() => setPasswordFocus({ password: true })}
-                  onBlur={() => setPasswordFocus({ password: false })}
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    resPassword.password !== "" && passwordFocus.password
-                      ? { opacity: "1", height: "50px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("password") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="#ff3f34" />
-                  )}
-                  <span
+        <article>
+          <section id="auth_background"></section>
+          <section className="auth resetPasswordForm">
+            <span id="reset_password_label">პაროლის აღდგენა</span>
+            <article id="auth_switch">
+              <form action="" autoComplete="off">
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <Key />
+                    <input
+                      type="password"
+                      placeholder="შეიყვანეთ პაროლი"
+                      name="password"
+                      value={resPassword.password}
+                      onChange={handlePasswordChange}
+                      onFocus={() => setPasswordFocus({ password: true })}
+                      onBlur={() => setPasswordFocus({ password: false })}
+                    />
+                  </fieldset>
+                  <div
+                    className="preError"
                     style={
-                      handleValidate("password")
-                        ? { color: "#55efc4" }
-                        : { color: "#ff3f34" }
+                      resPassword.password !== "" && passwordFocus.password
+                        ? { opacity: "1", height: "50px" }
+                        : { opacity: "0", height: "0" }
                     }
                   >
-                    პაროლი უნდა შეიცავდეს ციფრებს და იწყებოდეს დიდი ასუთი
-                  </span>
+                    {handleValidate("password") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="#ff3f34" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("password")
+                          ? { color: "#55efc4" }
+                          : { color: "#ff3f34" }
+                      }
+                    >
+                      პაროლი უნდა შეიცავდეს ციფრებს და იწყებოდეს დიდი ასუთი
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="auth_input_wrapper">
-                <input
-                  type="password"
-                  placeholder="გაიმეორეთ პაროლი"
-                  name="confirmPassword"
-                  value={resPassword.confirmPassword}
-                  onChange={handlePasswordChange}
-                  onFocus={() => setPasswordFocus({ confirmPassword: true })}
-                  onBlur={() => setPasswordFocus({ confirmPassword: false })}
-                />
-                <div></div>
-                <div
-                  className="preError"
-                  style={
-                    resPassword.confirmPassword !== "" &&
-                    passwordFocus.confirmPassword
-                      ? { opacity: "1", height: "30px" }
-                      : { opacity: "0", height: "0" }
-                  }
-                >
-                  {handleValidate("confirmPassword") ? (
-                    <Tick width="22px" height="22px" fill="#55efc4" />
-                  ) : (
-                    <Close width="27px" height="27px" fill="#ff3f34" />
-                  )}
-                  <span
+                <div className="auth_input_wrapper">
+                  <fieldset>
+                    <ConfPassword />
+                    <input
+                      type="password"
+                      placeholder="გაიმეორეთ პაროლი"
+                      name="confirmPassword"
+                      value={resPassword.confirmPassword}
+                      onChange={handlePasswordChange}
+                      onFocus={() =>
+                        setPasswordFocus({ confirmPassword: true })
+                      }
+                      onBlur={() =>
+                        setPasswordFocus({ confirmPassword: false })
+                      }
+                    />
+                  </fieldset>
+                  <div
+                    className="preError"
                     style={
-                      handleValidate("confirmPassword")
-                        ? { color: "#55efc4" }
-                        : { color: "#ff3f34" }
+                      resPassword.confirmPassword !== "" &&
+                      passwordFocus.confirmPassword
+                        ? { opacity: "1", height: "30px" }
+                        : { opacity: "0", height: "0" }
                     }
                   >
-                    პაროლები უნდა ემთხვეოდეს
-                  </span>
+                    {handleValidate("confirmPassword") ? (
+                      <Tick width="22px" height="22px" fill="#55efc4" />
+                    ) : (
+                      <Close width="27px" height="27px" fill="#ff3f34" />
+                    )}
+                    <span
+                      style={
+                        handleValidate("confirmPassword")
+                          ? { color: "#55efc4" }
+                          : { color: "#ff3f34" }
+                      }
+                    >
+                      პაროლები უნდა ემთხვეოდეს
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </form>
-          </article>
-          <button
-            onClick={() => {
-              if (
-                handleValidate("password") &&
-                handleValidate("confirmPassword")
-              ) {
-                handleResetPassword();
+              </form>
+            </article>
+            <button
+              onClick={() => {
+                if (
+                  handleValidate("password") &&
+                  handleValidate("confirmPassword")
+                ) {
+                  handleResetPassword();
+                }
+              }}
+              style={
+                handleValidate("password") && handleValidate("confirmPassword")
+                  ? undefined
+                  : {
+                      backgroundColor: "transparent",
+                      color: "#55efc4",
+                      cursor: "not-allowed",
+                    }
               }
-            }}
-            style={
-              handleValidate("password") && handleValidate("confirmPassword")
-                ? undefined
-                : {
-                    backgroundColor: "transparent",
-                    color: "#55efc4",
-                    cursor: "not-allowed",
-                  }
-            }
-          >
-            პაროლის განახლება
-          </button>
-        </section>
+            >
+              პაროლის განახლება
+            </button>
+          </section>
+        </article>
       )}
 
       <PuffLoader
