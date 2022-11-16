@@ -248,6 +248,8 @@ const userController = {
       anime.series = series;
       anime.uploadDate = uploadDate;
       anime.status = status;
+      anime.realUpdate = Date.now();
+      console.log(anime.realUpdate);
       await anime.save();
       res.status(200).json({ message: "ანიმე წარმატებულად განახლდა" });
       return io.emit("updateAnimeClient", {

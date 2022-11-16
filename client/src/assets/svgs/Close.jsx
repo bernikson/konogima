@@ -14,4 +14,4 @@ const Close = ({ width, height, fill }) => {
   );
 };
 
-export default Close;
+export default React.memo(Close);

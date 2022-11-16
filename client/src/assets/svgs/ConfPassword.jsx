@@ -24,4 +24,4 @@ const ConfPassword = () => {
   );
 };
 
-export default ConfPassword;
+export default React.memo(ConfPassword);

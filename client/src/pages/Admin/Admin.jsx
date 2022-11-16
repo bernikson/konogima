@@ -34,8 +34,8 @@ const Admin = () => {
           <Add />
         </div>
       </section>
-      <article className="ADFirst">სარეკლამო ადგილი</article>
-      <article className="ADSecond">სარეკლამო ადგილი</article>
+      {/* <article className="ADFirst">სარეკლამო ადგილი</article>
+      <article className="ADSecond">სარეკლამო ადგილი</article> */}
     </main>
   );
 };

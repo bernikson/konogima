@@ -46,7 +46,6 @@ const Profile = () => {
       }
     });
   }, [socket, id, navigate]);
-  console.log("hi");
   useEffect(() => {
     if (id === "own") {
       setUserData(user);
@@ -136,8 +135,8 @@ const Profile = () => {
                 ))}
             </article>
           </section>
-          <article className="ADFirst">სარეკლამო ადგილი</article>
-          <article className="ADSecond">სარეკლამო ადგილი</article>
+          {/* <article className="ADFirst">სარეკლამო ადგილი</article>
+          <article className="ADSecond">სარეკლამო ადგილი</article> */}
         </>
       ) : (
         <PuffLoader

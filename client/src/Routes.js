@@ -167,12 +167,12 @@ const App = () => {
   }, [isLogged, dispatch]);
 
   useEffect(() => {
-    socket.emit("getAnimes");
-  }, [socket]);
-
-  useEffect(() => {
     dispatch(clearStatus());
   }, [error, success, loading, dispatch]);
+
+  useEffect(() => {
+    socket.emit("getAnimes");
+  }, [socket]);
 
   //! -------------------------------------------------
 

@@ -1,0 +1,42 @@
+.AnimSkeleton {
+  width: 100%;
+  background-color: rgb(27, 27, 27);
+  aspect-ratio: 7/10;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.AnimSkeleton > div {
+  background-color: rgb(73, 73, 73);
+  width: 5rem;
+  height: 1.4rem;
+  border-radius: 10px;
+}
+
+.AnimSkeleton > article {
+  width: 80%;
+  height: 100%;
+  background-color: rgb(15, 15, 15);
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation-name: SkeletonAnim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes SkeletonAnim {
+  0% {
+    transform: skewX(20deg) translateX(-150%);
+  }
+  100% {
+    transform: skewX(20deg) translate(150%);
+  }
+}

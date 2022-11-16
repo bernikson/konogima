@@ -168,7 +168,7 @@
   }
 } */
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 440px) {
   #anime_card {
     width: 90% !important;
     margin: auto !important;
@@ -180,5 +180,25 @@
   }
   #home_popular > article > div:nth-child(2) {
     width: 90% !important;
+  }
+  #home > section {
+    padding: 0;
+  }
+  #home > section > article {
+    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+  }
+  #anime_card {
+    width: 100% !important;
+    border-radius: 3px !important;
+    padding: 0.5rem !important;
+  }
+
+  #anime_card h4 {
+    font-size: 0.9rem !important;
+  }
+  #anime_info > span {
+    font-size: 0.9rem !important;
   }
 }

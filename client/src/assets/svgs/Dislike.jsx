@@ -26,4 +26,4 @@ const Dislike = React.memo(({ width, height, fill }) => {
   );
 });
 
-export default Dislike;
+export default React.memo(Dislike);

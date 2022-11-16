@@ -41,4 +41,4 @@ const Tick = ({ width, height, fill }) => {
   );
 };
 
-export default Tick;
+export default React.memo(Tick);

@@ -63,4 +63,4 @@ const Play = ({ width, height }) => {
   );
 };
 
-export default Play;
+export default React.memo(Play);

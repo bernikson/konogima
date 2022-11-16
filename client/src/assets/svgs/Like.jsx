@@ -14,4 +14,4 @@ const Like = React.memo(({ width, height, fill }) => {
   );
 });
 
-export default Like;
+export default React.memo(Like);

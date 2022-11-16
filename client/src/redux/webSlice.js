@@ -124,6 +124,7 @@ export const updateAnime = createAsyncThunk(
   async ({ payload, Token, animeId }, { rejectWithValue }) => {
     try {
       const { data } = await api.updateAnimeAPI(payload, Token, animeId);
+      console.log(data);
       return data;
     } catch (error) {
       console.log(error);

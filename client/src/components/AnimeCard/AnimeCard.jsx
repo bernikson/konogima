@@ -7,6 +7,7 @@ import { useMemo, useState, useEffect } from "react";
 const AnimeCard = ({ anime }) => {
   const [totalSeries, setTotalSeries] = useState(0);
   const navigate = useNavigate();
+
   useEffect(() => {
     anime?.seasons?.forEach((season) => {
       season?.series?.forEach(() => {

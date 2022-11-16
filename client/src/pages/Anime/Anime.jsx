@@ -408,9 +408,9 @@ const Anime = () => {
           <p>{currentAnime?.description}</p>
         </aside>
       </section>
-      <article className="ADMain" style={{ width: "100%" }}>
+      {/* <article className="ADMain" style={{ width: "100%" }}>
         სარეკლამო ადგილი
-      </article>
+      </article> */}
       <div id="iframe_wrapper">
         <iframe
           src={playerToUse}
@@ -558,9 +558,9 @@ const Anime = () => {
         <button id="anime_add_comment" onClick={writeComment}>
           დაპოსტე კომენტარი
         </button>
-        <article className="ADMain" style={{ width: "100%" }}>
+        {/* <article className="ADMain" style={{ width: "100%" }}>
           სარეკლამო ადგილი
-        </article>
+        </article> */}
         <section id="anime_comments">
           {comments?.map((output, index) => {
             if (!output.isChild) {
@@ -587,8 +587,8 @@ const Anime = () => {
           </button>
         )}
       </section>
-      <article className="ADFirst">სარეკლამო ადგილი</article>
-      <article className="ADSecond">სარეკლამო ადგილი</article>
+      {/* <article className="ADFirst">სარეკლამო ადგილი</article>
+      <article className="ADSecond">სარეკლამო ადგილი</article> */}
     </main>
   );
 };

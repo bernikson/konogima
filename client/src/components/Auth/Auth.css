@@ -301,6 +301,9 @@ input:-webkit-autofill:focus {
   .auth {
     padding: 1rem;
   }
+  .parentAuth > article {
+    transition: 0s;
+  }
 }
 
 @media screen and (max-width: 340px) {

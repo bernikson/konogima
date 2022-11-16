@@ -43,4 +43,4 @@ const Views = React.memo(({ width, height, fill }) => {
   );
 });
 
-export default Views;
+export default React.memo(Views);

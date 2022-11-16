@@ -43,4 +43,4 @@ const Facebook = ({ width, height }) => {
   );
 };
 
-export default Facebook;
+export default React.memo(Facebook);

@@ -60,9 +60,9 @@ io.on("connection", async (socket) => {
   socket.on("getAnimes", async () => {
     try {
       const animes = await Anime.find()
-        .sort({ createdAt: -1 })
+        .sort({ realUpdate: -1 })
         .populate("seasons");
-      io.emit("getAnimesClient", {
+      socket.emit("getAnimesClient", {
         success: true,
         payload: animes,
       });
@@ -70,6 +70,14 @@ io.on("connection", async (socket) => {
       console.log(error);
     }
   });
+  // socket.on("getAnimesCount", async () => {
+  //   try {
+  //     const animesCount = await Anime.countDocuments();
+  //     socket.emit("getAnimesCountClient", animesCount);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // });
   socket.on("getComments", async ({ animeId, pages }) => {
     try {
       const comments = await Comment.find({ animeId })
@@ -77,7 +85,7 @@ io.on("connection", async (socket) => {
         .limit(10)
         .skip(pages * 10)
         .sort({ createdAt: -1 });
-      io.emit("getCommentsClient", {
+      socket.emit("getCommentsClient", {
         success: true,
         payload: comments,
       });
@@ -445,9 +453,10 @@ io.on("connection", async (socket) => {
   });
   socket.on("getSpecificUserData", async ({ username }) => {
     try {
-      const user = await User.findOne({ username }).populate(
-        "watchLater.anime"
-      );
+      const user = await User.findOne({ username }).populate({
+        path: "watchLater.anime",
+        populate: { path: "seasons" },
+      });
       if (!user)
         return socket.emit("getSpecificUserDataClient", { success: false });
       socket.emit("getSpecificUserDataClient", {

@@ -13,4 +13,4 @@ const Tiktok = ({ width, height }) => {
   );
 };
 
-export default Tiktok;
+export default React.memo(Tiktok);

@@ -98,6 +98,10 @@ const AnimeSchema = new Schema(
         default: [],
       },
     ],
+    realUpdate: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );

@@ -42,4 +42,4 @@ const Key = () => {
   );
 };
 
-export default Key;
+export default React.memo(Key);

@@ -29,4 +29,4 @@ const Comment = React.memo(({ width, height, fill }) => {
   );
 });
 
-export default Comment;
+export default React.memo(Comment);

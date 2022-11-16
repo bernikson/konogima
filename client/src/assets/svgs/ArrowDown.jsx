@@ -13,4 +13,4 @@ const ArrowDown = React.memo(({ width }) => {
   );
 });
 
-export default ArrowDown;
+export default React.memo(ArrowDown);
