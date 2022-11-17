@@ -291,7 +291,7 @@ const Home = () => {
                   </Suspense>
                 ))}
           </article>
-          {animes.length !== 0 && allArr.length === 0 && (
+          {animes?.length !== 0 && allArr?.length === 0 && (
             <span className="home_anime_filter_text">
               ანიმეები ვერ მოიძებნა
             </span>
