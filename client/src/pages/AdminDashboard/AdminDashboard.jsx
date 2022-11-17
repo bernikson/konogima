@@ -3,7 +3,7 @@ import "./AdminDashboard.css";
 import Tick from "../../assets/svgs/Tick";
 import ArrowDown from "../../assets/svgs/ArrowDown";
 import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -14,7 +14,12 @@ import {
 } from "../../redux/webSlice";
 
 const AdminDashboard = () => {
-  const { Token, socket, animes } = useSelector((state) => ({ ...state.web }));
+  const navigate = useNavigate();
+  const { Token, socket, animes, user, error, success, loading } = useSelector(
+    (state) => ({
+      ...state.web,
+    })
+  );
   const { id } = useParams();
   let currentAnime = animes?.find((anime) => anime._id === id);
   const dispatch = useDispatch();
@@ -284,7 +289,7 @@ const AdminDashboard = () => {
     );
   };
 
-  const handleUpdateAnime = () => {
+  const handleUpdateAnime = async () => {
     const {
       name,
       year,
@@ -304,7 +309,7 @@ const AdminDashboard = () => {
     animeGenres.map((genre) => {
       if (genre.state) genresArray.push(genre.value);
     });
-    dispatch(
+    await dispatch(
       updateAnime({
         payload: {
           name,
@@ -327,6 +332,13 @@ const AdminDashboard = () => {
       })
     );
   };
+  useEffect(() => {
+    console.log(success);
+    if (success !== null && user?.role === 1) {
+      console.log("ho");
+      return navigate("/admin");
+    }
+  }, [success]);
   return (
     <main id="admin_dashboard">
       <aside id="top_admin">

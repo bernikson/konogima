@@ -10,17 +10,16 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getToken,
-  updateUserState,
   clearStatus,
   getAnimes,
   addAnime,
-  addUpdatedAnime,
   addAnimeSeasonRedux,
   updateAnimeSeriesRedux,
   addWatchLater,
   addReply,
   sortAnimes,
   deleteAnime,
+  getUserData,
 } from "./redux/webSlice";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
@@ -88,6 +87,10 @@ const App = () => {
   //! Use effects
 
   useEffect(() => {
+    dispatch(getAnimes());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (sortedAnimes.length !== 0) {
       navigate("/");
     }
@@ -99,7 +102,7 @@ const App = () => {
 
   useEffect(() => {
     if (Token?.length !== 0 && Token !== null) {
-      socket.emit("getUserData", Token);
+      dispatch(getUserData({ Token }));
     }
   }, [socket, Token]);
 
@@ -115,27 +118,13 @@ const App = () => {
       await dispatch(deleteAnime({ payload }));
       if (checkAdmin) navigate("/admin");
     }
-
-    socket.on("updateAnimeClient", onUpdateAnimeClient);
-    async function onUpdateAnimeClient({ payload }) {
-      await dispatch(addUpdatedAnime({ payload }));
-      if (checkAdmin) navigate("/admin");
-    }
-
     return () => {
       socket.off("createAnimeClient", onCreateAnimeClient);
       socket.off("deleteAnimeClient", onDeleteAnimeClient);
-      socket.off("updateAnimeClient", onUpdateAnimeClient);
     };
   }, [socket, dispatch, user, checkAdmin, navigate]);
 
   useEffect(() => {
-    socket.on("getUserDataClient", (data) => {
-      dispatch(updateUserState(data.payload));
-    });
-    socket.on("getAnimesClient", (data) => {
-      dispatch(getAnimes(data.payload));
-    });
     socket.on("createAnimeSeason", async (payload) => {
       if (!payload.success) return ErrorHandler("error", payload.message);
       ErrorHandler("success", "სერია წარმატებით დაემატა");
@@ -169,10 +158,6 @@ const App = () => {
   useEffect(() => {
     dispatch(clearStatus());
   }, [error, success, loading, dispatch]);
-
-  useEffect(() => {
-    socket.emit("getAnimes");
-  }, [socket]);
 
   //! -------------------------------------------------
 

@@ -3,6 +3,7 @@ const userController = require("../controllers/userController");
 const ValidateImage = require("../middlewares/ValidateImage");
 const verifyToken = require("../middlewares/VerifyToken");
 const AdminCheck = require("../middlewares/AdminCheck");
+const { getUserData } = require("../controllers/userController");
 
 const {
   register,
@@ -17,6 +18,7 @@ const {
   createAnime,
   updateAnime,
   deleteAnime,
+  getAnimes,
 } = userController;
 
 Router.route("/register").post(register);
@@ -27,6 +29,9 @@ Router.route("/forgotPassword").post(forgotPassword);
 Router.route("/checkToken/:id").post(checkToken);
 Router.route("/resetPassword").patch(resetPassword);
 Router.route("/uploadImage").post(ValidateImage, verifyToken, uploadAvatar);
+Router.route("/getUserData").get(verifyToken, getUserData);
+
+Router.route("/getAnimes").get(getAnimes);
 Router.route("/uploadAnimeImage").post(
   ValidateImage,
   verifyToken,

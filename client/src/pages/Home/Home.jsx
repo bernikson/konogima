@@ -279,7 +279,7 @@ const Home = () => {
           </div>
 
           <article>
-            {animes.length !== 0
+            {animes?.length !== 0
               ? allArr?.map((anime, index) => (
                   <Suspense fallback={<div>Loading...</div>}>
                     <AnimeCard key={index} anime={anime} />

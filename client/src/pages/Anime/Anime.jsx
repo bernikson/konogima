@@ -17,6 +17,7 @@ import {
 } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
+import Iframe from "../../components/Iframe/Iframe";
 
 const Anime = () => {
   //! Intiaializations
@@ -412,14 +413,7 @@ const Anime = () => {
         სარეკლამო ადგილი
       </article> */}
       <div id="iframe_wrapper">
-        <iframe
-          src={playerToUse}
-          frameBorder="0"
-          title="Anime player"
-          allowFullScreen="true"
-          webkitallowfullscreen="true"
-          mozallowfullscreen="true"
-        ></iframe>
+        <Iframe playerToUse={playerToUse} />
         <div id="video_options">
           <aside>
             <div

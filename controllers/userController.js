@@ -251,10 +251,42 @@ const userController = {
       anime.realUpdate = Date.now();
       console.log(anime.realUpdate);
       await anime.save();
-      res.status(200).json({ message: "ანიმე წარმატებულად განახლდა" });
-      return io.emit("updateAnimeClient", {
+      res.status(200).json({
+        message: "ანიმე წარმატებულად განახლდა",
         success: true,
         payload: anime,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getAnimes: async (req, res, next) => {
+    try {
+      const animes = await Anime.find()
+        .sort({ realUpdate: -1 })
+        .populate("seasons");
+      return res.status(200).json({
+        success: true,
+        payload: animes,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getUserData: async (req, res, next) => {
+    try {
+      console.log("test");
+      const user = await User.findById(req.user)
+        .populate("watchLater.anime")
+        .populate({ path: "watchLater.anime", populate: { path: "seasons" } });
+      if (!user)
+        return res
+          .status(400)
+          .json({ success: false, message: "მომხმარებელი ვერ მოიძებნა" });
+
+      return res.status(200).json({
+        success: true,
+        payload: user,
       });
     } catch (error) {
       next(error);

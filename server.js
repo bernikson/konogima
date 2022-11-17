@@ -37,47 +37,6 @@ app.use(ErrorHandler);
 
 //! Socket.io
 io.on("connection", async (socket) => {
-  socket.on("getUserData", async (token) => {
-    try {
-      const decodedToken = JWT.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decodedToken._id)
-        .populate("watchLater.anime")
-        .populate({ path: "watchLater.anime", populate: { path: "seasons" } });
-      if (!user)
-        return socket.emit("getUserDataClient", {
-          success: false,
-          message: "მომხმარებელი ვერ მოიძებნა",
-        });
-
-      socket.emit("getUserDataClient", {
-        success: true,
-        payload: user,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  socket.on("getAnimes", async () => {
-    try {
-      const animes = await Anime.find()
-        .sort({ realUpdate: -1 })
-        .populate("seasons");
-      socket.emit("getAnimesClient", {
-        success: true,
-        payload: animes,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  // socket.on("getAnimesCount", async () => {
-  //   try {
-  //     const animesCount = await Anime.countDocuments();
-  //     socket.emit("getAnimesCountClient", animesCount);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
   socket.on("getComments", async ({ animeId, pages }) => {
     try {
       const comments = await Comment.find({ animeId })
@@ -139,7 +98,7 @@ io.on("connection", async (socket) => {
         await season.save();
       }
 
-      io.emit("createAnimeSeason", {
+      socket.emit("createAnimeSeason", {
         success: true,
         payload: season,
       });
@@ -179,7 +138,7 @@ io.on("connection", async (socket) => {
       });
 
       await season.save();
-      io.emit("updateAnimeSerie", {
+      socket.emit("updateAnimeSerie", {
         success: true,
         payload: season,
       });
@@ -214,7 +173,7 @@ io.on("connection", async (socket) => {
       );
       season?.series.splice(serieIndex, 1);
       await season.save();
-      io.emit("deleteAnimeSerie", {
+      socket.emit("deleteAnimeSerie", {
         success: true,
         payload: season,
       });
@@ -307,7 +266,7 @@ io.on("connection", async (socket) => {
         .limit(10)
         .skip(pages * 10)
         .sort({ createdAt: -1 });
-      return io.emit("writeCommentClient", {
+      return socket.emit("writeCommentClient", {
         success: true,
         payload: comments,
       });
@@ -401,7 +360,7 @@ io.on("connection", async (socket) => {
         { $push: { reply: comment } },
         { new: true }
       );
-      return io.emit("replyCommentClient", {
+      return socket.emit("replyCommentClient", {
         success: true,
         payload: { comment, commentId },
       });
@@ -477,7 +436,7 @@ io.on("connection", async (socket) => {
           message: "მომხმარებელი ვერ მოიძებნა",
         });
       await Comment.findByIdAndDelete(commentId);
-      io.emit("deleteCommentClientStuff", {
+      socket.emit("deleteCommentClientStuff", {
         success: true,
       });
     } catch (error) {

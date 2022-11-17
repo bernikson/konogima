@@ -41,3 +41,11 @@ export const updateAnimeAPI = (paylaod, Token, animeId) =>
       Authorization: `Bearer ${Token}`,
     },
   });
+
+export const getAnimesAPI = () => axios.get("/api/user/getAnimes");
+export const getUserDataAPI = (Token) =>
+  axios.get("/api/user/getUserData", {
+    headers: {
+      Authorization: `Bearer ${Token}`,
+    },
+  });

@@ -133,6 +133,33 @@ export const updateAnime = createAsyncThunk(
   }
 );
 
+export const getAnimes = createAsyncThunk(
+  "user/getAnimes",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getAnimesAPI();
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getUserData = createAsyncThunk(
+  "user/getUserData",
+  async ({ Token }, { rejectWithValue }) => {
+    try {
+      console.log(Token);
+      const { data } = await api.getUserDataAPI(Token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const webSlice = createSlice({
   name: "webSlice",
   initialState: {
@@ -157,12 +184,6 @@ const webSlice = createSlice({
       state.success = null;
       state.error = null;
     },
-    updateUserState: (state, { payload }) => {
-      state.user = payload;
-    },
-    getAnimes: (state, { payload }) => {
-      state.animes = payload;
-    },
     deleteAnime: (state, { payload }) => {
       state.animes.map((output, index) => {
         if (output._id === payload.payload) {
@@ -174,17 +195,6 @@ const webSlice = createSlice({
     addAnime: (state, { payload }) => {
       console.log("hey");
       state.animes.push(payload.payload);
-    },
-    addUpdatedAnime: (state, { payload }) => {
-      let id = payload.payload._id;
-      state.animes = state.animes.map((anime) => {
-        if (anime._id === id) {
-          anime = payload.payload;
-          return anime;
-        } else {
-          return anime;
-        }
-      });
     },
     likeAnime: (state, { payload }) => {
       const { animeId, userId } = payload;
@@ -480,11 +490,26 @@ const webSlice = createSlice({
       state.success = payload.message;
       state.loading = false;
       state.error = null;
+      let id = payload.payload._id;
+      state.animes = state.animes.map((anime) => {
+        if (anime._id === id) {
+          anime = payload.payload;
+          return anime;
+        } else {
+          return anime;
+        }
+      });
     },
     [updateAnime.rejected]: (state, { payload }) => {
       state.error = payload;
       state.success = null;
       state.loading = false;
+    },
+    [getAnimes.fulfilled]: (state, { payload }) => {
+      state.animes = payload.payload;
+    },
+    [getUserData.fulfilled]: (state, { payload }) => {
+      state.user = payload.payload;
     },
   },
 });
@@ -492,10 +517,7 @@ const webSlice = createSlice({
 export const {
   updateAuthState,
   clearStatus,
-  updateUserState,
-  getAnimes,
   addAnime,
-  addUpdatedAnime,
   addAnimeSeasonRedux,
   updateAnimeSeriesRedux,
   addComment,
