@@ -16,7 +16,7 @@ const AnimeCard = lazy(() => import("../../components/AnimeCard/AnimeCard"));
 const Home = () => {
   //! Initializations
   const dispatch = useDispatch();
-  const { animes, user, sortedAnimes, searchedAnimes, filteredAnimes, socket } =
+  const { animes, user, sortedAnimes, searchedAnimes } =
     useSelector((state) => ({
       ...state.web,
     }));
@@ -59,17 +59,6 @@ const Home = () => {
     );
   }, [animes]);
 
-  useEffect(() => {
-    let anims = [...animes];
-    if (filteredAnimes === "მოწონებით") {
-      anims.sort((a, b) => b?.likes?.length - a?.likes?.length);
-    } else if (filteredAnimes === "ნახვებით") {
-      anims.sort((a, b) => b?.views - a?.views);
-    } else {
-      anims.sort((a, b) => b?.createdAt - a?.createdAt);
-    }
-    setAllArr(anims.slice(0, page * 10));
-  }, [animes, filteredAnimes, page]);
 
   useEffect(() => {
     if (sortedAnimes.length === 0) {

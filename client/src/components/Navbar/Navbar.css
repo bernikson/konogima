@@ -329,6 +329,7 @@ nav > aside {
   gap: 0.8rem;
   flex-grow: 1;
   overflow-y: scroll;
+  margin-bottom: 2rem;
 }
 
 #new_nav ul::-webkit-scrollbar {

@@ -190,7 +190,6 @@ const webSlice = createSlice({
     comments: [],
     sortedAnimes: [],
     searchedAnimes: [],
-    filteredAnimes: "ნახვებით",
   },
   reducers: {
     updateAuthState: (state, { payload }) => {
@@ -342,9 +341,6 @@ const webSlice = createSlice({
     },
     searchAnimes: (state, { payload }) => {
       state.searchedAnimes = payload;
-    },
-    filterAnimes: (state, { payload }) => {
-      state.filteredAnimes = payload;
     },
     addWatchLater: (state, { payload }) => {
       let update = true;
@@ -556,6 +552,5 @@ export const {
   addWatchLater,
   dislikeAnime,
   searchAnimes,
-  filterAnimes,
 } = webSlice.actions;
 export default webSlice.reducer;

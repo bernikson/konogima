@@ -7,7 +7,6 @@ import {
   updateAuthState,
   logout,
   sortAnimes,
-  filterAnimes,
   searchAnimes,
 } from "../../redux/webSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,10 +61,6 @@ const Navbar = () => {
       setFilter("ნახვებით");
     }
   };
-
-  useEffect(() => {
-    dispatch(filterAnimes(filter));
-  }, [filter]);
 
   const changeNavBg = () => {
     window.scrollY >= 100 ? setScrollNav(true) : setScrollNav(false);
@@ -282,19 +277,6 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
-            <h1>ფილტრი</h1>
-            <div
-              className={filterAnim ? `filterShake` : undefined}
-              onClick={() => {
-                animate();
-                handleFilter();
-              }}
-            >
-              <span>{filter}</span>
-              <div>
-                <Filter />
-              </div>
-            </div>
           </div>
         </div>
       </aside>
