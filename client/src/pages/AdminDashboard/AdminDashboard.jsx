@@ -11,6 +11,7 @@ import {
   createAnime,
   updateAnime,
   deleteAnimeThunk,
+  createAnimeSeason,
 } from "../../redux/webSlice";
 
 const AdminDashboard = () => {
@@ -64,17 +65,7 @@ const AdminDashboard = () => {
         },
       });
     }
-    toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
-      id: "single",
-      duration: 4000,
-      style: {
-        backgroundColor: "black",
-        border: "1px solid #D084E3",
-        color: "white",
-        boxShadow: "0px 0px 30px #D084E3",
-      },
-    });
-    socket.emit("createSeasons", { Token, animeSeasons, animeId: id });
+    dispatch(createAnimeSeason({ Token, animeSeasons, animeId: id }));
   };
 
   let [animeGenres, setGenres] = useState([
@@ -333,8 +324,11 @@ const AdminDashboard = () => {
     );
   };
   useEffect(() => {
-    console.log(success);
-    if (success !== null && user?.role === 1) {
+    if (
+      success !== null &&
+      user?.role === 1 &&
+      success !== "სერია წარმეტებით დაემატა"
+    ) {
       console.log("ho");
       return navigate("/admin");
     }

@@ -19,6 +19,7 @@ const {
   updateAnime,
   deleteAnime,
   getAnimes,
+  createAnimeSeason,
 } = userController;
 
 Router.route("/register").post(register);
@@ -40,5 +41,10 @@ Router.route("/uploadAnimeImage").post(
 Router.route("/createAnime").post(verifyToken, AdminCheck, createAnime);
 Router.route("/deleteAnime").post(verifyToken, AdminCheck, deleteAnime);
 Router.route("/updateAnime/:id").patch(verifyToken, AdminCheck, updateAnime);
+Router.route("/createAnimeSeason").post(
+  verifyToken,
+  AdminCheck,
+  createAnimeSeason
+);
 
 module.exports = Router;

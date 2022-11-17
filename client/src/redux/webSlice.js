@@ -150,8 +150,24 @@ export const getUserData = createAsyncThunk(
   "user/getUserData",
   async ({ Token }, { rejectWithValue }) => {
     try {
-      console.log(Token);
       const { data } = await api.getUserDataAPI(Token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const createAnimeSeason = createAsyncThunk(
+  "user/createAnimeSeason",
+  async ({ Token, animeSeasons, animeId }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.createAnimeSeasonAPI({
+        Token,
+        animeSeasons,
+        animeId,
+      });
       return data;
     } catch (error) {
       console.log(error);
@@ -183,18 +199,6 @@ const webSlice = createSlice({
     clearStatus: (state, { payload }) => {
       state.success = null;
       state.error = null;
-    },
-    deleteAnime: (state, { payload }) => {
-      state.animes.map((output, index) => {
-        if (output._id === payload.payload) {
-          state.animes.splice(index, 1);
-          return output;
-        }
-      });
-    },
-    addAnime: (state, { payload }) => {
-      console.log("hey");
-      state.animes.push(payload.payload);
     },
     likeAnime: (state, { payload }) => {
       const { animeId, userId } = payload;
@@ -235,25 +239,6 @@ const webSlice = createSlice({
           return output;
         }
       });
-    },
-    addAnimeSeasonRedux: (state, { payload }) => {
-      let anime = state.animes.find((output) => output._id === payload.animeId);
-      let season = anime.seasons.find(
-        (output) => output.index === payload.index
-      );
-      if (!season) {
-        anime.seasons.push(payload);
-      } else {
-        season = payload;
-        anime.seasons = anime.seasons.map((output) => {
-          if (output.index === season.index) {
-            output = season;
-            return output;
-          } else {
-            return output;
-          }
-        });
-      }
     },
     updateAnimeSeriesRedux: (state, { payload }) => {
       let anime = state.animes.find((output) => output._id === payload.animeId);
@@ -464,6 +449,7 @@ const webSlice = createSlice({
       state.success = payload.message;
       state.loading = false;
       state.error = null;
+      state.animes.push(payload.payload);
     },
     [createAnime.rejected]: (state, { payload }) => {
       state.error = payload;
@@ -477,6 +463,12 @@ const webSlice = createSlice({
       state.success = payload.message;
       state.loading = false;
       state.error = null;
+      state.animes.map((output, index) => {
+        if (output._id === payload.payload) {
+          state.animes.splice(index, 1);
+          return output;
+        }
+      });
     },
     [deleteAnimeThunk.rejected]: (state, { payload }) => {
       state.error = payload;
@@ -511,14 +503,44 @@ const webSlice = createSlice({
     [getUserData.fulfilled]: (state, { payload }) => {
       state.user = payload.payload;
     },
+    [createAnimeSeason.pending]: (state) => {
+      state.loading = true;
+    },
+    [createAnimeSeason.fulfilled]: (state, { payload }) => {
+      state.success = payload.message;
+      state.loading = false;
+      state.error = null;
+      let anime = state.animes.find(
+        (output) => output._id === payload.payload.animeId
+      );
+      let season = anime.seasons.find(
+        (output) => output.index === payload.payload.index
+      );
+      if (!season) {
+        anime.seasons.push(payload.payload);
+      } else {
+        season = payload.payload;
+        anime.seasons = anime.seasons.map((output) => {
+          if (output.index === season.index) {
+            output = season;
+            return output;
+          } else {
+            return output;
+          }
+        });
+      }
+    },
+    [createAnimeSeason.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.success = null;
+      state.loading = false;
+    },
   },
 });
 
 export const {
   updateAuthState,
   clearStatus,
-  addAnime,
-  addAnimeSeasonRedux,
   updateAnimeSeriesRedux,
   addComment,
   likeAnimeComment,
@@ -533,7 +555,6 @@ export const {
   likeAnime,
   addWatchLater,
   dislikeAnime,
-  deleteAnime,
   searchAnimes,
   filterAnimes,
 } = webSlice.actions;

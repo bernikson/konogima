@@ -51,10 +51,11 @@ const Home = () => {
 
   //! useEffects
   useEffect(() => {
+    if(animes === undefined) return
     setPopularAnimes(
       [...animes]
-        .sort((a, b) => b.views - a.views)
-        .filter((arr, index) => index < 10)
+        ?.sort((a, b) => b.views - a.views)
+        ?.filter((arr, index) => index < 10)
     );
   }, [animes]);
 

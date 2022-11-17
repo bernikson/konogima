@@ -49,3 +49,14 @@ export const getUserDataAPI = (Token) =>
       Authorization: `Bearer ${Token}`,
     },
   });
+
+export const createAnimeSeasonAPI = ({ Token, animeSeasons, animeId }) =>
+  axios.post(
+    "/api/user/createAnimeSeason",
+    { animeSeasons, animeId },
+    {
+      headers: {
+        Authorization: `Bearer ${Token}`,
+      },
+    }
+  );

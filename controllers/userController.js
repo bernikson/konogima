@@ -1,6 +1,8 @@
 const ErrorResponse = require("../utils/ErrorResponse");
 const User = require("../models/userModel");
 const Anime = require("../models/animeModel");
+const Season = require("../models/seasonModel");
+const Comment = require("../models/commentModel");
 const JWT = require("jsonwebtoken");
 const sendEmail = require("../utils/EmailSend");
 const cloudinary = require("cloudinary");
@@ -181,14 +183,13 @@ const userController = {
   },
   createAnime: async (req, res, next) => {
     try {
-      let io = req.app.get("io");
-      let { year, totaltime, age, series } = req.body;
+      let { totaltime, age, series } = req.body;
       if (totaltime === "NaN") req.body.totaltime = "";
       if (age === "NaN") req.body.age = "";
       if (series === "NaN") req.body.age = "";
       const anime = await Anime.create(req.body);
-      res.status(200).json({ message: "ანიმე წარმატებულად შეიქმნა" });
-      return io.emit("createAnimeClient", {
+      return res.status(200).json({
+        message: "ანიმე წარმატებულად შეიქმნა",
         success: true,
         payload: anime,
       });
@@ -202,8 +203,8 @@ const userController = {
       let io = req.app.get("io");
       console.log(req.body);
       await Anime.findByIdAndDelete(animeId);
-      res.status(200).json({ message: "ანიმე წარმატებულად წაიშალა" });
-      return io.emit("deleteAnimeClient", {
+      res.status(200).json({
+        message: "ანიმე წარმატებულად წაიშალა",
         success: true,
         payload: animeId,
       });
@@ -275,18 +276,52 @@ const userController = {
   },
   getUserData: async (req, res, next) => {
     try {
-      console.log("test");
       const user = await User.findById(req.user)
         .populate("watchLater.anime")
         .populate({ path: "watchLater.anime", populate: { path: "seasons" } });
       if (!user)
-        return res
-          .status(400)
-          .json({ success: false, message: "მომხმარებელი ვერ მოიძებნა" });
-
+        return next(new ErrorResponse("მომხმარებელი ვერ მოიძებნა", 400));
       return res.status(200).json({
         success: true,
         payload: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  createAnimeSeason: async (req, res, next) => {
+    try {
+      const { animeSeasons, animeId } = req.body;
+      let season = await Season.findOne({
+        animeId,
+        index: animeSeasons.season,
+      });
+      let anime = await Anime.findById(animeId);
+      if (!anime) return next(new ErrorResponse("ანიმე ვერ მოიძებნა", 400));
+      if (!season) {
+        season = await Season.create({
+          index: animeSeasons.season,
+          series: {
+            playerOne: animeSeasons.playerOne,
+            playerTwo: animeSeasons.playerTwo,
+            playerThree: animeSeasons.playerThree,
+          },
+          animeId,
+        });
+        anime.seasons.push(season);
+        await anime.save();
+      } else {
+        season.series.push({
+          playerOne: animeSeasons.playerOne,
+          playerTwo: animeSeasons.playerTwo,
+          playerThree: animeSeasons.playerThree,
+        });
+        await season.save();
+      }
+      return res.status(200).json({
+        success: true,
+        payload: season,
+        message: "სერია წარმეტებით დაემატა",
       });
     } catch (error) {
       next(error);

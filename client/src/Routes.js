@@ -12,19 +12,17 @@ import {
   getToken,
   clearStatus,
   getAnimes,
-  addAnime,
   addAnimeSeasonRedux,
   updateAnimeSeriesRedux,
   addWatchLater,
   addReply,
   sortAnimes,
-  deleteAnime,
   getUserData,
 } from "./redux/webSlice";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
 import NotFound from "./pages/NotFound/NotFound";
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 
 const App = () => {
   //! Initialiations
@@ -107,29 +105,6 @@ const App = () => {
   }, [socket, Token]);
 
   useEffect(() => {
-    socket.on("createAnimeClient", onCreateAnimeClient);
-    async function onCreateAnimeClient({ payload }) {
-      await dispatch(addAnime({ payload }));
-      if (checkAdmin) navigate("/admin");
-    }
-
-    socket.on("deleteAnimeClient", onDeleteAnimeClient);
-    async function onDeleteAnimeClient({ payload }) {
-      await dispatch(deleteAnime({ payload }));
-      if (checkAdmin) navigate("/admin");
-    }
-    return () => {
-      socket.off("createAnimeClient", onCreateAnimeClient);
-      socket.off("deleteAnimeClient", onDeleteAnimeClient);
-    };
-  }, [socket, dispatch, user, checkAdmin, navigate]);
-
-  useEffect(() => {
-    socket.on("createAnimeSeason", async (payload) => {
-      if (!payload.success) return ErrorHandler("error", payload.message);
-      ErrorHandler("success", "სერია წარმატებით დაემატა");
-      dispatch(addAnimeSeasonRedux(payload.payload));
-    });
     socket.on("updateAnimeSerie", async (payload) => {
       if (!payload.success) return ErrorHandler("error", payload.message);
       dispatch(updateAnimeSeriesRedux(payload.payload));
