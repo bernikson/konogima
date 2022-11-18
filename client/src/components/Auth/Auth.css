@@ -308,6 +308,9 @@ input:-webkit-autofill:focus {
     left: calc(288px - 90px);
     width: 6.5rem;
   }
+  .auth_nav > div:first-child:after {
+    width: 11rem;
+  }
 }
 
 @media screen and (max-width: 340px) {
@@ -315,7 +318,7 @@ input:-webkit-autofill:focus {
     padding: 0.3rem 1rem;
   }
   .login .auth_nav > div:first-child:after {
-    left: calc(288px - 122px);
+    left: calc(288px - 112px);
     width: 6rem;
   }
 }

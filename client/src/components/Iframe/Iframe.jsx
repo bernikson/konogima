@@ -7,7 +7,7 @@ const Iframe = ({ playerToUse }) => {
       <iframe
         src={playerToUse}
         title="Anime player"
-        allowFullScreen="true"
+        allowFullScreen={true}
         webkitallowfullscreen="true"
         mozallowfullscreen="true"
       ></iframe>

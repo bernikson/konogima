@@ -16,10 +16,11 @@ const AnimeCard = lazy(() => import("../../components/AnimeCard/AnimeCard"));
 const Home = () => {
   //! Initializations
   const dispatch = useDispatch();
-  const { animes, user, sortedAnimes, searchedAnimes } =
-    useSelector((state) => ({
+  const { animes, user, sortedAnimes, searchedAnimes } = useSelector(
+    (state) => ({
       ...state.web,
-    }));
+    })
+  );
   //! -----------------------------------------------------------
 
   //! useStates
@@ -51,14 +52,13 @@ const Home = () => {
 
   //! useEffects
   useEffect(() => {
-    if(animes === undefined) return
+    if (animes === undefined) return;
     setPopularAnimes(
       [...animes]
         ?.sort((a, b) => b.views - a.views)
         ?.filter((arr, index) => index < 10)
     );
   }, [animes]);
-
 
   useEffect(() => {
     if (sortedAnimes.length === 0) {
@@ -72,7 +72,7 @@ const Home = () => {
 
   useEffect(() => {
     setAllArr(searchedAnimes.slice(0, page * 10));
-  }, [searchedAnimes.length, page]);
+  }, [searchedAnimes?.length, page]);
 
   useEffect(() => {
     if (sortedAnimes.length === 0) return;

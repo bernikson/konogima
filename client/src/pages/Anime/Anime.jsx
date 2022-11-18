@@ -18,6 +18,7 @@ import {
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import Iframe from "../../components/Iframe/Iframe";
+import { Helmet } from "react-helmet";
 
 const Anime = () => {
   //! Intiaializations
@@ -205,7 +206,7 @@ const Anime = () => {
   useEffect(() => {
     if (Object.values(user).length !== 0) {
       user?.watchLater.map((iterator) => {
-        if (iterator.anime._id === animeIdentification) {
+        if (iterator?.anime?._id === animeIdentification) {
           setPlayerDetails({
             season: iterator?.playerDetails?.season,
             series: iterator?.playerDetails?.series,
@@ -270,9 +271,12 @@ const Anime = () => {
       totalSeries += 1;
     });
   });
-
   return (
     <main id="anime">
+      <Helmet>
+        <title>{currentAnime?.name}</title>
+        <meta name="description" content={currentAnime?.description} />
+      </Helmet>
       {currentAnime?.name?.split("/").map((output) => (
         <h1>{output}</h1>
       ))}
