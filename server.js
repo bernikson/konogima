@@ -37,6 +37,19 @@ app.use(ErrorHandler);
 
 //! Socket.io
 io.on("connection", async (socket) => {
+  let conenctedUsers = io.engine.clientsCount;
+
+  //?Whenever user connects, server emits data to client event
+  socket.on("connectedUsersServer", (data) => {
+    socket.emit("connectedUsers", conenctedUsers);
+  });
+
+  //?Whenever user disconnects, decrements size of connectedUser and emits data to client event
+
+  socket.on("disconnect", () => {
+    socket.emit("connectedUsers", conenctedUsers - 1);
+  });
+
   socket.on("getComments", async ({ animeId, pages }) => {
     try {
       const comments = await Comment.find({ animeId })

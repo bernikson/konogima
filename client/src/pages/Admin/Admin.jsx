@@ -4,12 +4,47 @@ import "./Admin.css";
 import { useNavigate } from "react-router-dom";
 import Add from "../../assets/svgs/Add";
 import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
 const Admin = () => {
-  const { animes } = useSelector((state) => ({ ...state.web }));
+  const [adminState, setAdminState] = useState(0);
+  const [connectedUsers, setConnectedUsers] = useState(0);
+  const { animes, socket } = useSelector((state) => ({ ...state.web }));
   const navigate = useNavigate();
+  useEffect(() => {
+    socket.on("connectedUsers", (data) => {
+      console.log(data);
+      setConnectedUsers(data);
+    });
+  }, [socket, connectedUsers]);
+
+  useEffect(() => {
+    socket.emit("connectedUsersServer");
+  }, [socket]);
+
   return (
     <main id="admin">
+      <article id="admin_list">
+        <div>
+          {" "}
+          <button
+            className={adminState === 0 ? "specialAdminBtn" : undefined}
+            onClick={() => setAdminState(0)}
+          >
+            ანიმეები
+          </button>
+          <button
+            className={adminState === 1 ? "specialAdminBtn" : undefined}
+            onClick={() => setAdminState(1)}
+          >
+            მომხმარებლები
+          </button>
+        </div>
+        <article>
+          <div></div>
+          {connectedUsers}
+        </article>
+      </article>
       <section>
         {animes?.map((anime, index) => {
           return (

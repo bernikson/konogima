@@ -539,7 +539,15 @@ const Anime = () => {
           </aside>
         </div>
       </div>
-
+      <section
+        id="banner"
+        onClick={() => {
+          window.open(
+            "https://www.facebook.com/profile.php?id=100087225231718",
+            "_blank"
+          );
+        }}
+      ></section>
       <section id="anime_comments_wrapper">
         <div id="anime_comments_count">
           <Comment width="40" />
