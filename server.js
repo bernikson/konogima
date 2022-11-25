@@ -1,8 +1,18 @@
 //! Setting up server
 const express = require("express");
+const fs = require("fs");
 const app = express();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server, {
+const httpsOptions = {
+  cert: fs.readFileSync("./ssl/konogima_com.crt"),
+  ca: fs.readFileSync("./ssl/konogima_com.ca-bundle"),
+  key: fs.readFileSync("./ssl/private.key"),
+};
+
+const httpPort = 80;
+const httpsPort = 443;
+const httpsServer = require("https").createServer(httpsOptions, app);
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer, {
   cors: {
     origin: "https://konogima.com",
   },
@@ -34,6 +44,13 @@ app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);
 app.use(ErrorHandler);
+
+app.use((req, res, next) => {
+  if (req.protocol === "http") {
+    res.redirect(301, `https://${req.headers.host}${req.url}`);
+  }
+  next();
+});
 
 //! Socket.io
 io.on("connection", async (socket) => {
@@ -469,7 +486,12 @@ mongoose
   .then(() => console.log(`Database connected`))
   .catch((error) => console.log(`Database error: ${error}`));
 
-server.listen(process.env.PORT || 5000, (error) => {
+httpsServer.listen(httpsPort, (error) => {
   error && console.log(`Server error: ${error}`);
-  console.log(`Server connected`);
+  console.log(`https connected`);
+});
+
+httpServer.listen(httpPort, (error) => {
+  error && console.log(`Server error: ${error}`);
+  console.log(`http connected`);
 });
