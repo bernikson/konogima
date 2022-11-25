@@ -12,7 +12,7 @@ const httpPort = 80;
 const httpsPort = 443;
 const httpsServer = require("https").createServer(httpsOptions, app);
 const httpServer = require("http").createServer(app);
-const io = require("socket.io")(httpServer, {
+const io = require("socket.io")(httpsServer, {
   cors: {
     origin: "https://konogima.com",
   },
