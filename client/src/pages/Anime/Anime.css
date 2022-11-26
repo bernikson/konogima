@@ -400,7 +400,7 @@
 }
 
 #video_options aside > ul > li:last-child {
-  border-radius: 0px 0px 5px 5px;
+  border-radius: 0px 0px 0px 5px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -454,14 +454,24 @@
   } */
   #video_options aside > ul {
     top: 100%;
+    border-radius: 0px;
   }
   #video_options > aside div {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    padding: 0.4rem 0.9rem;
     gap: 0.4rem;
+  }
+
+  .animeDropSvg {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
   }
   #video_options {
     gap: 0.5rem;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
   #video_options > aside svg {
     width: 18px;
@@ -471,10 +481,10 @@
     aspect-ratio: 10/10;
   }
   #video_options aside > ul > li:first-child {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
   }
   #video_options aside > ul > li {
-    font-size: 0.8rem;
+    font-size: 1rem;
     padding: 0.5rem 0.5rem;
     gap: 0.4rem;
   }
@@ -510,9 +520,15 @@
   }
 }
 
+@media screen and (max-width: 450px) {
+  #video_options > aside div {
+    font-size: 0.9rem;
+  }
+}
+
 @media screen and (max-width: 400px) {
   #video_options aside > ul {
-    top: 100%;
+    top: 98%;
   }
   #video_options > aside div {
     font-size: 0.8rem;
@@ -521,13 +537,14 @@
     gap: 0.4rem;
   }
   #video_options aside > ul > li {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     font-weight: bolder;
   }
-}
-
-@media screen and (max-width: 350px) {
   #video_options > aside div {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.5rem;
+  }
+  #video_options aside > ul {
+    overflow-y: scroll;
   }
 }

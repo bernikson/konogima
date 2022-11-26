@@ -1,6 +1,7 @@
 #admin {
   width: 70%;
   margin: auto;
+  margin-top: 2rem;
   overflow-y: scroll;
   min-height: calc(100vh - 240px);
   overflow-x: hidden;

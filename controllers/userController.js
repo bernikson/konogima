@@ -23,7 +23,7 @@ const userController = {
         return next(new ErrorResponse("შეიყვანეთ ყველა მონაცემი", 400));
       const user = await User.create(req.body);
       if (req.cookies["Token"]) req.cookies["Token"] = "";
-      const refreshToken = user.createToken("refresh");
+      const refreshToken = user.createToken();
       user.createCookie(res, refreshToken);
       return res.status(200).json({
         message: "მომხმარებელი წარმატებულად დარეგისტრირდა",
@@ -43,7 +43,7 @@ const userController = {
       const isMatch = await user.comparePasswords(password);
       if (!isMatch) return next(new ErrorResponse("არასწორი პაროლი", 400));
       if (req.cookies["Token"]) req.cookies["Token"] = "";
-      const refreshToken = user.createToken("refresh");
+      const refreshToken = user.createToken();
       user.createCookie(res, refreshToken);
       return res.status(200).json({
         message: "წარმატებულად შევიდა მომხმარებელი",

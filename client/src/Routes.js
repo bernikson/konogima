@@ -12,9 +12,9 @@ import {
   getToken,
   clearStatus,
   getAnimes,
-  addAnimeSeasonRedux,
   updateAnimeSeriesRedux,
   addWatchLater,
+  logout,
   addReply,
   sortAnimes,
   getUserData,
@@ -125,6 +125,12 @@ const App = () => {
       dispatch(addWatchLater(payload));
     });
   }, [socket, dispatch]);
+
+  useEffect(() => {
+    if (error === "ტოკენს ვადა გაუვიდა") {
+      dispatch(logout());
+    }
+  }, [error]);
 
   useEffect(() => {
     isLogged === "true" && dispatch(getToken());

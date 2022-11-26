@@ -67,9 +67,9 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-UserSchema.methods.createToken = function (tokenType) {
+UserSchema.methods.createToken = function () {
   return JWT.sign({ _id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "30d",
   });
 };
 
@@ -78,7 +78,7 @@ UserSchema.methods.createCookie = function (res, Token) {
     httpOnly: true,
     path: "/",
     sameSite: "lax",
-    maxAge: 60 * 1000 * 60 * 24 * 365,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
   });
 };
 
