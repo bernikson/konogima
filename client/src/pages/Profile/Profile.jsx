@@ -14,7 +14,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { user, Token, socket } = useSelector((state) => ({ ...state.web }));
   useEffect(() => {
-    if (Object.values(user).length === 0) {
+    if (Object.values(user).length === 0 && id === "own") {
       navigate("/");
     }
   }, [user]);

@@ -127,7 +127,7 @@ const App = () => {
   }, [socket, dispatch]);
 
   useEffect(() => {
-    if (error === "ტოკენს ვადა გაუვიდა") {
+    if (error === "ტოკენს ვადა გაუვიდა" || error === "jwt expired") {
       dispatch(logout());
     }
   }, [error]);
