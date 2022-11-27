@@ -124,12 +124,12 @@ const Profile = () => {
             სარეკლამო ადგილი
           </article>
           <section id="profile_watch_later">
-            {user?.watchLater.length !== 0 && (
+            {user?.watchLater?.length !== 0 && (
               <h4>{id === "own" ? "გააგრძელე ყურება" : "უყურებს ანიმეებს"}</h4>
             )}
 
             <article id="profile_watch_later_animes">
-              {Object.values(userData).length !== 0 &&
+              {Object.values(userData)?.length !== 0 &&
                 userData?.watchLater?.map((output, index) => (
                   <AnimeCard key={index} anime={output?.anime} />
                 ))}
