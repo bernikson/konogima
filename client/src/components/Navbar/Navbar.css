@@ -256,11 +256,11 @@ nav > aside {
 }
 
 #new_nav {
-  width: 15rem;
+  width: 18rem;
   height: 100vh;
   position: fixed;
   top: 0;
-  right: -18rem;
+  right: -20rem;
   box-shadow: 0px 0px 30px var(--secondary);
   background-color: #161216;
   display: flex;
@@ -364,7 +364,7 @@ nav > aside {
 
 #new_nav ul li span {
   color: #cccccc;
-  font-size: 1.1rem;
+  font-size: 1rem;
   word-break: break-all;
 }
 
@@ -461,7 +461,9 @@ nav > aside {
     font-size: 1.1rem;
     padding: 0.8rem 1rem;
   }
-
+  #new_nav {
+    width: 18.5rem;
+  }
   #nav_auth {
     display: none;
   }
