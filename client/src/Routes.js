@@ -151,6 +151,16 @@ const App = () => {
   return (
     <div className="App">
       <Navbar />
+      <div class="snowflakes" aria-hidden="true">
+        {[...Array(11).keys()].map(() => {
+          return (
+            <>
+              <div class="snowflake">❆</div>
+              <div class="snowflake">❅</div>
+            </>
+          );
+        })}
+      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/anime/:id" element={<Anime />} />

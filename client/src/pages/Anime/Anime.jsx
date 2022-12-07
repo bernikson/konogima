@@ -271,6 +271,8 @@ const Anime = () => {
       totalSeries += 1;
     });
   });
+
+  console.log(seriesData);
   return (
     <main id="anime">
       <Helmet>
@@ -484,8 +486,11 @@ const Anime = () => {
                     setPlayerDetails({ ...playerDetails, series: index + 1 });
                     setSerieToPlay(serie);
                   }}
+                  style={
+                    serie?.OVA ? { backgroundColor: "#be55d8" } : undefined
+                  }
                 >
-                  სერია {index + 1}
+                  {serie?.OVA ? "OVA" : "სერია"} {index + 1}
                 </li>
               ))}
             </ul>

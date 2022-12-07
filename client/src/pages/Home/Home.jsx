@@ -77,12 +77,20 @@ const Home = () => {
   useEffect(() => {
     if (sortedAnimes.length === 0) return;
     let foundAnime = [];
-    sortedAnimes.forEach((output) => {
-      animes?.forEach((outputTwo) => {
-        if (outputTwo?.genres?.includes(output)) {
-          foundAnime.push(outputTwo);
-        }
-      });
+
+    // animes?.forEach((element) => {
+    //   sortedAnimes.every((v) => {
+    //     allArr.filter((test) => {
+    //       return test?.genres?.includes(v);
+    //     });
+    //     console.log(allArr);
+    //   });
+    //   return foundAnime;
+    // });
+
+    animes?.filter((output) => {
+      let checkArr = sortedAnimes?.every((v) => output?.genres?.includes(v));
+      if (checkArr) return foundAnime.push(output);
     });
     if (foundAnime === undefined) return setAllArr([]);
     setAllArr(foundAnime);
@@ -162,7 +170,7 @@ const Home = () => {
             </>
           )}
         </section>
-        ){/* <article className="ADMain">სარეკლამო ადგილი</article> */}
+        {/* <article className="ADMain">სარეკლამო ადგილი</article> */}
         {user?.watchLater?.length >= 5 ? (
           <section id="home_last_played">
             {isLogged === "true" &&

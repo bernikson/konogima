@@ -213,6 +213,10 @@
   transform: translateY(-0.2rem);
 }
 
+#OVASerie {
+  flex-direction: row !important;
+}
+
 #anime_comments {
   width: 100%;
   margin-top: 2rem;
@@ -412,10 +416,20 @@
   }
 }
 
+@media screen and (max-width: 1100px) {
+  #anime_aside_wrapper > aside:last-child > div > ul > li {
+    font-size: 1.3rem;
+  }
+  #anime_info_wrapper {
+    gap: 2rem;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   #anime {
     width: 90%;
   }
+
   /* #anime iframe {
     height: 45vw;
   } */

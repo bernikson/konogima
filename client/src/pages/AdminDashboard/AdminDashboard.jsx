@@ -30,6 +30,7 @@ const AdminDashboard = () => {
     playerOne: "",
     playerTwo: "",
     playerThree: "",
+    OVA: false,
   });
 
   const [seasonChooser, setSeasonChooser] = useState(1);
@@ -45,6 +46,7 @@ const AdminDashboard = () => {
     playerThree: "",
     seasonId: "",
     playerId: "",
+    OVA: false,
   });
 
   const handlePlayers = (e) => {
@@ -687,30 +689,47 @@ const AdminDashboard = () => {
               <div></div>
             </div>
           )}
-          <div id="season_wrapper">
-            <div
-              onClick={() => {
-                if (animeSeasons.season !== 1)
+          <div className="add_serie_wrapper">
+            <div id="season_wrapper">
+              <div
+                onClick={() => {
+                  if (animeSeasons.season !== 1)
+                    addAnimeSeasons((prevState) => ({
+                      ...prevState,
+                      season: prevState.season - 1,
+                    }));
+                }}
+              >
+                <ArrowDown />
+              </div>
+              <span>სეზონი {animeSeasons.season}</span>
+              <div
+                onClick={() =>
                   addAnimeSeasons((prevState) => ({
                     ...prevState,
-                    season: prevState.season - 1,
-                  }));
-              }}
-            >
-              <ArrowDown />
+                    season: prevState.season + 1,
+                  }))
+                }
+              >
+                <ArrowDown />
+              </div>
             </div>
-            <span>სეზონი {animeSeasons.season}</span>
-            <div
-              onClick={() =>
-                addAnimeSeasons((prevState) => ({
-                  ...prevState,
-                  season: prevState.season + 1,
-                }))
-              }
-            >
-              <ArrowDown />
+            <div className="OVAFirst">
+              <div
+                onClick={() =>
+                  addAnimeSeasons({
+                    ...animeSeasons,
+                    OVA: !animeSeasons.OVA,
+                  })
+                }
+                className={animeSeasons.OVA ? "trigger_player" : undefined}
+              >
+                <Tick />
+              </div>
+              <span>OVA</span>
             </div>
           </div>
+
           <button onClick={() => handleCreateAnimeSeason()}>
             სერიის დამატება
           </button>
@@ -751,6 +770,7 @@ const AdminDashboard = () => {
                             playerThree: outputTwo.playerThree,
                             seasonId: output._id,
                             playerId: outputTwo._id,
+                            OVA: outputTwo.OVA,
                           });
                         }}
                         key={index}
@@ -791,6 +811,20 @@ const AdminDashboard = () => {
                     name="playerThree"
                     onChange={handlePlayers}
                   />
+                </div>
+                <div className="OVAFirst" id="OVASerie">
+                  <div
+                    onClick={() =>
+                      updatePlayers({
+                        ...players,
+                        OVA: !players.OVA,
+                      })
+                    }
+                    className={players.OVA ? "trigger_player" : undefined}
+                  >
+                    <Tick />
+                  </div>
+                  <span>OVA</span>
                 </div>
                 <div id="admin_season_button_wrapper">
                   <button
@@ -845,6 +879,7 @@ const AdminDashboard = () => {
                         playerThree: "",
                         seasonId: "",
                         playerId: "",
+                        OVA: false,
                       });
                     }}
                   >

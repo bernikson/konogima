@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "https://konogima.com",
+  "proxy": "http://localhost:80",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

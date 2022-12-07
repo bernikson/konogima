@@ -8,6 +8,7 @@ const SeasonSchema = new Schema(
         playerOne: String,
         playerTwo: String,
         playerThree: String,
+        OVA: Boolean,
       },
     ],
     animeId: {

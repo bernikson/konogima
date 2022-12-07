@@ -296,6 +296,7 @@ const userController = {
         animeId,
         index: animeSeasons.season,
       });
+      console.log(animeSeasons);
       let anime = await Anime.findById(animeId);
       if (!anime) return next(new ErrorResponse("ანიმე ვერ მოიძებნა", 400));
       if (!season) {
@@ -305,6 +306,7 @@ const userController = {
             playerOne: animeSeasons.playerOne,
             playerTwo: animeSeasons.playerTwo,
             playerThree: animeSeasons.playerThree,
+            OVA: animeSeasons.OVA,
           },
           animeId,
         });
@@ -315,6 +317,7 @@ const userController = {
           playerOne: animeSeasons.playerOne,
           playerTwo: animeSeasons.playerTwo,
           playerThree: animeSeasons.playerThree,
+          OVA: animeSeasons.OVA,
         });
         await season.save();
       }

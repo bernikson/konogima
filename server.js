@@ -12,9 +12,9 @@ const httpPort = 80;
 const httpsPort = 443;
 const httpsServer = require("https").createServer(httpsOptions, app);
 const httpServer = require("http").createServer(app);
-const io = require("socket.io")(httpsServer, {
+const io = require("socket.io")(httpServer, {
   cors: {
-    origin: "https://konogima.com",
+    origin: "http://localhost:3000",
   },
 });
 
@@ -39,7 +39,7 @@ app.use(compression());
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "https://konogima.com" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);
@@ -114,6 +114,7 @@ io.on("connection", async (socket) => {
             playerOne: animeSeasons.playerOne,
             playerTwo: animeSeasons.playerTwo,
             playerThree: animeSeasons.playerThree,
+            OVA: animeSeasons.OVA,
           },
           animeId,
         });
@@ -124,6 +125,7 @@ io.on("connection", async (socket) => {
           playerOne: animeSeasons.playerOne,
           playerTwo: animeSeasons.playerTwo,
           playerThree: animeSeasons.playerThree,
+          OVA: animeSeasons.OVA,
         });
         await season.save();
       }
@@ -163,6 +165,7 @@ io.on("connection", async (socket) => {
           output.playerOne = data.playerOne;
           output.playerTwo = data.playerTwo;
           output.playerThree = data.playerThree;
+          output.OVA = data.OVA;
           return output;
         }
       });

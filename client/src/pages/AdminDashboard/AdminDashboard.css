@@ -191,6 +191,45 @@
   width: 5px !important;
 }
 
+.OVAFirst {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.OVAFirst > span {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+}
+
+.OVAFirst > div {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--secondary);
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.OVAFirst > div > svg {
+  width: 23px;
+  height: 23px;
+  opacity: 0;
+  transition: 0.3s;
+  fill: var(--primary);
+  transform: scale(0);
+}
+
+.add_serie_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 #anime_genres_dropdown::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -499,7 +538,7 @@
   margin: 0;
   margin-top: 0.8rem;
   padding: 0;
-  max-height: 18rem;
+  max-height: 20rem;
   overflow-y: scroll;
   overflow-x: hidden;
 }
