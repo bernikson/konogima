@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9bc8e13d.css",
-    "main.js": "/static/js/main.835dee8d.js",
+    "main.js": "/static/js/main.0cdc0517.js",
     "static/media/konogima-logo.webp": "/static/media/konogima-logo.7ee5a3801d1352ea8724.webp",
     "static/media/Background.jpg": "/static/media/Background.2f0a2d80669d7092b98a.jpg",
     "static/media/sylfaen.svg": "/static/media/sylfaen.9d5f07eafa79d86bc880.svg",
@@ -47,10 +47,10 @@
     "static/media/outfit-v6-latin-500.woff2": "/static/media/outfit-v6-latin-500.58c41fa985958f687e02.woff2",
     "index.html": "/index.html",
     "main.9bc8e13d.css.map": "/static/css/main.9bc8e13d.css.map",
-    "main.835dee8d.js.map": "/static/js/main.835dee8d.js.map"
+    "main.0cdc0517.js.map": "/static/js/main.0cdc0517.js.map"
   },
   "entrypoints": [
     "static/css/main.9bc8e13d.css",
-    "static/js/main.835dee8d.js"
+    "static/js/main.0cdc0517.js"
   ]
 }
