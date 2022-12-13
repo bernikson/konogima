@@ -38,16 +38,16 @@ const morgan = require("morgan");
 
 //! Express middlewares
 app.use(compression());
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        "script-src": ["'self'", "www.google-analytics.com"],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       useDefaults: true,
+//       directives: {
+//         "script-src": ["'self'", "www.google-analytics.com"],
+//       },
+//     },
+//   })
+// );
 app.use(morgan("dev"));
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
