@@ -34,19 +34,21 @@ const Comment = require("./models/commentModel");
 const compression = require("compression");
 const path = require("path");
 const morgan = require("morgan");
+const helmet = require("helmet");
 
 //! Express middlewares
 app.use(compression());
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       useDefaults: true,
-//       directives: {
-//         "script-src": ["'self'", "www.google-analytics.com"],
-//       },
-//     },
-//   })
-// );
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "script-src": ["'self'", "www.google-analytics.com"],
+        "img-src": ["'self'", "https: data:"],
+      },
+    },
+  })
+);
 app.use(morgan("dev"));
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
