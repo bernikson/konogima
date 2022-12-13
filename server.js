@@ -41,12 +41,27 @@ app.use(compression());
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: true,
       directives: {
-        "script-src": ["'self'", "www.google-analytics.com"],
-        "img-src": ["'self'", "https: data:"],
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://*.google.com",
+          "https://*.google-analytics.com",
+          "https://*.googletagmanager.com",
+        ],
+        connectSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://*.google.com",
+          "https://*.google-analytics.com",
+          "https://*.googletagmanager.com",
+        ],
+        imgSrc: [`'self'`, `data:`],
       },
     },
+    //Will work for most, but did not work for me:
+    // crossOriginEmbedderPolicy: false,
   })
 );
 app.use(morgan("dev"));
