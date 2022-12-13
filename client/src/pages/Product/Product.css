@@ -1,0 +1,305 @@
+#product {
+  width: 70%;
+  margin: 4rem auto 0 auto;
+  background-color: #1b171b;
+  border-radius: 10px;
+  padding: 2rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+#product_details {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  align-items: center;
+}
+
+#product_background {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  aspect-ratio: 9/10;
+  width: 25rem;
+}
+
+#product_details > aside > div > h6 {
+  font-size: 1.2rem;
+  font-family: "BPG Glaho";
+  font-weight: bold;
+  color: #7e677e;
+  margin-bottom: 0.5rem;
+}
+
+#product_details > aside > div > h6:last-of-type {
+  margin-top: 1rem;
+}
+
+#product_details > aside > div > h2 {
+  font-size: 2.1rem;
+  font-family: "BPG Glaho";
+  color: white;
+  width: 20rem;
+}
+
+#product_ratings_wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+#product_ratings_wrapper > .home_product_ratings > svg {
+  min-width: 22px;
+  height: 22px;
+}
+
+#product_ratings_wrapper > span {
+  padding-left: 0.5rem;
+  border-left: 2px solid #7e677e;
+  font-size: 1.2rem;
+  color: #787878;
+}
+
+#product_ratings_wrapper > span > span {
+  color: var(--secondary);
+}
+
+#product_price_wrapper {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+#product_price_wrapper > h2 {
+  line-height: 1em;
+  color: #e84393;
+  font-size: 2.8rem;
+  font-weight: bold;
+  font-family: "Outfit";
+}
+
+#product_price_wrapper > span {
+  color: #787878;
+  font-size: 1.8rem;
+  font-family: "Outfit";
+  text-decoration: line-through;
+  margin-left: 0.8rem;
+}
+
+#product_price_wrapper > div {
+  padding: 0.3rem 1.1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: "Outfit";
+  margin-left: 2rem;
+  background-color: #e84393;
+  color: #141414;
+}
+
+#product_price_expirery {
+  color: #cccccc;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+#product_price_expirery > span {
+  font-weight: bold;
+  color: var(--secondary);
+}
+
+.product_additional_info {
+  color: #cccccc;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product_additional_info > span {
+  font-weight: bold;
+  color: var(--secondary);
+}
+
+#product_details > aside > div > p {
+  font-size: 1.2rem;
+  color: #cccccc;
+  width: 25rem;
+}
+
+#product_button_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+
+#product_button_wrapper > button {
+  padding: 0.5rem 1.8rem;
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-family: "BPG Glaho";
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+
+#product_button_wrapper > button:hover {
+  transform: translateY(-0.2rem);
+}
+
+#product_button_wrapper > button:first-child {
+  background-color: #81ecec;
+}
+
+#product_button_wrapper > button:last-child {
+  border: 2px solid #7e677e;
+  color: #7e677e;
+  background-color: transparent;
+}
+
+#product_review_write {
+  display: flex;
+  flex-direction: column;
+  width: 55rem;
+  margin: 4rem auto 0 auto;
+}
+
+#product_review_write > .home_product_ratings > div {
+  transition: 0.1s ease;
+  cursor: pointer;
+}
+
+#product_review_write > .home_product_ratings > div:hover {
+  transform: scale(1.2);
+}
+
+#product_review_write > .home_product_ratings > div > svg {
+  min-width: 25px;
+  height: 25px;
+}
+
+#product_review_write > textarea {
+  border-radius: 8px;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #cccccc;
+  font-size: 1.1rem;
+  color: #141414;
+  font-family: "BPG Glaho";
+  height: 10rem;
+  font-weight: bold;
+  resize: none;
+}
+
+#product_review_write > textarea:focus {
+  outline: none;
+}
+
+#product_review_write > button {
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: 0.5s ease;
+  padding: 0.7rem 1.5rem;
+  border-radius: 5px;
+  background-color: var(--secondary);
+  font-family: "BPG Glaho";
+  cursor: pointer;
+  color: #141414;
+  width: fit-content;
+  align-self: flex-end;
+  margin-top: 0.8rem;
+}
+
+#product_review_write > button:hover {
+  transform: translateY(-0.2rem);
+}
+
+#product_reviews_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 55rem;
+  margin: 3rem auto 0rem auto;
+  max-height: 50vh;
+  overflow-y: scroll;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 1400px) {
+  #product {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  #product {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  #product {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #product_review_write {
+    width: 100%;
+  }
+  #product_details {
+    gap: 2rem;
+  }
+  #product_reviews_wrapper {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  #product_details {
+    flex-direction: column;
+    align-items: initial;
+  }
+  #product_background {
+    margin: auto;
+  }
+  #product_details > aside:last-child {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  #product_details {
+    gap: 3rem;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  #product_details > aside > div > p {
+    width: 20rem;
+  }
+  #product_details > aside > div > h2 {
+    width: 15rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #product_details > aside:last-child {
+    flex-direction: column;
+  }
+  #product_details > aside > div > p {
+    width: auto;
+  }
+  #product_details > aside > div > h2 {
+    width: auto;
+  }
+  #product_background {
+    width: 18rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #product {
+    margin: 2rem auto 0 auto;
+  }
+}

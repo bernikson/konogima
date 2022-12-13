@@ -331,7 +331,6 @@ const AdminDashboard = () => {
       user?.role === 1 &&
       success !== "სერია წარმეტებით დაემატა"
     ) {
-      console.log("ho");
       return navigate("/admin");
     }
   }, [success]);

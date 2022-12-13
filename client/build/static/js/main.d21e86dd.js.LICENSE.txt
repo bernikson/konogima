@@ -112,8 +112,16 @@ object-assign
 
 //! Intiaializations
 
+//! MISC
+
 //! Use effects
 
+//! initializations
+
+//! useEffect
+
 //! useEffects
+
+//! useState
 
 //!Notifications

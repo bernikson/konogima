@@ -2,7 +2,7 @@
   width: 70%;
   margin: auto;
   margin-bottom: 2rem;
-  min-height: calc(100vh - 272px);
+  min-height: calc(100vh - 242px);
   overflow-x: hidden;
 }
 
@@ -35,7 +35,7 @@
   width: 3rem !important;
   height: 5rem !important;
   border-radius: 10px;
-  background-color: black;
+  background-color: #161216;
   box-shadow: 0px 0px 30px var(--secondary);
 }
 
@@ -66,6 +66,7 @@
 #home > section button {
   font-size: 1.1rem;
   color: #ff7675;
+
   width: fit-content;
   font-weight: bold;
   padding: 0.5rem 1.2rem;
@@ -95,6 +96,7 @@
 
 #home > button {
   font-size: 1.3rem;
+  font-family: "BPG Glaho";
   font-weight: bold;
   background-color: var(--secondary);
   width: fit-content;
@@ -116,9 +118,171 @@
   font-weight: bold;
 }
 
+#home_product_section {
+  padding: 2rem !important;
+  box-sizing: border-box;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 3rem;
+  height: auto;
+  background-color: #1b171b;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.home_product {
+  aspect-ratio: 7/10;
+  padding: 1.3rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-self: flex-start;
+  background-color: transparent;
+  border: 2px solid #d084e3;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px hsla(0, 0%, 80%, 1);
+}
+
+.home_product_hover {
+  border-radius: 10px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.home_product_hover > svg {
+  opacity: 0;
+  visibility: hidden;
+  min-width: 5em;
+  height: 5rem;
+  transform: scale(0.5);
+  transition: 0.4s ease;
+  fill: var(--secondary);
+}
+
+.home_product_hover:hover {
+  background-color: hsla(210, 100%, 0%, 0.7);
+}
+
+.home_product_hover:hover svg {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.home_product_background {
+  width: 100%;
+  aspect-ratio: 9/10;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home_product > div {
+  padding: 0rem 1rem;
+}
+
+.home_product > div > h6 {
+  font-weight: bold;
+  color: hsla(300, 10%, 45%, 1);
+  margin: 0.5rem 0rem;
+  font-size: 1.2rem;
+}
+
+.home_product > div > h3 {
+  font-weight: 500;
+  color: white;
+  margin: 0.3rem 0rem;
+  font-size: 1.6rem;
+}
+
+.home_product_ratings {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin: 0.4rem 0rem;
+  margin-bottom: 0.7rem;
+}
+
+.home_product_ratings > svg {
+  min-width: 18px;
+  height: 18px;
+}
+
+.home_product_price {
+  align-items: flex-end;
+  display: flex;
+}
+
+.home_product_sale {
+  color: hsla(331, 78%, 59%, 1);
+  font-size: 2.4rem;
+  font-family: "Outfit";
+  font-weight: bolder;
+  line-height: 1em;
+}
+
+.home_product_real {
+  color: #5e5e5e;
+  font-size: 1.2rem;
+  font-family: "Outfit";
+  margin-left: 0.3rem;
+  font-weight: bold;
+  text-decoration: line-through;
+}
+
+.home_product_price > div {
+  background-color: #e84393;
+  padding: 0.2rem 0.7rem;
+  font-family: "Outfit";
+  font-size: 1.2rem;
+  color: #141414;
+  border-radius: 5px;
+  align-self: flex-end;
+  margin-left: auto;
+  font-weight: bold;
+}
+
+.home_product_saleOriginal {
+  color: white;
+  text-decoration: none;
+  font-size: 2.2rem;
+  font-family: "Outfit";
+  font-weight: bolder;
+  line-height: 1em;
+  margin-left: 0 !important;
+}
+
 @media screen and (max-width: 1870px) {
   #home > section > article {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (max-width: 1800px) {
+  .home_shop {
+    width: 80% !important;
+  }
+}
+@media screen and (max-width: 1550px) {
+  .home_shop {
+    width: 90% !important;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  #home_product_section {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem !important;
   }
 }
 
@@ -145,9 +309,43 @@
   }
 }
 
+@media screen and (max-width: 1050px) {
+  .home_product_sale {
+    font-size: 2.1rem;
+  }
+  .home_product_real {
+    font-size: 1.1rem;
+  }
+  .home_product_price > div {
+    font-size: 1.1rem;
+  }
+  .home_product > div {
+    padding: 0rem !important;
+  }
+  .home_product_saleOriginal {
+    font-size: 2.1rem !important;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   #home {
     width: 90%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #home {
+    width: 90%;
+  }
+  #home_product_section {
+    gap: 2rem !important;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  #home_product_section {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem !important;
   }
 }
 
@@ -156,6 +354,63 @@
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
 }
+
+@media screen and (max-width: 600px) {
+  #home_product_section {
+    gap: 2rem !important;
+  }
+  #home_product_section {
+    padding: 1rem !important;
+    background-color: transparent !important;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .home_product_price > div {
+    display: none;
+  }
+  .home_product {
+    padding: 1rem;
+  }
+  #home_product_section {
+    gap: 1rem !important;
+  }
+  .home_product > div > h6 {
+    font-size: 1.1rem;
+  }
+  .home_product > div > h3 {
+    font-size: 1.3rem;
+  }
+  .home_product_ratings > svg {
+    min-width: 15px;
+    height: 15px;
+  }
+  .home_product_sale {
+    font-size: 1.8rem;
+  }
+  .home_product_saleOriginal {
+    font-size: 1.8rem !important;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .home_product_ratings > svg {
+    min-width: 12px;
+    height: 12px;
+  }
+  .home_product_ratings {
+    margin-bottom: 0.4rem;
+  }
+}
+
+/* @media screen and (max-width: 450px) {
+  #home_product_section {
+    grid-template-columns: 1fr;
+  }
+  .home_product_price > div {
+    display: block;
+  }
+} */
 
 /* @media screen and (max-width: 570px) {
   #anime_card {
@@ -200,5 +455,9 @@
   }
   #anime_info > span {
     font-size: 0.9rem !important;
+  }
+  #home > section h1 {
+    font-size: 1.1rem;
+    margin-bottom: 0rem;
   }
 }

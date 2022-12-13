@@ -44,7 +44,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("../../assets/images/Banner.webp");
+  background-image: url("../../assets/images/BannerChristmas.png");
   border-radius: 10px;
   margin-top: 2rem;
 }
@@ -148,6 +148,7 @@
   color: lightgrey;
   font-size: 1.1rem;
   font-weight: 400;
+  line-height: 1.6em;
 }
 
 #anime iframe {
@@ -407,6 +408,21 @@
   border-radius: 0px 0px 0px 5px;
 }
 
+@media screen and (max-width: 1700px) {
+  #anime {
+    width: 70%;
+  }
+  #anime_info_wrapper {
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  #anime_aside_wrapper {
+    flex-direction: column;
+  }
+}
+
 @media screen and (max-width: 1200px) {
   #anime {
     width: 75%;
@@ -439,9 +455,6 @@
 }
 
 @media screen and (max-width: 900px) {
-  #anime_aside_wrapper {
-    flex-direction: column;
-  }
   #anime_info_wrapper {
     display: flex;
     gap: 3rem;

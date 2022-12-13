@@ -50,7 +50,6 @@ const CommentCard = ({ data, id }) => {
       }
       if (data?._id === response.payload.commentId) {
         setReplies((prevReply) => {
-          console.log(prevReply);
           prevReply.reply.push(response.payload.comment);
           prevReply.reply.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -103,7 +102,6 @@ const CommentCard = ({ data, id }) => {
       setReplies((prevReplies) => {
         prevReplies?.likeRatio.like.splice(index, 1);
         prevReplies.likeRatio.counter -= 1;
-        console.log(prevReplies);
         return { ...prevReplies };
       });
     } else {
@@ -129,7 +127,7 @@ const CommentCard = ({ data, id }) => {
       setReplies((prevReplies) => {
         prevReplies?.likeRatio.dislike.splice(index, 1);
         prevReplies.likeRatio.counter += 1;
-        console.log(prevReplies);
+
         return { ...prevReplies };
       });
     } else {
@@ -153,7 +151,6 @@ const CommentCard = ({ data, id }) => {
     replies?.reply.map((output) => {
       if (output._id === payload.commentId) {
         if (output?.likeRatio.like.includes(payload.userId)) {
-          console.log(output?.likeRatio.like);
           let index = output?.likeRatio.like.indexOf(payload.userId);
           setReplies((prevReplies) => {
             output?.likeRatio.like.splice(index, 1);
@@ -183,7 +180,6 @@ const CommentCard = ({ data, id }) => {
     replies?.reply.map((output) => {
       if (output._id === payload.commentId) {
         if (output?.likeRatio.dislike.includes(payload.userId)) {
-          console.log(output?.likeRatio.dislike);
           let index = output?.likeRatio.dislike.indexOf(payload.userId);
           setReplies((prevReplies) => {
             output?.likeRatio.dislike.splice(index, 1);

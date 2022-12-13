@@ -6,6 +6,7 @@
   background-color: #1b171b;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
 #footer > aside {
@@ -23,6 +24,7 @@
   font-size: 1.8rem;
   font-weight: bold;
   color: #ff3f34;
+  font-family: "Outfit";
 }
 
 #footer_left > div > svg {
@@ -41,17 +43,18 @@
   background-color: lightgrey;
   border-radius: 7px;
   font-size: 1.1rem;
+  font-family: "Outfit";
   font-weight: bold;
 }
 
 #footer_logo {
   width: 6rem;
-  height: 5rem;
+  height: 5.4rem;
   background-size: cover;
   background-position: center;
   cursor: pointer;
   background-repeat: no-repeat;
-  background-image: url("../../assets/images/konogima-logo.webp");
+  background-image: url("../../assets/images/LogoChristmas.png");
 }
 
 @media screen and (max-width: 900px) {

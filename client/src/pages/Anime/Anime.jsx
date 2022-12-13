@@ -516,7 +516,7 @@ const Anime = () => {
               }
             >
               {Object.values(serieToPlay)?.map((output, index) => {
-                if (output !== "" && index !== 3) {
+                if (output !== "" && index !== 3 && index !== 4) {
                   return (
                     <li
                       key={index}
@@ -600,6 +600,24 @@ const Anime = () => {
       </section>
       {/* <article className="ADFirst">სარეკლამო ადგილი</article>
       <article className="ADSecond">სარეკლამო ადგილი</article> */}
+      <div
+        className="ADChristmas"
+        onClick={() =>
+          window.open(
+            "https://www.facebook.com/profile.php?id=100087225231718",
+            "_blank"
+          )
+        }
+      ></div>
+      <div
+        className="ADChristmasTwo"
+        onClick={() =>
+          window.open(
+            "https://www.facebook.com/profile.php?id=100087225231718",
+            "_blank"
+          )
+        }
+      ></div>
     </main>
   );
 };

@@ -1,0 +1,66 @@
+.product_review {
+  display: flex;
+  gap: 1rem;
+}
+
+.product_review_avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  background-color: lightcyan;
+}
+
+.product_review > aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.product_review > aside > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.product_review > aside > div > h5 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--secondary);
+  margin: 0;
+}
+
+.product_review > aside > p {
+  color: #cccc;
+  font-size: 1.1rem;
+  margin: 0;
+  margin-bottom: 0.2rem;
+  word-break: break-all;
+}
+
+.product_review > aside > span {
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: bold;
+  color: var(--secondary);
+  font-family: "Outfit";
+}
+
+@media screen and (max-width: 420px) {
+  .product_review_avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+  #product_details > aside > div > h6 {
+    margin-bottom: 0.7rem;
+  }
+  #product_ratings_wrapper {
+    margin: 0.3rem 0rem;
+  }
+  #product_review_write {
+    margin-top: 2rem;
+  }
+}

@@ -1,0 +1,279 @@
+#admin_product {
+  margin: 5rem auto 0 auto;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 290px);
+}
+
+#admin_product > section {
+  display: flex;
+  gap: 3rem;
+}
+
+#admin_product > section > aside {
+  display: flex;
+  flex-direction: column;
+}
+
+#admin_product > section > aside:first-child > button {
+  width: 100%;
+  color: #141414;
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+  border-radius: 8px;
+  background-color: var(--secondary);
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "BPG Glaho";
+}
+
+#admin_product > section > aside:nth-child(2) > div {
+  display: flex;
+  gap: 3rem;
+}
+
+#admin_product_details {
+  display: flex;
+  flex-direction: column;
+}
+
+#admin_product_details > span {
+  font-weight: 400;
+  color: white;
+  font-family: "BPG Glaho";
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+#admin_product_details > fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  transition: 0.5s ease;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+#admin_product_details > fieldset > input {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-family: "BPG Glaho";
+  border: none;
+  background-color: transparent;
+  width: 18rem;
+}
+
+#admin_product_details > fieldset > input[lang="en"] {
+  font-family: "Outfit";
+}
+
+/* #admin_product_details > fieldset > input[type="number"] {
+  background-color: red;
+} */
+
+#admin_product_details > fieldset > input:focus {
+  outline: none;
+}
+
+#admin_product_details > fieldset > input::placeholder {
+  color: lightgrey;
+  font-family: "BPG Glaho";
+}
+
+#admin_product_details > fieldset > div {
+  border-radius: 100px;
+  width: 100%;
+  height: 0.3rem;
+  background-color: var(--secondary);
+}
+
+#admin_product_background {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 17rem;
+  border-radius: 10px;
+  background-color: lightgray;
+  aspect-ratio: 7/10;
+}
+
+.admin_product_capacity > div > svg {
+  min-width: 21px;
+  height: 21px;
+}
+
+.admin_product_capacity > div:first-child > svg {
+  stroke: #fd79a8;
+}
+
+.admin_product_capacity > div:last-child > svg {
+  fill: #55efc4;
+}
+
+.admin_product_capacity {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  background-color: #322a32;
+  border-radius: 5px;
+  gap: 1rem;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.admin_product_capacity > div {
+  padding: 0.7rem;
+  cursor: pointer;
+  transition: 0.5s ease;
+  display: flex;
+  align-items: center;
+}
+
+.admin_product_capacity > div:hover {
+  background-color: #3f363f;
+}
+
+.disabledField {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.disabledField > input {
+  cursor: not-allowed;
+}
+
+.admin_product_capacity > span {
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.checkBox {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.checkBox > span {
+  font-size: 1.1rem;
+  color: white;
+}
+
+.checkBox > div {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--secondary);
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.checkBox > div > svg {
+  width: 23px;
+  height: 23px;
+  opacity: 0;
+  transition: 0.3s;
+  fill: var(--primary);
+  transform: scale(0);
+}
+
+#admin_product > section > aside textarea {
+  resize: none;
+  color: #141414;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: lightgray;
+  font-weight: bold;
+  font-family: "BPG Glaho";
+}
+
+#admin_product > section > aside textarea:focus {
+  outline: none;
+}
+
+#admin_product > section > aside textarea::placeholder {
+  color: #2c2c2c;
+}
+
+#admin_product > section > aside button {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.7rem 1.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.5s ease;
+  background-color: #55efc4;
+  width: fit-content;
+  font-family: "BPG Glaho";
+  margin-top: 1rem;
+  align-self: flex-end;
+}
+
+#admin_product > section > aside button:hover {
+  transform: translateY(-0.2rem);
+}
+
+@media screen and (max-width: 1050px) {
+  #admin_product > section > aside:nth-child(2) > div {
+    flex-direction: column;
+  }
+  #admin_product {
+    width: 90%;
+  }
+  #admin_product > section > aside:last-child {
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #admin_product > section {
+    flex-direction: column;
+    width: 100%;
+  }
+  #admin_product {
+    justify-content: flex-start;
+  }
+  #admin_product > section > aside:first-child {
+    width: fit-content;
+  }
+  #admin_product_details > fieldset > input {
+    width: 100%;
+  }
+  #admin_product > section > aside:last-child {
+    width: 100%;
+  }
+  #admin_product_details > fieldset {
+    margin-bottom: 1.5rem;
+  }
+  .checkBox {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  #admin_product > section > aside:nth-child(2) > div {
+    gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #admin_product > section > aside:first-child {
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  #admin_product {
+    margin-top: 2rem;
+  }
+}

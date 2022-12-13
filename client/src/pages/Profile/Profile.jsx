@@ -120,9 +120,9 @@ const Profile = () => {
             type="file"
             accept="image/png, image/jpeg, image/webp"
           />
-          <article className="ADMain" style={{ width: "100%" }}>
+          {/* <article className="ADMain" style={{ width: "100%" }}>
             სარეკლამო ადგილი
-          </article>
+          </article> */}
           <section id="profile_watch_later">
             {user?.watchLater?.length !== 0 && (
               <h4>{id === "own" ? "გააგრძელე ყურება" : "უყურებს ანიმეებს"}</h4>

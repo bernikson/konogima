@@ -33,9 +33,13 @@ const Season = require("./models/seasonModel");
 const Comment = require("./models/commentModel");
 const compression = require("compression");
 const path = require("path");
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 //! Express middlewares
 app.use(compression());
+app.use(helmet());
+app.use(morgan("dev"));
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

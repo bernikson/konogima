@@ -18,11 +18,14 @@ import {
   addReply,
   sortAnimes,
   getUserData,
+  getProducts,
 } from "./redux/webSlice";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
 import NotFound from "./pages/NotFound/NotFound";
 import { useMemo } from "react";
+import AdminProduct from "./pages/AdminProduct/AdminProduct";
+import Product from "./pages/Product/Product";
 
 const App = () => {
   //! Initialiations
@@ -86,6 +89,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getAnimes());
+    dispatch(getProducts());
   }, [dispatch]);
 
   useEffect(() => {
@@ -164,7 +168,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/anime/:id" element={<Anime />} />
+        <Route path="/product/:id" element={<Product />} />
         <Route path="/admin" element={checkAdmin && <Admin />} />
+        <Route
+          path="/admin_product/:id"
+          element={checkAdmin && <AdminProduct />}
+        />
         <Route
           path="/admin_dashboard/:id"
           element={checkAdmin && <AdminDashboard />}
@@ -173,6 +182,7 @@ const App = () => {
         <Route path="/reset_password/:id" element={<ResetPassword />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
+
       <Footer />
     </div>
   );

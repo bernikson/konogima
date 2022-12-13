@@ -128,14 +128,37 @@
     url("./Fonts/sylfaen.svg#Sylfaen") format("svg");
 }
 
+@font-face {
+  font-family: "BPG Glaho";
+  src: url("./Fonts/bpg-glaho-webfont.eot"); /* IE9 Compat Modes */
+  src: url("./Fonts/bpg-glaho-webfont.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("./Fonts/bpg-glaho-webfont.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("./Fonts/bpg-glaho-webfont.woff")
+      format("woff"),
+    /* Pretty Modern Browsers */ url("./Fonts/bpg-glaho-webfont.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("./Fonts/bpg-glaho-webfont.svg#bpg_glahoregular") format("svg"); /* Legacy iOS */
+}
+
 :root {
   --secondary: hsl(288, 63%, 70%);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 
 body {
   background-color: #161216;
   user-select: none;
-  font-family: "Outfit";
+  font-family: "BPG Glaho";
   overflow-x: hidden !important;
 }
 
@@ -317,6 +340,57 @@ button {
   display: none;
 }
 
+#content_navigator {
+  display: flex;
+  background-color: #161216;
+  border-radius: 100px;
+  align-items: center;
+
+  overflow: hidden;
+  border-bottom: 2px solid #d084e3;
+}
+
+#content_navigator > span {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  color: white;
+  cursor: pointer;
+}
+
+#content_navigator > span:hover {
+  background-color: #493c49;
+}
+
+#content_navigator_two {
+  display: none;
+  background-color: #161216;
+  border-radius: 100px;
+  align-items: center;
+  overflow: hidden;
+  border-bottom: 2px solid #d084e3;
+}
+
+#content_navigator_two > span {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  color: white;
+  cursor: pointer;
+}
+
+#content_navigator_two > span:hover {
+  background-color: #493c49;
+}
+
+.modifiedContentState {
+  color: #141414 !important;
+  font-weight: bold;
+  background-color: var(--secondary);
+}
+
+.modifiedContentState:hover {
+  background-color: var(--secondary) !important;
+}
+
 @media screen and (max-width: 1800px) {
   .ADFirst,
   .ADSecond {
@@ -354,4 +428,105 @@ button {
 ::-webkit-scrollbar-thumb {
   background: var(--secondary);
   border-radius: 10px;
+}
+
+.ADChristmas {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("./assets/images/ADChristmas.png");
+  width: 14rem;
+  aspect-ratio: 3/10;
+
+  position: fixed;
+  border-radius: 5px;
+  cursor: pointer;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ADChristmasTwo {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("./assets/images/ADChristmas.png");
+  width: 14rem;
+  aspect-ratio: 3/10;
+
+  position: fixed;
+  border-radius: 5px;
+  cursor: pointer;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media screen and (max-width: 1750px) {
+  .ADChristmas {
+    left: 1rem;
+    width: 13rem;
+  }
+  .ADChristmasTwo {
+    right: 1rem;
+    width: 13rem;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .ADChristmas {
+    left: 1rem;
+    width: 11rem;
+  }
+  .ADChristmasTwo {
+    right: 1rem;
+    width: 11rem;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .ADChristmas {
+    left: 1rem;
+    width: 9rem;
+  }
+  .ADChristmasTwo {
+    right: 1rem;
+    width: 9rem;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .ADChristmas {
+    display: none;
+  }
+  .ADChristmasTwo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #content_navigator {
+    display: none;
+  }
+  #content_navigator_two {
+    display: flex;
+    width: fit-content;
+    margin-top: 1.3rem;
+    margin-left: 1rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #content_navigator_two {
+    margin: 1rem auto 0rem auto;
+  }
+  #content_navigator_two > span {
+    padding: 0.7rem 1.1rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #content_navigator_two > span {
+    font-size: 1rem;
+    padding: 0.6rem 0.9rem;
+  }
 }

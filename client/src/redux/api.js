@@ -60,3 +60,17 @@ export const createAnimeSeasonAPI = ({ Token, animeSeasons, animeId }) =>
       },
     }
   );
+
+export const createProductAPI = (payload, Token) =>
+  axios.post("/api/user/createProduct", payload, {
+    headers: {
+      Authorization: `Bearer ${Token}`,
+    },
+  });
+export const updateProductAPI = (payload, id, Token) =>
+  axios.patch(`/api/user/updateProduct/${id}`, payload, {
+    headers: {
+      Authorization: `Bearer ${Token}`,
+    },
+  });
+export const getProductsAPI = () => axios.get("/api/user/getProducts");

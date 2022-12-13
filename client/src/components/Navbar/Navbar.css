@@ -31,9 +31,10 @@ nav::after {
 
 .nav_logo_name {
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: bold;
   margin-left: 1.5rem;
+  font-family: "Outfit";
   transform: translateY(0.4rem);
 }
 
@@ -51,12 +52,12 @@ nav > aside {
 
 #nav_logo {
   width: 5rem;
-  height: 4.1rem;
+  height: 4.5em;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
-  background-image: url("../../assets/images/konogima-logo.webp");
+  background-image: url("../../assets/images/LogoChristmas.png");
 }
 
 #nav_auth {
@@ -68,6 +69,7 @@ nav > aside {
   padding: 0.5rem 1.4rem;
   border-radius: 10px;
   background-color: var(--secondary);
+  font-family: "BPG Glaho";
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
@@ -309,6 +311,7 @@ nav > aside {
   font-size: 1rem;
   background-color: transparent;
   color: white;
+  font-family: "BPG Glaho";
   width: 100%;
 }
 
@@ -469,7 +472,7 @@ nav > aside {
   }
   #nav_logo {
     width: 4rem;
-    height: 3.3rem;
+    height: 3.6rem;
   }
   #nav_menu_logo {
     width: 2.5rem;

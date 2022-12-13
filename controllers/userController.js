@@ -3,6 +3,8 @@ const User = require("../models/userModel");
 const Anime = require("../models/animeModel");
 const Season = require("../models/seasonModel");
 const Comment = require("../models/commentModel");
+const Review = require("../models/reviewModel");
+const Product = require("../models/productModel");
 const JWT = require("jsonwebtoken");
 const sendEmail = require("../utils/EmailSend");
 const cloudinary = require("cloudinary");
@@ -201,7 +203,6 @@ const userController = {
     try {
       const { animeId } = req.body;
       let io = req.app.get("io");
-      console.log(req.body);
       await Anime.findByIdAndDelete(animeId);
       res.status(200).json({
         message: "ანიმე წარმატებულად წაიშალა",
@@ -250,7 +251,6 @@ const userController = {
       anime.uploadDate = uploadDate;
       anime.status = status;
       anime.realUpdate = Date.now();
-      console.log(anime.realUpdate);
       await anime.save();
       res.status(200).json({
         message: "ანიმე წარმატებულად განახლდა",
@@ -296,7 +296,6 @@ const userController = {
         animeId,
         index: animeSeasons.season,
       });
-      console.log(animeSeasons);
       let anime = await Anime.findById(animeId);
       if (!anime) return next(new ErrorResponse("ანიმე ვერ მოიძებნა", 400));
       if (!season) {
@@ -328,6 +327,170 @@ const userController = {
       });
     } catch (error) {
       next(error);
+    }
+  },
+  uploadProductImage: async (req, res, next) => {
+    try {
+      const { file } = req.files;
+      cloudinary.v2.uploader.upload(
+        file.tempFilePath,
+        { folder: "Konogima", format: "webp", quality: "auto:eco" },
+        async (error, result) => {
+          error && console.log(error);
+          removeImage(file.tempFilePath);
+          res.status(200).json({
+            message: "პროდუქტის სურათი შეიცვალა",
+            payload: result?.secure_url,
+          });
+        }
+      );
+    } catch (error) {
+      return next(error);
+    }
+  },
+  createProduct: async (req, res, next) => {
+    try {
+      const {
+        name,
+        type,
+        price,
+        quantity,
+        salePrice,
+        saleExpirery,
+        description,
+        background,
+        sold,
+      } = req.body;
+      if (
+        !name &&
+        !type &&
+        !price &&
+        !quantity &&
+        !salePrice &&
+        !saleExpirery &&
+        !description &&
+        !background &&
+        !sold
+      ) {
+        return next(new ErrorResponse("შეიყვანეთ ინფორმაცია", 400));
+      }
+      const product = await Product.create({
+        name,
+        type,
+        price,
+        quantity,
+        salePrice,
+        saleExpirery,
+        description,
+        background,
+      });
+      return res.status(200).json({
+        success: true,
+        message: "პროდუქტი წარმატებულად შეიქმნა",
+        payload: product,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  getProducts: async (req, res, next) => {
+    try {
+      const products = await Product.find();
+      return res.status(200).json({
+        success: true,
+        message: "წარმატებულად მივიღეთ პროდუქტები",
+        payload: products,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  updateProduct: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const {
+        name,
+        type,
+        price,
+        quantity,
+        salePrice,
+        saleExpirery,
+        description,
+        background,
+        sold,
+      } = req.body;
+      if (
+        !name &&
+        !type &&
+        !price &&
+        !quantity &&
+        !salePrice &&
+        !saleExpirery &&
+        !description &&
+        !background &&
+        !sold
+      ) {
+        return next(new ErrorResponse("შეიყვანეთ ინფორმაცია", 400));
+      }
+      const product = await Product.findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            name,
+            type,
+            price,
+            quantity,
+            salePrice,
+            saleExpirery,
+            description,
+            background,
+            sold,
+          },
+        },
+        { new: true }
+      );
+      return res.status(200).json({
+        success: true,
+        message: "პროდუქტი წარმატებულად განახლდა",
+        payload: product,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  createReview: async (req, res, next) => {
+    try {
+      const { username, userId, comment, rating, avatar, productId } = req.body;
+      const review = await Review.create({
+        username,
+        userId,
+        comment,
+        rating,
+        productId,
+        avatar,
+      });
+      return res.status(200).json({
+        message: "პროდუქტის შეფასება წარმატებით დაიდო",
+        success: true,
+        payload: review,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+  getReview: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const reviews = await Review.find({ productId: id }).sort({
+        createdAt: -1,
+      });
+      return res.status(200).json({
+        message: "პროდუქტის შეფასებები წარმატებით მივიღეთ",
+        success: true,
+        payload: reviews,
+      });
+    } catch (error) {
+      return next(error);
     }
   },
 };

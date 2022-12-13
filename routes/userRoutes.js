@@ -29,6 +29,12 @@ const {
   deleteAnime,
   getAnimes,
   createAnimeSeason,
+  uploadProductImage,
+  createProduct,
+  getProducts,
+  updateProduct,
+  createReview,
+  getReview,
 } = userController;
 
 Router.route("/register").post(authLimiter, register);
@@ -55,5 +61,24 @@ Router.route("/createAnimeSeason").post(
   AdminCheck,
   createAnimeSeason
 );
+
+//! Products
+
+Router.route("/uploadProductImage").post(
+  ValidateImage,
+  verifyToken,
+  uploadProductImage
+);
+Router.route("/createProduct").post(verifyToken, AdminCheck, createProduct);
+Router.route("/updateProduct/:id").patch(
+  verifyToken,
+  AdminCheck,
+  updateProduct
+);
+Router.route("/getProducts").get(getProducts);
+
+//! Reviews
+Router.route("/createReview").post(verifyToken, createReview);
+Router.route("/getReviews/:id").get(getReview);
 
 module.exports = Router;

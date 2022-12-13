@@ -1,14 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.9bc8e13d.css",
-    "main.js": "/static/js/main.0cdc0517.js",
-    "static/media/konogima-logo.webp": "/static/media/konogima-logo.7ee5a3801d1352ea8724.webp",
+    "main.css": "/static/css/main.d0023de0.css",
+    "main.js": "/static/js/main.d21e86dd.js",
     "static/media/Background.jpg": "/static/media/Background.2f0a2d80669d7092b98a.jpg",
     "static/media/sylfaen.svg": "/static/media/sylfaen.9d5f07eafa79d86bc880.svg",
     "static/media/sylfaen.eot": "/static/media/sylfaen.a807f3bb353a1f792f21.eot",
     "static/media/sylfaen.ttf": "/static/media/sylfaen.52e6494de75b3fd67ab9.ttf",
+    "static/media/LogoChristmas.png": "/static/media/LogoChristmas.4c36378be54f1041fca4.png",
+    "static/media/ADChristmas.png": "/static/media/ADChristmas.66f31a306b2809e05fa7.png",
+    "static/media/BannerChristmas.png": "/static/media/BannerChristmas.c4b75b3d92dc8b8a2e60.png",
     "static/media/sylfaen.woff": "/static/media/sylfaen.8f6d463bfbebdff177ab.woff",
     "static/media/sylfaen.woff2": "/static/media/sylfaen.c23d7b22f8ec54001de7.woff2",
+    "static/media/bpg-glaho-webfont.svg": "/static/media/bpg-glaho-webfont.a333550e30d863b70605.svg",
+    "static/media/bpg-glaho-webfont.eot": "/static/media/bpg-glaho-webfont.003c6afd7939a8e6d3aa.eot",
+    "static/media/bpg-glaho-webfont.ttf": "/static/media/bpg-glaho-webfont.6c3c61e22efcf16578ab.ttf",
     "static/media/outfit-v6-latin-600.svg": "/static/media/outfit-v6-latin-600.fa7840c24beea64e01f6.svg",
     "static/media/outfit-v6-latin-800.svg": "/static/media/outfit-v6-latin-800.1e1f67044a25de172a19.svg",
     "static/media/outfit-v6-latin-700.svg": "/static/media/outfit-v6-latin-700.2892343388b4b83ed79a.svg",
@@ -16,7 +21,7 @@
     "static/media/outfit-v6-latin-500.svg": "/static/media/outfit-v6-latin-500.24a9b3024c2b66ba16d1.svg",
     "static/media/outfit-v6-latin-regular.svg": "/static/media/outfit-v6-latin-regular.e89ff248cf79d62616ab.svg",
     "static/media/outfit-v6-latin-300.svg": "/static/media/outfit-v6-latin-300.53fd167de162b89c92d9.svg",
-    "static/media/Banner.webp": "/static/media/Banner.de0ec708dea6c50a972e.webp",
+    "static/media/bpg-glaho-webfont.woff": "/static/media/bpg-glaho-webfont.0587be0d0f046633dcdb.woff",
     "static/media/outfit-v6-latin-600.ttf": "/static/media/outfit-v6-latin-600.130aea09ab4a043d8eb8.ttf",
     "static/media/outfit-v6-latin-800.ttf": "/static/media/outfit-v6-latin-800.ab6cdca20182e79c33d5.ttf",
     "static/media/outfit-v6-latin-900.ttf": "/static/media/outfit-v6-latin-900.5a6f2befb50247112a97.ttf",
@@ -24,6 +29,7 @@
     "static/media/outfit-v6-latin-300.ttf": "/static/media/outfit-v6-latin-300.7e0ec59cac111161b65a.ttf",
     "static/media/outfit-v6-latin-500.ttf": "/static/media/outfit-v6-latin-500.e5f924490a0ff9dba3f4.ttf",
     "static/media/outfit-v6-latin-regular.ttf": "/static/media/outfit-v6-latin-regular.e9b6adae36fc21ed3b92.ttf",
+    "static/media/bpg-glaho-webfont.woff2": "/static/media/bpg-glaho-webfont.38661d1828c5b178a56d.woff2",
     "static/media/outfit-v6-latin-800.woff": "/static/media/outfit-v6-latin-800.d052ea49604deb2ad1b0.woff",
     "static/media/outfit-v6-latin-regular.woff": "/static/media/outfit-v6-latin-regular.e8b59272d5e505e051a0.woff",
     "static/media/outfit-v6-latin-600.woff": "/static/media/outfit-v6-latin-600.bd1b5588d8f96b8fc5a8.woff",
@@ -46,11 +52,11 @@
     "static/media/outfit-v6-latin-900.woff2": "/static/media/outfit-v6-latin-900.fff8267e211bee22db75.woff2",
     "static/media/outfit-v6-latin-500.woff2": "/static/media/outfit-v6-latin-500.58c41fa985958f687e02.woff2",
     "index.html": "/index.html",
-    "main.9bc8e13d.css.map": "/static/css/main.9bc8e13d.css.map",
-    "main.0cdc0517.js.map": "/static/js/main.0cdc0517.js.map"
+    "main.d0023de0.css.map": "/static/css/main.d0023de0.css.map",
+    "main.d21e86dd.js.map": "/static/js/main.d21e86dd.js.map"
   },
   "entrypoints": [
-    "static/css/main.9bc8e13d.css",
-    "static/js/main.0cdc0517.js"
+    "static/css/main.d0023de0.css",
+    "static/js/main.d21e86dd.js"
   ]
 }

@@ -8,6 +8,7 @@ import {
   logout,
   sortAnimes,
   searchAnimes,
+  updateContentState,
 } from "../../redux/webSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Menu from "../../assets/svgs/Menu";
@@ -23,7 +24,7 @@ const Navbar = () => {
   const [searchAnim, setSearchAnim] = useState(false);
   const [menuAnim, setMenuAnim] = useState(false);
   const [search, setSearch] = useState("");
-  const { user, sortedAnimes, animes } = useSelector((state) => ({
+  const { user, sortedAnimes, animes, contentState } = useSelector((state) => ({
     ...state.web,
   }));
   const animate = () => {
@@ -166,7 +167,40 @@ const Navbar = () => {
         <div id="nav_logo"></div>
         <span className="nav_logo_name">Konogima</span>
       </div>
-
+      <article id="content_navigator">
+        <span
+          onClick={() => dispatch(updateContentState("ანიმე"))}
+          className={
+            contentState === "ანიმე" ? "modifiedContentState" : undefined
+          }
+        >
+          ანიმე
+        </span>
+        <span
+          style={{ cursor: "not-allowed" }}
+          className={
+            contentState === "მანგა" ? "modifiedContentState" : undefined
+          }
+        >
+          მანგა
+        </span>
+        <span
+          style={{ cursor: "not-allowed" }}
+          className={
+            contentState === "დორამა" ? "modifiedContentState" : undefined
+          }
+        >
+          დორამა
+        </span>
+        <span
+          style={{ cursor: "not-allowed" }}
+          className={
+            contentState === "მაღაზია" ? "modifiedContentState" : undefined
+          }
+        >
+          მაღაზია
+        </span>
+      </article>
       <aside>
         {localStorage.getItem("isLogged") !== "true" ? (
           <div id="nav_auth">
@@ -210,34 +244,7 @@ const Navbar = () => {
           >
             <Menu />
           </div>
-          {/* <div
-            id="nav_menu_dropdown"
-            className={dropdown ? "triggeredDropdown" : undefined}
-          >
-            <div id="nav_menu_dropdown_btn">
-              <button onClick={() => setNavState(0)}>ჟანრები</button>
-              <button id="nav_res_menu_trigger" onClick={() => setNavState(1)}>
-                მომხმარებელი
-              </button>
-            </div>
-            {navState === 0 && (
-              <ul>
-                {animeGenres?.map((anime, index) => (
-                  <li onClick={() => dispatch(sortAnimes([anime]))} key={index}>
-                    {anime}
-                  </li>
-                ))}
-              </ul>
-            )}
-            {navState === 1 && (
-              <ul id="nav_res_menu">
-                <li onClick={() => dispatch(updateAuthState(1))}>შესვლა</li>
-                <li onClick={() => dispatch(updateAuthState(2))}>
-                  რეგისტრაცია
-                </li>
-              </ul>
-            )}
-          </div> */}
+
           <div id="new_nav" className={dropdown ? "triggerNewDrop" : undefined}>
             <h1>ძებნა</h1>
             <fieldset className={searchAnim ? "triggerSearchAnim" : undefined}>

@@ -9,11 +9,12 @@ import { useState, useEffect } from "react";
 const Admin = () => {
   const [adminState, setAdminState] = useState(0);
   const [connectedUsers, setConnectedUsers] = useState(0);
-  const { animes, socket } = useSelector((state) => ({ ...state.web }));
+  const { animes, socket, products } = useSelector((state) => ({
+    ...state.web,
+  }));
   const navigate = useNavigate();
   useEffect(() => {
     socket.on("connectedUsers", (data) => {
-      console.log(data);
       setConnectedUsers(data);
     });
   }, [socket, connectedUsers]);
@@ -21,6 +22,18 @@ const Admin = () => {
   useEffect(() => {
     socket.emit("connectedUsersServer");
   }, [socket]);
+
+  let text = "";
+  switch (adminState) {
+    case 0:
+      text = "ანიმეს დამატება";
+      break;
+    case 1:
+      text = "პროდუქტის დამატება";
+      break;
+    default:
+      break;
+  }
 
   return (
     <main id="admin">
@@ -37,6 +50,12 @@ const Admin = () => {
             className={adminState === 1 ? "specialAdminBtn" : undefined}
             onClick={() => setAdminState(1)}
           >
+            მაღაზია
+          </button>
+          <button
+            className={adminState === 2 ? "specialAdminBtn" : undefined}
+            onClick={() => setAdminState(2)}
+          >
             მომხმარებლები
           </button>
         </div>
@@ -46,28 +65,51 @@ const Admin = () => {
         </article>
       </article>
       <section>
-        {animes?.map((anime, index) => {
-          return (
-            <article
-              key={index}
-              className="admin_anime"
-              style={{ backgroundImage: `url(${anime?.background})` }}
-              onClick={() => navigate(`/admin_dashboard/${anime?._id}`)}
-            >
-              <div>
-                <Edit />
-              </div>
-            </article>
-          );
-        })}
-
-        <div
-          id="admin_anime_add"
-          onClick={() => navigate("/admin_dashboard/new")}
-        >
-          <span>ანიმეს დამატება</span>
-          <Add />
-        </div>
+        {adminState === 0 &&
+          animes?.map((anime, index) => {
+            return (
+              <article
+                key={index}
+                className="admin_anime"
+                style={{ backgroundImage: `url(${anime?.background})` }}
+                onClick={() => navigate(`/admin_dashboard/${anime?._id}`)}
+              >
+                <div>
+                  <Edit />
+                </div>
+              </article>
+            );
+          })}
+        {adminState === 1 &&
+          products?.map((product, index) => {
+            return (
+              <article
+                key={index}
+                className="admin_product"
+                style={{ backgroundImage: `url(${product?.background})` }}
+                onClick={() => navigate(`/admin_product/${product?._id}`)}
+              >
+                <div>
+                  <Edit />
+                </div>
+              </article>
+            );
+          })}
+        {adminState !== 2 && (
+          <div
+            id="admin_anime_add"
+            onClick={() => {
+              if (adminState === 0) {
+                navigate("/admin_dashboard/new");
+              } else if (adminState === 1) {
+                navigate("/admin_product/new");
+              }
+            }}
+          >
+            <span>{text}</span>
+            <Add />
+          </div>
+        )}
       </section>
       {/* <article className="ADFirst">სარეკლამო ადგილი</article>
       <article className="ADSecond">სარეკლამო ადგილი</article> */}

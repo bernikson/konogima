@@ -176,6 +176,44 @@ export const createAnimeSeason = createAsyncThunk(
   }
 );
 
+export const createProduct = createAsyncThunk(
+  "user/createProduct",
+  async ({ Token, payload }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.createProductAPI(payload, Token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getProducts = createAsyncThunk(
+  "user/getProducts",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getProductsAPI();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "user/updateProduct",
+  async ({ Token, payload, id }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.updateProductAPI(payload, id, Token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const webSlice = createSlice({
   name: "webSlice",
   initialState: {
@@ -190,10 +228,15 @@ const webSlice = createSlice({
     comments: [],
     sortedAnimes: [],
     searchedAnimes: [],
+    products: [],
+    contentState: "ანიმე",
   },
   reducers: {
     updateAuthState: (state, { payload }) => {
       state.authState = payload;
+    },
+    updateContentState: (state, { payload }) => {
+      state.contentState = payload;
     },
     clearStatus: (state, { payload }) => {
       state.success = null;
@@ -531,11 +574,50 @@ const webSlice = createSlice({
       state.success = null;
       state.loading = false;
     },
+    [createProduct.pending]: (state, { payload }) => {
+      state.loading = true;
+    },
+    [createProduct.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.success = payload.message;
+      state.products.push(payload.payload);
+    },
+    [createProduct.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.success = null;
+    },
+    [getProducts.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.products = payload.payload;
+    },
+    [updateProduct.pending]: (state, { payload }) => {
+      state.loading = true;
+    },
+    [updateProduct.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.success = payload.message;
+      state.products = state.products.map((output) => {
+        if (output._id === payload.payload._id) {
+          output = payload.payload;
+        }
+        return output;
+      });
+    },
+    [updateProduct.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.success = null;
+    },
   },
 });
 
 export const {
   updateAuthState,
+  updateContentState,
   clearStatus,
   updateAnimeSeriesRedux,
   addComment,

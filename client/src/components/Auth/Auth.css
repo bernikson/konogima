@@ -96,6 +96,7 @@
   position: relative;
 }
 .auth_nav > div:first-child > button {
+  font-family: "BPG Glaho";
   cursor: pointer;
   font-size: 1.2rem;
   z-index: 100;
@@ -112,6 +113,7 @@
 .register .auth_nav > div:first-child > button:first-child {
   color: black;
   font-weight: bold;
+  font-family: "BPG Glaho";
 }
 .forgotPassword .auth_nav > div:first-child > button:first-child {
   color: black;
@@ -170,6 +172,7 @@
 }
 
 .auth_input_wrapper input {
+  font-family: "BPG Glaho";
   font-size: 1.1rem;
   font-weight: 400;
   background-color: transparent;
@@ -204,6 +207,7 @@ input:-webkit-autofill:focus {
   font-weight: bold;
   font-size: 1.1rem;
   margin-top: 1.5rem;
+  font-family: "BPG Glaho";
   cursor: pointer;
   background-color: #55efc4;
   border: 2px solid #55efc4;
