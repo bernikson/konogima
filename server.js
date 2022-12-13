@@ -38,7 +38,11 @@ const morgan = require("morgan");
 
 //! Express middlewares
 app.use(compression());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(morgan("dev"));
 app.set("io", io);
 app.use(express.urlencoded({ extended: true }));
