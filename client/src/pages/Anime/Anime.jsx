@@ -604,7 +604,7 @@ const Anime = () => {
         className="ADChristmas"
         onClick={() =>
           window.open(
-            "https://www.facebook.com/profile.php?id=100087225231718",
+            "https://www.facebook.com/photo/?fbid=126118300305677&set=a.116585024592338",
             "_blank"
           )
         }
@@ -613,7 +613,7 @@ const Anime = () => {
         className="ADChristmasTwo"
         onClick={() =>
           window.open(
-            "https://www.facebook.com/profile.php?id=100087225231718",
+            "https://www.facebook.com/photo/?fbid=126118300305677&set=a.116585024592338",
             "_blank"
           )
         }
