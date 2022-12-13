@@ -49,6 +49,7 @@ app.use(
           "https://*.google.com",
           "https://*.google-analytics.com",
           "https://*.googletagmanager.com",
+          "https://*.res.cloudinary.com",
         ],
         connectSrc: [
           "'self'",
@@ -56,8 +57,9 @@ app.use(
           "https://*.google.com",
           "https://*.google-analytics.com",
           "https://*.googletagmanager.com",
+          "https://*.res.cloudinary.com",
         ],
-        imgSrc: [`'self'`, `data:`],
+        imgSrc: [`'self'`, "https://cdnjs.cloudflare.com", `data:`],
       },
     },
     //Will work for most, but did not work for me:
