@@ -40,7 +40,12 @@ const morgan = require("morgan");
 app.use(compression());
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "script-src": ["'self'", "www.google-analytics.com"],
+      },
+    },
   })
 );
 app.use(morgan("dev"));
