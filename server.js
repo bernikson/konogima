@@ -33,7 +33,6 @@ const Season = require("./models/seasonModel");
 const Comment = require("./models/commentModel");
 const compression = require("compression");
 const path = require("path");
-const helmet = require("helmet");
 const morgan = require("morgan");
 
 //! Express middlewares
