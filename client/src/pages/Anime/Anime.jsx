@@ -278,7 +278,28 @@ const Anime = () => {
       <Helmet>
         <title>{currentAnime?.name}</title>
         <meta name="description" content={currentAnime?.description} />
-        <link rel="canonical" href={`/anime/${currentAnime?._id}`} />
+        <link
+          rel="canonical"
+          href={`https://konogima.com/anime/${currentAnime?._id}`}
+        />
+        <meta
+          property="og:url"
+          content={`https://konogima.com/anime/${currentAnime?._id}`}
+        />
+        <meta property="og:title" content={currentAnime?.name} />
+        <meta property="og:description" content={currentAnime?.description} />
+        <meta property="og:image" content={currentAnime?.background} />
+
+        <meta
+          property="twitter:url"
+          content={`https://konogima.com/anime/${currentAnime?._id}`}
+        />
+        <meta property="twitter:title" content={currentAnime?.name} />
+        <meta
+          property="twitter:description"
+          content={currentAnime?.description}
+        />
+        <meta property="twitter:image" content={currentAnime?.background} />
       </Helmet>
       {currentAnime?.name?.split("/").map((output) => (
         <h1>{output}</h1>

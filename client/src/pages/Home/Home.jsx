@@ -18,6 +18,7 @@ import StarHalf from "../../assets/svgs/StarHalf";
 import StarEmpty from "../../assets/svgs/StarEmpty";
 import Search from "../../assets/svgs/Search";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const AnimeCard = lazy(() => import("../../components/AnimeCard/AnimeCard"));
 
@@ -97,6 +98,35 @@ const Home = () => {
       id="home"
       className={contentState === "მაღაზია" ? "home_shop" : undefined}
     >
+      <Helmet>
+        <title>Konogima | უყურე ანიმეებს</title>
+        <meta
+          name="description"
+          content="უახლესი ანიმეები კარგი გახმოვანებით"
+        />
+        <link rel="canonical" href="https://konogima.com/" />
+        <meta property="og:url" content="https://konogima.com/" />
+        <meta property="og:title" content="Konogima | უყურე ანიმეებს" />
+        <meta
+          property="og:description"
+          content="უახლესი ანიმეები კარგი გახმოვანებით"
+        />
+        <meta
+          property="og:image"
+          content="https://media.discordapp.net/attachments/1015980602031345715/1041337020175351858/standard_1.gif"
+        />
+
+        <meta property="twitter:url" content="https://konogima.com/" />
+        <meta property="twitter:title" content="Konogima | უყურე ანიმეებს" />
+        <meta
+          property="twitter:description"
+          content="უახლესი ანიმეები კარგი გახმოვანებით"
+        />
+        <meta
+          property="twitter:image"
+          content="https://media.discordapp.net/attachments/1015980602031345715/1041337020175351858/standard_1.gif"
+        />
+      </Helmet>
       {/* {Object.values(animes).length !== 0 ? ( */}
       <article id="content_navigator_two">
         <span
