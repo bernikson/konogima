@@ -18,7 +18,7 @@ import {
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import Iframe from "../../components/Iframe/Iframe";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const Anime = () => {
   //! Intiaializations
@@ -278,6 +278,7 @@ const Anime = () => {
       <Helmet>
         <title>{currentAnime?.name}</title>
         <meta name="description" content={currentAnime?.description} />
+        <link rel="canonical" href={`/anime/${currentAnime?._id}`} />
       </Helmet>
       {currentAnime?.name?.split("/").map((output) => (
         <h1>{output}</h1>

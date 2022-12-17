@@ -6,18 +6,16 @@ import Store from "./redux/Store";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { HelmetProvider } from "react-helmet-async";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <Helmet>
-      <title>Konogima | უყურე ანიმეებს</title>
-      <meta name="description" content="უახლესი ანიმეები კარგი გახმოვანებით" />
-    </Helmet>
     <Provider store={Store}>
-      <Routes />
-      <Toaster position="bottom-center" />
+      <HelmetProvider>
+        <Routes />
+        <Toaster position="bottom-center" />
+      </HelmetProvider>
     </Provider>
   </BrowserRouter>
 );
