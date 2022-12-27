@@ -435,7 +435,7 @@ button {
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("./assets/images/Market.png");
-  width: 14rem;
+  width: 12rem;
   aspect-ratio: 3/10;
 
   position: fixed;
@@ -450,7 +450,7 @@ button {
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("./assets/images/Market.png");
-  width: 14rem;
+  width: 12rem;
   aspect-ratio: 3/10;
 
   position: fixed;

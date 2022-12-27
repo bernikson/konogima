@@ -91,7 +91,7 @@ const Home = () => {
   // useEffect(() => {
   //   user?.watchLater?.sort((a, b) => b?.anime?.views - a?.anime?.views);
   // }, [user]);
-
+  console.log(contentState === "ანიმე");
   //! -----------------------------------------------------------
 
   return (
@@ -155,7 +155,7 @@ const Home = () => {
           დორამა
         </span>
         <span
-          style={{ cursor: "not-allowed" }}
+          onClick={() => dispatch(updateContentState("მაღაზია"))}
           className={
             contentState === "მაღაზია" ? "modifiedContentState" : undefined
           }
@@ -373,14 +373,18 @@ const Home = () => {
       {/* 
       <article className="ADFirst">სარეკლამო ადგილი</article>
       <article className="ADSecond">სარეკლამო ადგილი</article> */}
-      <div
-        className="ADChristmas"
-        onClick={() => dispatch(updateContentState("მაღაზია"))}
-      ></div>
-      <div
-        className="ADChristmasTwo"
-        onClick={() => dispatch(updateContentState("მაღაზია"))}
-      ></div>
+      {contentState !== "მაღაზია" && (
+        <div
+          className="ADChristmas"
+          onClick={() => dispatch(updateContentState("მაღაზია"))}
+        ></div>
+      )}
+      {contentState !== "მაღაზია" && (
+        <div
+          className="ADChristmasTwo"
+          onClick={() => dispatch(updateContentState("მაღაზია"))}
+        ></div>
+      )}
     </main>
   );
 };
