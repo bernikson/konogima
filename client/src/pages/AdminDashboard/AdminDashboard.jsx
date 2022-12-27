@@ -198,7 +198,7 @@ const AdminDashboard = () => {
           },
         });
       const compressedFile = await imageCompression(file, {
-        initialQuality: 0.3,
+        initialQuality: 0.6,
         fileType: "image/webp",
       });
       const base64 = await convertToBase64(compressedFile);
