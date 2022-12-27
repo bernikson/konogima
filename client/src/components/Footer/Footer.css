@@ -25,11 +25,15 @@
   font-weight: bold;
   color: #ff3f34;
   font-family: "Outfit";
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #footer_left > div > svg {
   fill: var(--secondary);
   width: 2rem;
+  height: 2rem;
 }
 
 #footer_right {
@@ -38,13 +42,25 @@
   justify-content: center;
 }
 
-#footer_right > button {
-  padding: 0.5rem 1.2rem;
+#footer_right div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#footer_right button {
+  padding: 0.4rem 1.2rem;
   background-color: lightgrey;
-  border-radius: 7px;
-  font-size: 1.1rem;
+  border-radius: 5px;
+  font-size: 1rem;
   font-family: "Outfit";
   font-weight: bold;
+  white-space: nowrap;
+}
+
+#footer_right > button {
+  user-select: text;
+  cursor: text;
 }
 
 #footer_logo {
@@ -57,21 +73,21 @@
   background-image: url("../../assets/images/LogoChristmas.png");
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
   #footer > aside {
     width: auto;
     gap: 1rem;
   }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 950px) {
   #footer {
     justify-content: center;
     gap: 2rem;
   }
 }
 
-@media screen and (max-width: 460px) {
+@media screen and (max-width: 600px) {
   #footer_right {
     flex-direction: column;
   }

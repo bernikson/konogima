@@ -13,6 +13,8 @@ import {
   deleteAnimeThunk,
   createAnimeSeason,
 } from "../../redux/webSlice";
+import convertToBase64 from "../../utils/base64Convert";
+import imageCompression from "browser-image-compression";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -183,13 +185,11 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       const file = e.target.files[0];
-      let formData = new FormData();
-      formData.append("file", file);
       let loader = true;
       loader &&
         toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
           id: "single",
-          duration: 4000,
+          duration: 8000,
           style: {
             backgroundColor: "black",
             border: "1px solid #D084E3",
@@ -197,9 +197,15 @@ const AdminDashboard = () => {
             boxShadow: "0px 0px 30px #D084E3",
           },
         });
+      const compressedFile = await imageCompression(file, {
+        initialQuality: 0.3,
+        fileType: "image/webp",
+      });
+      const base64 = await convertToBase64(compressedFile);
+
       const { data } = await axios.post(
         "/api/user/uploadAnimeImage",
-        formData,
+        { image: base64 },
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",

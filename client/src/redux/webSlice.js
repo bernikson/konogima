@@ -230,9 +230,23 @@ const webSlice = createSlice({
     searchedAnimes: [],
     products: [],
     contentState: "ანიმე",
+    law: {
+      TOS: false,
+      PRIVACY: false,
+    },
   },
   reducers: {
     updateAuthState: (state, { payload }) => {
+      state.authState = payload;
+    },
+    updateLaw: (state, { payload }) => {
+      state.law = payload;
+    },
+    changeReduxAvatar: (state, { payload }) => {
+      state.user.avatar = payload;
+    },
+    update: (state, { payload }) => {
+      console.log(payload);
       state.authState = payload;
     },
     updateContentState: (state, { payload }) => {
@@ -634,5 +648,7 @@ export const {
   addWatchLater,
   dislikeAnime,
   searchAnimes,
+  updateLaw,
+  changeReduxAvatar,
 } = webSlice.actions;
 export default webSlice.reducer;

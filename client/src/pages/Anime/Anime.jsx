@@ -14,6 +14,7 @@ import {
   likeAnime,
   addWatchLater,
   dislikeAnime,
+  updateContentState,
 } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import CommentCard from "../../components/CommentCard/CommentCard";
@@ -624,21 +625,11 @@ const Anime = () => {
       <article className="ADSecond">სარეკლამო ადგილი</article> */}
       <div
         className="ADChristmas"
-        onClick={() =>
-          window.open(
-            "https://www.facebook.com/photo/?fbid=126118300305677&set=a.116585024592338",
-            "_blank"
-          )
-        }
+        onClick={() => dispatch(updateContentState("მაღაზია"))}
       ></div>
       <div
         className="ADChristmasTwo"
-        onClick={() =>
-          window.open(
-            "https://www.facebook.com/photo/?fbid=126118300305677&set=a.116585024592338",
-            "_blank"
-          )
-        }
+        onClick={() => dispatch(updateContentState("მაღაზია"))}
       ></div>
     </main>
   );

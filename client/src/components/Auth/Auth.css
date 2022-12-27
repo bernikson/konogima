@@ -201,6 +201,50 @@ input:-webkit-autofill:focus {
   outline: none;
 }
 
+#auth_agreement {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#auth_agreement > span {
+  color: #cccc;
+  font-size: 1rem;
+  line-height: 1.3em;
+}
+
+#auth_agreement > span > span {
+  font-weight: bold;
+  color: var(--secondary);
+  cursor: ;
+}
+
+#auth_agreement > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  border-bottom: 2px solid var(--secondary);
+  background-color: #0f0f0f;
+  cursor: pointer;
+}
+
+#auth_agreement > div svg {
+  min-width: 20px;
+  height: 20px;
+  fill: var(--secondary);
+  transform: scale(0.4);
+  transition: 0.4s ease;
+  opacity: 0;
+}
+
+.auth_agreement_check > svg {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
 .auth > button {
   padding: 0.7rem 1.4rem;
   border-radius: 4px;

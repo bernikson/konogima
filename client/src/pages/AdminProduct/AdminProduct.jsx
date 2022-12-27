@@ -9,6 +9,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createProduct, updateProduct } from "../../redux/webSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import convertToBase64 from "../../utils/base64Convert";
+import imageCompression from "browser-image-compression";
 
 const AdminProduct = () => {
   //! useState
@@ -44,8 +46,6 @@ const AdminProduct = () => {
     try {
       e.preventDefault();
       let image = e.target.files[0];
-      let formData = new FormData();
-      formData.append("file", image);
       let loader = true;
       loader &&
         toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
@@ -58,9 +58,14 @@ const AdminProduct = () => {
             boxShadow: "0px 0px 30px #D084E3",
           },
         });
+      const compressedFile = await imageCompression(image, {
+        initialQuality: 0.3,
+        fileType: "image/webp",
+      });
+      const base64 = await convertToBase64(compressedFile);
       const { data } = await axios.post(
         "/api/user/uploadProductImage",
-        formData,
+        { image: base64 },
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",

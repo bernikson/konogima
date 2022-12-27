@@ -54,6 +54,7 @@ const ProductSchema = new Schema(
       min: 0,
       max: 5,
     },
+    reviews: { type: [Number], default: [5] },
   },
   { timestamps: true }
 );

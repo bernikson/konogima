@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import { useMemo } from "react";
 import AdminProduct from "./pages/AdminProduct/AdminProduct";
 import Product from "./pages/Product/Product";
+import Law from "./components/Law/Law";
 
 const App = () => {
   //! Initialiations
@@ -182,7 +183,7 @@ const App = () => {
         <Route path="/reset_password/:id" element={<ResetPassword />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
-
+      <Law />
       <Footer />
     </div>
   );

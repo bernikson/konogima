@@ -22,6 +22,7 @@ const Auth = () => {
   const { authState } = useSelector((state) => ({
     ...state.web,
   }));
+  const [agreementCheck, setAgreementCheck] = useState(false);
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
@@ -415,6 +416,20 @@ const Auth = () => {
                     </span>
                   </div>
                 </div>
+                <article id="auth_agreement">
+                  <div
+                    onClick={() => setAgreementCheck(!agreementCheck)}
+                    className={
+                      agreementCheck ? "auth_agreement_check" : undefined
+                    }
+                  >
+                    <Tick />
+                  </div>
+                  <span>
+                    ვეთანხმები <span>სამომხმარებლო შეთანხმებასა</span> და{" "}
+                    <span>კონფიდენციალობის პოლიტიკას.</span>
+                  </span>
+                </article>
               </form>
             )}
           </article>
@@ -423,6 +438,7 @@ const Auth = () => {
               onClick={() => {
                 if (
                   handleValidate("username") &&
+                  agreementCheck &&
                   handleValidate("password") &&
                   handleValidate("email") &&
                   handleValidate("confirmPassword")
@@ -432,6 +448,7 @@ const Auth = () => {
               }}
               style={
                 handleValidate("username") &&
+                agreementCheck &&
                 handleValidate("password") &&
                 handleValidate("email") &&
                 handleValidate("confirmPassword")

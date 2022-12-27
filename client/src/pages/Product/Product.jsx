@@ -204,14 +204,18 @@ const Product = () => {
           </div>
           <div>
             <h6>აღწერა:</h6>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-              dolorum aut esse necessitatibus ipsam facere dolore illo
-              consectetur! Asperiores perferendis blanditiis, laborum eius magni
-              laboriosam adipisci vitae totam libero maxime.
-            </p>
+            <p>{currentProduct?.description}</p>
             <div id="product_button_wrapper">
-              <button>შეკვეთა</button>
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.instagram.com/konogimacom/",
+                    "_blank"
+                  )
+                }
+              >
+                შეკვეთა
+              </button>
               <button onClick={() => navigate("/")}>უკან</button>
             </div>
           </div>

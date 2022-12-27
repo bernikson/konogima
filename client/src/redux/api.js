@@ -9,12 +9,16 @@ export const forgotPasswordAPI = (data) =>
 export const resetPasswordAPI = (data) =>
   axios.post("/api/user/resetPassword", data);
 export const uploadImageAPI = (image, Token) =>
-  axios.post("/api/user/uploadImage", image, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${Token}`,
-    },
-  });
+  axios.post(
+    "/api/user/uploadImage",
+    { image },
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${Token}`,
+      },
+    }
+  );
 export const createAnimeAPI = (paylaod, Token) =>
   axios.post("/api/user/createAnime", paylaod, {
     headers: {

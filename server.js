@@ -67,9 +67,10 @@ app.use(compression());
 //   })
 // );
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "public")));
 app.set("io", io);
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: "50mb" }));
 app.use(cors({ credentials: true, origin: "https://konogima.com" }));
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));

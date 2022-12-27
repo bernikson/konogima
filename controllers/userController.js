@@ -9,12 +9,19 @@ const JWT = require("jsonwebtoken");
 const sendEmail = require("../utils/EmailSend");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const ImageKit = require("imagekit");
 
 //! ENV variables არ მუშაობს ამაზე რატომღაც
 cloudinary.config({
   cloud_name: "dpwr0nkcw",
   api_key: "471119865116464",
   api_secret: "ZFmGVDF0TaG5isrg7qdJeIMAnAE",
+});
+
+var imagekit = new ImageKit({
+  publicKey: "public_x3ARmEEdmkgz2mJ52AhpsA7ZVg0=",
+  privateKey: "private_dfzHgDmLgAd+8LKraTQ86nOZBPA=",
+  urlEndpoint: "https://ik.imagekit.io/rn3rkibio",
 });
 
 const userController = {
@@ -141,44 +148,49 @@ const userController = {
   },
   uploadAvatar: async (req, res, next) => {
     try {
-      const { file } = req.files;
-      cloudinary.v2.uploader.upload(
-        file.tempFilePath,
-        { folder: "Konogima", format: "webp", quality: "auto:eco" },
-        async (error, result) => {
-          error && console.log(error);
-          removeImage(file.tempFilePath);
+      if (!req.body.image)
+        return next(new ErrorResponse("სურათი ვერ მოიძებნა", 400));
+      imagekit
+        .upload({
+          file: req.body.image, //required
+          fileName: "test.jpg", //required
+        })
+        .then(async (response) => {
           await User.findByIdAndUpdate(
             req.user,
-            { avatar: result.secure_url },
+            { avatar: response.url },
             { new: true }
           );
-
           res.status(200).json({
             message: "სურათი შეიცვალა",
-            payload: result.secure_url,
+            payload: response.url,
           });
-        }
-      );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       return next(error);
     }
   },
   uploadAnimeImage: async (req, res, next) => {
     try {
-      const { file } = req.files;
-      cloudinary.v2.uploader.upload(
-        file.tempFilePath,
-        { folder: "Konogima", format: "webp", quality: "auto:eco" },
-        async (error, result) => {
-          error && console.log(error);
-          removeImage(file.tempFilePath);
+      if (!req.body.image)
+        return next(new ErrorResponse("სურათი ვერ მოიძებნა", 400));
+      imagekit
+        .upload({
+          file: req.body.image, //required
+          fileName: "test.jpg", //required
+        })
+        .then(async (response) => {
           res.status(200).json({
-            message: "ანიმეს სურათი შეიცვალა",
-            payload: result?.secure_url,
+            message: "სურათი შეიცვალა",
+            payload: response.url,
           });
-        }
-      );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       return next(error);
     }
@@ -331,19 +343,22 @@ const userController = {
   },
   uploadProductImage: async (req, res, next) => {
     try {
-      const { file } = req.files;
-      cloudinary.v2.uploader.upload(
-        file.tempFilePath,
-        { folder: "Konogima", format: "webp", quality: "auto:eco" },
-        async (error, result) => {
-          error && console.log(error);
-          removeImage(file.tempFilePath);
+      if (!req.body.image)
+        return next(new ErrorResponse("სურათი ვერ მოიძებნა", 400));
+      imagekit
+        .upload({
+          file: req.body.image, //required
+          fileName: "test.jpg", //required
+        })
+        .then(async (response) => {
           res.status(200).json({
-            message: "პროდუქტის სურათი შეიცვალა",
-            payload: result?.secure_url,
+            message: "სურათი შეიცვალა",
+            payload: response.url,
           });
-        }
-      );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       return next(error);
     }
@@ -469,12 +484,25 @@ const userController = {
         productId,
         avatar,
       });
+      const product = await Product.findById(productId);
+      let counter = 0;
+      product.reviews.push(rating);
+      product.reviews.forEach((review) => {
+        console.log(review);
+        counter += review;
+      });
+      let result = counter / product.reviews.length;
+      product.rating = result;
+      console.log(result);
+      console.log(product);
+      await product.save();
       return res.status(200).json({
         message: "პროდუქტის შეფასება წარმატებით დაიდო",
         success: true,
         payload: review,
       });
     } catch (error) {
+      console.log(error);
       return next(error);
     }
   },

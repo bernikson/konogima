@@ -19,6 +19,7 @@ import StarEmpty from "../../assets/svgs/StarEmpty";
 import Search from "../../assets/svgs/Search";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import InnerProduct from "../../components/InnerProduct/InnerProduct";
 
 const AnimeCard = lazy(() => import("../../components/AnimeCard/AnimeCard"));
 
@@ -360,57 +361,7 @@ const Home = () => {
         <>
           <section id="home_product_section">
             {products?.map((product) => {
-              return (
-                <artice
-                  className="home_product"
-                  onClick={() => navigate(`/product/${product._id}`)}
-                >
-                  <div className="home_product_hover">
-                    <Search />
-                  </div>
-                  <div
-                    className="home_product_background"
-                    style={{ backgroundImage: `url(${product?.background})` }}
-                  ></div>
-                  <div>
-                    <h6>{product?.type}</h6>
-                    <h3>{product?.name}</h3>
-                    <div className="home_product_ratings">
-                      <StarFull />
-                      <StarFull />
-                      <StarFull />
-                      <StarHalf />
-                      <StarEmpty />
-                    </div>
-                    <div className="home_product_price">
-                      {product?.salePrice && (
-                        <span className="home_product_sale">
-                          ₾{product?.salePrice}
-                        </span>
-                      )}
-
-                      <span
-                        className={`home_product_real ${
-                          !product?.salePrice
-                            ? "home_product_saleOriginal"
-                            : undefined
-                        }`}
-                      >
-                        ₾{product?.price}
-                      </span>
-                      {product?.salePrice && (
-                        <div>
-                          {(
-                            (100 * (product?.price - product?.salePrice)) /
-                            product?.price
-                          ).toFixed(0)}
-                          %
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </artice>
-              );
+              return <InnerProduct product={product} />;
             })}
           </section>
         </>
@@ -424,21 +375,11 @@ const Home = () => {
       <article className="ADSecond">სარეკლამო ადგილი</article> */}
       <div
         className="ADChristmas"
-        onClick={() =>
-          window.open(
-            "https://www.facebook.com/photo/?fbid=126118300305677&set=a.116585024592338",
-            "_blank"
-          )
-        }
+        onClick={() => dispatch(updateContentState("მაღაზია"))}
       ></div>
       <div
         className="ADChristmasTwo"
-        onClick={() =>
-          window.open(
-            "https://www.facebook.com/photo/?fbid=126118300305677&set=a.116585024592338",
-            "_blank"
-          )
-        }
+        onClick={() => dispatch(updateContentState("მაღაზია"))}
       ></div>
     </main>
   );

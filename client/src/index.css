@@ -434,7 +434,7 @@ button {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("./assets/images/ADChristmas.png");
+  background-image: url("./assets/images/Market.png");
   width: 14rem;
   aspect-ratio: 3/10;
 
@@ -449,7 +449,7 @@ button {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("./assets/images/ADChristmas.png");
+  background-image: url("./assets/images/Market.png");
   width: 14rem;
   aspect-ratio: 3/10;
 
@@ -494,7 +494,7 @@ button {
   }
 }
 
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 1250px) {
   .ADChristmas {
     display: none;
   }

@@ -1,0 +1,85 @@
+#law {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  padding: 1rem 2rem;
+  background-color: hsla(0, 0%, 0%, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.openLaw {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#law > article {
+  padding: 1rem 2rem;
+  background-color: #1b171b;
+  max-height: 70vh;
+  width: 70vw;
+  border-radius: 10px;
+  overflow-y: scroll;
+  transform: scale(0.7);
+  transition: 0.5s ease;
+}
+
+.openLaw > article {
+  transform: scale(1) !important;
+}
+
+#law h2 {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: normal;
+  margin: 1rem 0;
+}
+
+#law p {
+  font-size: 1rem;
+  color: #cccccc;
+  font-weight: normal;
+  line-height: 1.4em;
+}
+
+#law ol {
+  padding: 1rem 2rem;
+}
+
+#law li {
+  font-size: 1rem;
+  color: #cccccc;
+  font-weight: normal;
+  padding: 0.3rem 0rem;
+  line-height: 1.7em;
+}
+
+@media screen and (max-width: 1200px) {
+  #law > article {
+    width: 80vw;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #law > article {
+    width: 90vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #law > article {
+    width: 95vw;
+    padding: 1rem;
+  }
+  #law {
+    padding: 1rem;
+  }
+}

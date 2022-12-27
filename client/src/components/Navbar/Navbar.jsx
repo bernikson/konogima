@@ -193,7 +193,7 @@ const Navbar = () => {
           დორამა
         </span>
         <span
-          style={{ cursor: "not-allowed" }}
+          onClick={() => dispatch(updateContentState("მაღაზია"))}
           className={
             contentState === "მაღაზია" ? "modifiedContentState" : undefined
           }

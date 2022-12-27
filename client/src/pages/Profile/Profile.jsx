@@ -7,6 +7,9 @@ import { uploadImage } from "../../redux/webSlice";
 import { useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
+import convertToBase64 from "../../utils/base64Convert";
+import imageCompression from "browser-image-compression";
+import { toast } from "react-hot-toast";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -23,10 +26,24 @@ const Profile = () => {
     e.preventDefault();
     try {
       const file = e.target.files[0];
-      let formData = new FormData();
-      formData.append("file", file);
-
-      await dispatch(uploadImage({ image: formData, Token }));
+      // let formData = new FormData();
+      // formData.append("file", file);
+      toast.loading("მიმდინარეობს ინფორმაციის მიღება...", {
+        id: "single",
+        duration: 8000,
+        style: {
+          backgroundColor: "black",
+          border: "1px solid #D084E3",
+          color: "white",
+          boxShadow: "0px 0px 30px #D084E3",
+        },
+      });
+      const compressedFile = await imageCompression(file, {
+        initialQuality: 0.7,
+        fileType: "image/webp",
+      });
+      const base64 = await convertToBase64(compressedFile);
+      await dispatch(uploadImage({ image: base64, Token }));
     } catch (error) {
       console.log(error);
     }
