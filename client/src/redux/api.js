@@ -14,7 +14,6 @@ export const uploadImageAPI = (image, Token) =>
     { image },
     {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${Token}`,
       },
     }

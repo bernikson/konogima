@@ -148,6 +148,7 @@ const userController = {
   },
   uploadAvatar: async (req, res, next) => {
     try {
+      console.log(req.body);
       if (!req.body.image)
         return next(new ErrorResponse("სურათი ვერ მოიძებნა", 400));
       imagekit
@@ -161,7 +162,7 @@ const userController = {
             { avatar: response.url },
             { new: true }
           );
-          res.status(200).json({
+          return res.status(200).json({
             message: "სურათი შეიცვალა",
             payload: response.url,
           });
@@ -170,6 +171,7 @@ const userController = {
           console.log(error);
         });
     } catch (error) {
+      console.log(error);
       return next(error);
     }
   },

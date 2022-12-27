@@ -84,10 +84,13 @@ export const uploadImage = createAsyncThunk(
   "user/uploadImage",
   async ({ image, Token }, { rejectWithValue }) => {
     try {
+      console.log({ image });
+      console.log(image);
       const { data } = await api.uploadImageAPI(image, Token);
+      console.log("tesst");
       return data;
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
       return rejectWithValue(error.response.data.message);
     }
   }
