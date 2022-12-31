@@ -59,7 +59,7 @@ const AdminProduct = () => {
           },
         });
       const compressedFile = await imageCompression(image, {
-        initialQuality: 0.6,
+        initialQuality: 1,
         fileType: "image/webp",
       });
       const base64 = await convertToBase64(compressedFile);

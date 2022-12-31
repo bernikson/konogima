@@ -39,7 +39,7 @@ const Profile = () => {
         },
       });
       const compressedFile = await imageCompression(file, {
-        initialQuality: 0.7,
+        initialQuality: 1,
         fileType: "image/webp",
       });
       const base64 = await convertToBase64(compressedFile);
