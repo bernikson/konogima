@@ -38,34 +38,7 @@ const helmet = require("helmet");
 
 //! Express middlewares
 app.use(compression());
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         scriptSrc: [
-//           "'self'",
-//           "'unsafe-inline'",
-//           "https://*.google.com",
-//           "https://*.google-analytics.com",
-//           "https://*.googletagmanager.com",
-//           "https://*.res.cloudinary.com",
-//         ],
-//         connectSrc: [
-//           "'self'",
-//           "'unsafe-inline'",
-//           "https://*.google.com",
-//           "https://*.google-analytics.com",
-//           "https://*.googletagmanager.com",
-//           "https://*.res.cloudinary.com",
-//         ],
-//         imgSrc: [`'self'`, "https://cdnjs.cloudflare.com", `data:`],
-//       },
-//     },
-//     //Will work for most, but did not work for me:
-//     // crossOriginEmbedderPolicy: false,
-//   })
-// );
+
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("io", io);
@@ -79,7 +52,7 @@ app.use(ErrorHandler);
 
 app.use((req, res, next) => {
   if (req.protocol === "http") {
-    res.redirect(301, `https://${req.headers.host}${req.url}`);
+    return res.redirect(301, `https://${req.headers.host}${req.url}`);
   }
   next();
 });
