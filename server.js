@@ -14,7 +14,7 @@ const httpsServer = require("https").createServer(httpsOptions, app);
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpsServer, {
   cors: {
-    origin: "http://127.0.0.1:5173",
+    origin: "https://konogima.com",
   },
 });
 
@@ -71,7 +71,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("io", io);
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json({ limit: "50mb" }));
-app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }));
+app.use(cors({ credentials: true, origin: "https://konogima.com" }));
 app.use(cookieParser());
 app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);
