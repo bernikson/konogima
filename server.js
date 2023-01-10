@@ -50,13 +50,6 @@ app.use(expressFileUpload({ useTempFiles: true }));
 app.use("/api/user", userRoutes);
 app.use(ErrorHandler);
 
-app.use((req, res, next) => {
-  if (req.protocol === "http") {
-    return res.redirect(301, `https://${req.headers.host}${req.url}`);
-  }
-  next();
-});
-
 //! Socket.io
 io.on("connection", async (socket) => {
   let conenctedUsers = io.engine.clientsCount;
@@ -481,6 +474,13 @@ io.on("connection", async (socket) => {
       console.log(error);
     }
   });
+});
+
+app.use((req, res, next) => {
+  if (req.protocol === "http") {
+    res.redirect(301, `https://${req.headers.host}${req.url}`);
+  }
+  next();
 });
 
 app.use(express.static(path.join(__dirname, "/client/build")));
